@@ -1,0 +1,21 @@
+# Secrets and team-only files (never commit these)
+.env
+TEAM-NOTES.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node (if used for frontend)
+node_modules/
