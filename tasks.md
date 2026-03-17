@@ -3,16 +3,17 @@
 ## ASAP
 
 - [x] Finalize and submit proposal
-- [ ] Find a web host. Consider Hetzner Cloud VPS in Falkenstein (~€2.99–3.79/month). Closest datacenter to Switzerland with EU data protection. A smaller tier is likely sufficient since there is no heavy groupware dependency.
+- [x] Find a web host. Hetzner Cloud CX23 in Nuremberg (`nbg1`), €3.49/month. Ubuntu 24.04, 2 vCPU, 4 GB RAM, 40 GB SSD. Firewall configured (SSH/HTTP/HTTPS). IP: 178.104.80.19.
 
 ## After Proposal Is Approved
 
 - [ ] Get a PublicAI API key. Check `publicai.co` vs. `publicai.ch` — verify which one keeps data in Switzerland and what the current rate limits and pricing are outside of promotional periods.
 - [ ] Test the PublicAI API with a sample German event page before the hackathon. Confirm it can return valid structured JSON for event extraction. This avoids burning hackathon time on API surprises.
-- [ ] Set up the web host (VPS). Install Nginx, Python environment, and PostgreSQL or SQLite. Configure SSL via Let's Encrypt.
-- [ ] Register a `.ch` domain and configure DNS.
+- [x] Set up the web host (VPS). Installed Nginx, Python 3.12, PostgreSQL 16, and certbot.
+- [ ] Register a `.ch` domain and configure DNS to point to 178.104.80.19.
+- [ ] Configure SSL via Let's Encrypt (requires domain to be registered and DNS propagated first).
 - [ ] Pick a frontend calendar technology. Recommendation: FullCalendar (open source, can consume iCal feeds) with plain HTML/JS, or a lightweight framework like Astro for server rendering.
-- [ ] Initialize the Git repository and push to GitHub.
+- [x] Initialize the Git repository and push to GitHub.
 - [ ] Prepare mock data: a hand-written JSON file with 5-10 sample events matching the planned schema. This lets the Data Formatting and Website teams start working immediately at the hackathon without waiting for the AI pipeline.
 - [ ] Finalize 3-5 target websites for the MVP. Document each URL and what kind of events it contains.
 
@@ -22,7 +23,7 @@
 
 No programming required.
 
-- [ ] Configure server timezone to `Europe/Zurich`
+- [x] Configure server timezone to `Europe/Zurich`
 - [ ] Set up environment variables and secrets for API keys and deployment
 - [ ] Add GitHub Secrets to the repository: `PUBLICAI_API_KEY`, `DB_CONNECTION_STRING` (or equivalent)
 - [ ] Set up automated database backups
