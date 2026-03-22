@@ -7,13 +7,14 @@
 
 ## After Proposal Is Approved
 
-- [ ] Get a PublicAI API key. Check `publicai.co` vs. `publicai.ch` — verify which one keeps data in Switzerland and what the current rate limits and pricing are outside of promotional periods.
-- [ ] Test the PublicAI API with a sample German event page before the hackathon. Confirm it can return valid structured JSON for event extraction. This avoids burning hackathon time on API surprises.
+- [x] Get a PublicAI API key. Check `publicai.co` vs. `publicai.ch` — verify which one keeps data in Switzerland and what the current rate limits and pricing are outside of promotional periods.
+- [x] Confirm the PublicAI API key is valid and the Apertus model responds. ✓ Key works. Use full model name `swiss-ai/apertus-8b-instruct` (or `swiss-ai/apertus-70b-instruct`). Endpoint: `https://api.publicai.co/v1`. The real integration and prompt testing is Track 2's job.
 - [x] Set up the web host (VPS). Installed Nginx, Python 3.12, PostgreSQL 16, and certbot.
-- [ ] Register a `.ch` domain and configure DNS to point to 178.104.80.19.
-- [ ] Configure SSL via Let's Encrypt (requires domain to be registered and DNS propagated first).
+- [x] Configure server timezone to `Europe/Zurich`
+- [ ] Set up environment variables and secrets for API keys and deployment
 - [ ] Pick a frontend calendar technology. Recommendation: FullCalendar (open source, can consume iCal feeds) with plain HTML/JS, or a lightweight framework like Astro for server rendering.
 - [x] Initialize the Git repository and push to GitHub.
+- [ ] Set up automated database backups
 - [ ] Prepare mock data: a hand-written JSON file with 5-10 sample events matching the planned schema. This lets the Data Formatting and Website teams start working immediately at the hackathon without waiting for the AI pipeline.
 - [ ] Finalize 3-5 target websites for the MVP. Document each URL and what kind of events it contains.
 
@@ -23,10 +24,9 @@
 
 No programming required.
 
-- [x] Configure server timezone to `Europe/Zurich`
-- [ ] Set up environment variables and secrets for API keys and deployment
+- [ ] Register a `.ch` domain and configure DNS to point to 178.104.80.19.
+- [ ] Configure SSL via Let's Encrypt (requires domain to be registered and DNS propagated first).
 - [ ] Add GitHub Secrets to the repository: `PUBLICAI_API_KEY`, `DB_CONNECTION_STRING` (or equivalent)
-- [ ] Set up automated database backups
 - [ ] Distribute the mock data JSON file to the Data Formatting and Website teams so they can start immediately
 - [ ] Coordinate end-to-end integration testing: once all tracks have their pieces working, wire the full pipeline together (scrape → AI → JSON → calendar → website) and verify it works
 - [ ] **Test with real data** (no programming required): As the other teams populate events into the database, verify that each event displays correctly on the website. Check timezone rendering, special characters in German text (umlauts), and events that span multiple days.
@@ -43,7 +43,7 @@ No programming required.
   - Instruct the model to assume `Europe/Zurich` timezone for all events unless otherwise specified
   - Instruct the model to return only raw JSON with no markdown formatting or explanation
   - Include the source URL in the output for each event (needed for deduplication)
-- [ ] **Connect to PublicAI API**: Send scraped text to the Apertus model and receive structured JSON back. Use the OpenAI-compatible endpoint at `api.publicai.co`.
+- [ ] **Connect to PublicAI API**: Send scraped text to the Apertus model and receive structured JSON back. Use the OpenAI-compatible endpoint at `https://api.publicai.co/v1`. Model name: `swiss-ai/apertus-8b-instruct` (or `swiss-ai/apertus-70b-instruct`). API key is in the `.env` file.
 - [ ] **Add output verification**: Validate that the AI response is valid JSON and matches the expected schema. Handle common failure modes: markdown-wrapped JSON, missing fields, hallucinated fields, partial responses. Add retry logic (re-prompt on invalid output, up to 2-3 retries).
 - [ ] **Test end-to-end**: Run the full scrape-and-extract pipeline against all target websites. Review the output manually for accuracy.
 - [ ] **Event update detection**: Detect and flag source-side changes (rescheduled, cancelled, or removed events) in the AI output so the Data Formatting team can apply reliable update logic.

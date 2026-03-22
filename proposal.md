@@ -45,7 +45,7 @@ The system has three layers:
 ├─────────────────────────────────────────────┤
 │  Data Processing (middle layer)             │
 │  Converts AI output into database events,   │
-│  deduplicates and resolves update conflicts  │
+│  deduplicates and resolves update conflicts │
 ├─────────────────────────────────────────────┤
 │  Scraping + AI (base layer)                 │
 │  Scrapes organization websites,             │
