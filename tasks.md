@@ -11,7 +11,7 @@
 - [x] Confirm the PublicAI API key is valid and the Apertus model responds. ✓ Key works. Use full model name `swiss-ai/apertus-8b-instruct` (or `swiss-ai/apertus-70b-instruct`). Endpoint: `https://api.publicai.co/v1`. The real integration and prompt testing is Track 2's job.
 - [x] Set up the web host (VPS). Installed Nginx, Python 3.12, PostgreSQL 16, and certbot.
 - [x] Configure server timezone to `Europe/Zurich`
-- [ ] Set up environment variables and secrets for API keys and deployment
+- [x] Set up environment variables and secrets for API keys and deployment
 - [ ] Pick a frontend calendar technology. Recommendation: FullCalendar (open source, can consume iCal feeds) with plain HTML/JS, or a lightweight framework like Astro for server rendering.
 - [x] Initialize the Git repository and push to GitHub.
 - [ ] Set up automated database backups
