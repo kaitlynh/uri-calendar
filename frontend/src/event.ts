@@ -1,0 +1,12 @@
+
+export type Event = {
+  event_id: string,
+  source_url: string,
+  event_title: string,
+  start_datetime: string,
+  end_datetime?: string,
+  location: string,
+  description: string,
+  category?: string,
+  extracted_at: string
+}
