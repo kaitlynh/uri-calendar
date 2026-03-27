@@ -3,6 +3,7 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+from datetime import datetime
 
 # Load .env from same directory as this script
 load_dotenv(dotenv_path=Path(__file__).parent / '.env')
@@ -10,7 +11,6 @@ load_dotenv(dotenv_path=Path(__file__).parent / '.env')
 
 def get_db_connection():
     try:
-        print("hi3")
         conn = psycopg2.connect(
             host=os.getenv("DB_HOST", "localhost"),
             port=os.getenv("DB_PORT", "5432"),
@@ -25,51 +25,69 @@ def get_db_connection():
         raise
 
 
+def parse_start_datetime(value):
+    """Split ISO8601 datetime string into (date, time) or (None, None)."""
+    if not value:
+        return None, None
+    try:
+        dt = datetime.fromisoformat(value)
+        return dt.date(), dt.time()
+    except ValueError:
+        print(f"Could not parse start_datetime: {value}")
+        return None, None
+
+
 def ingest_events(json_file: str):
-    # Resolve path relative to this script
     json_path = Path(__file__).parent / json_file
- 
+
     with open(json_path, "r") as f:
         events = json.load(f)
- 
+
     if not isinstance(events, list):
         raise ValueError("Expected a JSON array of event objects.")
- 
+
     conn = get_db_connection()
     cur = conn.cursor()
-    
-    print("hi2")
 
     inserted = 0
     skipped = 0
- 
+
     for event in events:
         try:
             source_url = event.get("source_url")
- 
-            # 1. Upsert source, get back source_id
+            source_name = event.get("source_name")
+
+            # 1. Upsert source
             cur.execute(
                 """
-                INSERT INTO sources (base_url)
-                VALUES (%s)
-                ON CONFLICT (base_url) DO UPDATE SET base_url = EXCLUDED.base_url
+                INSERT INTO sources (source_name, source_url)
+                VALUES (%s, %s)
+                ON CONFLICT (source_url) DO UPDATE SET source_name = EXCLUDED.source_name
                 RETURNING source_id
                 """,
-                (source_url,)
+                (source_name, source_url)
             )
             source_id = cur.fetchone()[0]
- 
-            # 2. Insert event
+
+            # 2. Extract Date/Time directly from JSON (since they are already split)
+            start_date = event.get("start_date")
+            start_time = event.get("start_time")
+            
+            # If you still want to use the parser for a combined string, 
+            # ensure the key matches your JSON:
+            # start_date, start_time = parse_start_datetime(event.get("start_datetime"))
+
+            # 3. Insert event
             cur.execute(
                 """
                 INSERT INTO events (
                     source_id,
                     event_title,
-                    start_datetime,
+                    start_date,
+                    start_time,
                     end_datetime,
                     location,
                     description,
-                    category,
                     extracted_at
                 )
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -77,28 +95,28 @@ def ingest_events(json_file: str):
                 (
                     source_id,
                     event.get("event_title"),
-                    event.get("start_datetime"),
+                    start_date,
+                    start_time,
                     event.get("end_datetime"),
                     event.get("location"),
                     event.get("description"),
-                    event.get("category"),
                     event.get("extracted_at"),
                 )
             )
             inserted += 1
+
         except psycopg2.Error as e:
-            print(f"Skipping event due to error: {e}")
+            print(f"Skipping event '{event.get('event_title')}' due to error: {e}")
             conn.rollback()
             skipped += 1
             continue
- 
+
     conn.commit()
     cur.close()
     conn.close()
- 
+
     print(f"Done. Inserted: {inserted}, Skipped: {skipped}")
- 
- 
+
+
 if __name__ == "__main__":
-    print("hi")
     ingest_events("data.json")

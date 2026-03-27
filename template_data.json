@@ -4,7 +4,7 @@
   "source_url": "string (url)",
   "event_title": "string",
   "start_date": "string (YYYY-MM-DD)",
-  "start_time": "string (HH:MM:SS)",
+  "start_time": "string (HH:MM:SS) or null",
   "end_datetime": "ISO8601 string or null",
   "location": "string",
   "description": "string",
