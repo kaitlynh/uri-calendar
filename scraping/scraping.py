@@ -156,6 +156,28 @@ def scrape_musikschule(source: dict, extracted_at: str) -> list[Event]:
         ))
     return events
 
+def scrape_altdorf(source: dict, extracted_at: str) -> list[Event]:
+    import os, sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from scrape_altdorf import fetch_events, _to_template as altdorf_to_template
+
+    raw = fetch_events()
+    events = []
+    for e in raw:
+        t = altdorf_to_template(e, extracted_at)
+        events.append(Event(
+            source_name  = t["source_name"],
+            source_url   = t["source_url"],
+            event_title  = t["event_title"],
+            start_date   = t["start_date"],
+            start_time   = t["start_time"],
+            end_datetime = t["end_datetime"],
+            location     = t["location"],
+            description  = t["description"],
+            extracted_at = t["extracted_at"],
+        ))
+    return events
+
 def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
     import os, sys
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -178,6 +200,29 @@ def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
         ))
     return events
 
+def scrape_andermatt(source: dict, extracted_at: str) -> list[Event]:
+    import os, sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from scrape_andermatt import fetch_events, _to_template as andermatt_to_template
+
+    raw = fetch_events()
+    events = []
+    for e in raw:
+        t = andermatt_to_template(e, extracted_at)
+        events.append(Event(
+            source_name  = t["source_name"],
+            source_url   = t["source_url"],
+            event_title  = t["event_title"],
+            start_date   = t["start_date"],
+            start_time   = t["start_time"],
+            end_datetime = t["end_datetime"],
+            location     = t["location"],
+            description  = t["description"],
+            extracted_at = t["extracted_at"],
+        ))
+    return events
+
+
 SCRAPERS = {
     "static":            scrape_static,
     "rss":               scrape_rss,
@@ -185,6 +230,8 @@ SCRAPERS = {
     "urnerwochenblatt":  scrape_urnerwochenblatt,
     "kbu":               scrape_kbu,
     "musikschule":       scrape_musikschule,
+    "altdorf":           scrape_altdorf,
+    "andermatt":         scrape_andermatt,
 }
 
 def collect_all_events(sources_path: str = "scraping/sources.json", output_path: str = "events/events.json"):
