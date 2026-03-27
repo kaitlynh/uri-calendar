@@ -15,6 +15,7 @@ import feedparser
 @dataclass
 class Event:
     source_name: Optional[str]
+    base_url: Optional[str]
     source_url: Optional[str]
     event_title: str
     start_date: Optional[str]
@@ -49,6 +50,7 @@ def scrape_static(source: dict, extracted_at: str) -> list[Event]:
         events.append(Event(
             source_name    = source.get("name"),
             source_url     = link_el["href"] if link_el else source["url"],
+            base_url       = source["url"],
             event_title    = title_el.text.strip() if title_el else "",
             start_date     = date_el.get("datetime", date_el.text.strip()) if date_el else None,
             start_time     = None,
@@ -70,6 +72,7 @@ def scrape_rss(source: dict, extracted_at: str) -> list[Event]:
 
         events.append(Event(
             source_name    = urlsplit(source["url"]).netloc,
+            base_url       = source["url"],
             source_url     = entry.get("link", source["url"]),
             event_title    = entry.get("title", ""),
             start_date     = date_str.split("T")[0] if date_str else None,
@@ -102,6 +105,7 @@ def scrape_js(source: dict, extracted_at: str) -> list[Event]:
         events.append(Event(
             source_name    = source.get("name"),
             source_url     = link_el["href"] if link_el else source["url"],
+            base_url         = source["url"],
             event_title    = title_el.text.strip() if title_el else "",
             start_date     = date_el.get("datetime", date_el.text.strip()) if date_el else None,
             start_time     = None,
@@ -123,6 +127,7 @@ def scrape_kbu(source: dict, extracted_at: str) -> list[Event]:
         t = kbu_to_template(e, extracted_at)
         events.append(Event(
             source_name  = t["source_name"],
+            base_url     =  "kbu.ch",
             source_url   = t["source_url"],
             event_title  = t["event_title"],
             start_date   = t["start_date"],
@@ -145,6 +150,7 @@ def scrape_musikschule(source: dict, extracted_at: str) -> list[Event]:
         t = ms_to_template(e, extracted_at)
         events.append(Event(
             source_name  = t["source_name"],
+            base_url     = "www.musikschule-uri.ch",
             source_url   = t["source_url"],
             event_title  = t["event_title"],
             start_date   = t["start_date"],
@@ -167,6 +173,7 @@ def scrape_altdorf(source: dict, extracted_at: str) -> list[Event]:
         t = altdorf_to_template(e, extracted_at)
         events.append(Event(
             source_name  = t["source_name"],
+            base_url      = "www.altdorf.ch",
             source_url   = t["source_url"],
             event_title  = t["event_title"],
             start_date   = t["start_date"],
@@ -189,6 +196,7 @@ def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
         t = uw_to_template(e, extracted_at)
         events.append(Event(
             source_name  = "urnerwochenblatt.ch",
+            base_url       = "urnerwochenblatt.ch",
             source_url   = t["source_url"],
             event_title  = t["event_title"],
             start_date   = t["start_date"],
@@ -211,6 +219,7 @@ def scrape_andermatt(source: dict, extracted_at: str) -> list[Event]:
         t = andermatt_to_template(e, extracted_at)
         events.append(Event(
             source_name  = t["source_name"],
+            base_url       = "www.gemeinde-andermatt.ch",
             source_url   = t["source_url"],
             event_title  = t["event_title"],
             start_date   = t["start_date"],

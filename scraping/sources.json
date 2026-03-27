@@ -1,5 +1,5 @@
 [
-  {
+ {
     "name": "Urner Wochenblatt",
     "url": "https://www.urnerwochenblatt.ch/veranstaltungen/",
     "type": "urnerwochenblatt",
@@ -14,5 +14,20 @@
     "name": "Musikschule Uri",
     "url": "https://www.musikschule-uri.ch/events-news/",
     "type": "musikschule"
+  },
+  {
+    "name": "Schulen Altdorf",
+    "url": "https://schule-altdorf.ch/events/feed/",
+    "type": "rss"
+  },
+    {
+    "name": "Gemeinde Altdorf",
+    "url": "https://www.altdorf.ch/anlaesseaktuelles",
+    "type": "altdorf"
+  },
+  {
+    "name": "Gemeinde Andermatt",
+    "url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131",
+    "type": "andermatt"
   }
 ]
