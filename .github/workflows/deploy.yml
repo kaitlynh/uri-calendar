@@ -17,3 +17,8 @@ jobs:
           script: |
             cd /opt/uri-calendar
             git pull origin main
+            cd frontend
+            npm install
+            npm run build
+            cp /opt/uri-calendar/nginx/uri-calendar.conf /etc/nginx/sites-enabled/default
+            nginx -t && systemctl reload nginx
