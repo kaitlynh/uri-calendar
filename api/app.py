@@ -40,7 +40,7 @@ def serialize_event(row):
     return {
         "event_id": str(row["event_id"]),
         "source_name": row["source_name"],
-        "source_url": row["source_url"],
+        "base_url": row["base_url"],
         "event_title": row["event_title"],
         "start_date": row["start_date"].isoformat() if row["start_date"] else None,
         "start_time": row["start_time"].strftime("%H:%M:%S") if row["start_time"] else None,
@@ -74,13 +74,13 @@ def get_events():
     conn = get_db()
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-            # Join with sources to include source_name/source_url in the response.
+            # Join with sources to include source_name/base_url in the response.
             # NULLS FIRST so all-day events appear before timed events.
             cur.execute(
                 """
                 SELECT e.event_id, e.event_title, e.start_date, e.start_time,
                        e.end_datetime, e.location, e.description, e.extracted_at,
-                       s.source_name, s.source_url
+                       s.source_name, s.base_url
                 FROM events e
                 JOIN sources s ON e.source_id = s.source_id
                 WHERE e.start_date = %s
@@ -103,7 +103,7 @@ def get_sources():
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute(
                 """
-                SELECT source_id, source_name, source_url, created_at
+                SELECT source_id, source_name, base_url, created_at
                 FROM sources
                 ORDER BY source_name ASC
                 """
@@ -116,7 +116,7 @@ def get_sources():
         {
             "source_id": str(r["source_id"]),
             "source_name": r["source_name"],
-            "source_url": r["source_url"],
+            "base_url": r["base_url"],
             "created_at": r["created_at"].isoformat() if r["created_at"] else None,
         }
         for r in rows
