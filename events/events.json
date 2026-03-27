@@ -1,5 +1,93 @@
 [
   {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2499/eventdate/8764",
+    "event_title": "Hütten-Abend auf der Rüti Hütte",
+    "start_date": "2025-12-19",
+    "start_time": "18:30:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Lust auf einen Hüttenabend mit traumhafter Aussicht über Andermatt?",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2510/eventdate/9611",
+    "event_title": "Karaoke Night",
+    "start_date": "2026-01-05",
+    "start_time": "21:00:00",
+    "end_datetime": "2026-01-05T24:00:00",
+    "location": null,
+    "description": "Karaoke Night - komm vorbei und sing mit!",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2508/eventdate/9598",
+    "event_title": "Pub Quiz",
+    "start_date": "2026-01-05",
+    "start_time": "20:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Pub Quiz - Komm vorbei und mach mit!",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2511/eventdate/9698",
+    "event_title": "LIVE MUSIC CONCERT - The Aurora",
+    "start_date": "2026-01-10",
+    "start_time": "20:30:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Rock & Roll",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995233",
+    "event_title": "Schach- Treff",
+    "start_date": "2026-01-12",
+    "start_time": null,
+    "end_datetime": "2026-06-15",
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995251",
+    "event_title": "Handy- Treff",
+    "start_date": "2026-01-12",
+    "start_time": null,
+    "end_datetime": "2026-04-27",
+    "location": "Kursraum Pro Senectute Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2444/eventdate/8748",
+    "event_title": "DJ Sessions - Jeden Freitag",
+    "start_date": "2026-01-16",
+    "start_time": "16:30:00",
+    "end_datetime": "2026-01-16T18:30:00",
+    "location": null,
+    "description": "Entspannte DJ Sounds, winterliches Shoppingflair und feine Drinks im IGNIV Chalet – jeden Freitag in der Furkagasse in Andermatt Reuss.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2445/eventdate/8803",
+    "event_title": "Live Sessions - Jeden Samstag",
+    "start_date": "2026-01-17",
+    "start_time": "16:30:00",
+    "end_datetime": "2026-01-17T18:30:00",
+    "location": null,
+    "description": "Live-Musik, Winterflair und das IGNIV Chalet mit feinen Drinks – jeden Samstag in der Furkagasse in Andermatt Reuss.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
     "source_name": "urnerwochenblatt.ch",
     "source_url": "https://www.digital-cluster-uri.ch",
     "event_title": "Hackdays Uri",
@@ -8,7 +96,7 @@
     "end_datetime": "2026-03-27T23:00:00",
     "location": "Zeughaus, Lehnplatz 22, Altdorf",
     "description": "Wir suchen Ideen für unseren Kanton. Gemeinsam entwickeln wir kreative Lösungen für Uri zum Thema digitale Souveränität.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -19,7 +107,7 @@
     "end_datetime": "2026-03-27T15:00:00",
     "location": "Restaurant Lehnhof, Lehnplatz 18, Altdorf",
     "description": "Ankauf von Schmuck, Uhren, Münzen und anderem. Gewerblich autorisierter Edelmetallankäufer.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -30,7 +118,7 @@
     "end_datetime": "2026-03-27T15:30:00",
     "location": "Pro Senectute, Gitschenstrasse 9, Altdorf",
     "description": "Sie erhalten wertvolle Informationen. Anmeldung erforderlich: Telefon 041 870 42 12 oder kurse@ur.prosenectute.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -41,7 +129,7 @@
     "end_datetime": "2026-03-27T18:00:00",
     "location": "Amsteg",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -52,7 +140,7 @@
     "end_datetime": "2026-03-27T17:00:00",
     "location": "Turnhalle Hagen, Altdorf",
     "description": "Gymnastik, Kraft, Ausdauer, Beweglichkeit, Spiel und Spass.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -63,7 +151,7 @@
     "end_datetime": "2026-03-27T18:30:00",
     "location": "Furkagasse, Andermatt",
     "description": "Entspannte DJ Sounds, winterliches Shoppingflair und feine Drinks im IGNIV Chalet – jeden Freitag.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -74,7 +162,7 @@
     "end_datetime": null,
     "location": "Nussbäumli 1, Altdorf",
     "description": "Musik von Anina Sialm.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -85,7 +173,7 @@
     "end_datetime": "2026-03-27T21:30:00",
     "location": "Theater Uri, Schützengasse 11, Altdorf",
     "description": "Frei entwickelt nach einer Kurzgeschichte von Catharina Valckx. Tickets unter: www.theater-uri.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -96,7 +184,7 @@
     "end_datetime": null,
     "location": "Kino Leuzinger, Altdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -107,7 +195,7 @@
     "end_datetime": "2026-03-27T22:30:00",
     "location": "Mehrzweckhalle, Sisikon",
     "description": "Lustspiel von Nick Hasler und Vinzenz Steiner. Reservation via Website.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -118,7 +206,51 @@
     "end_datetime": null,
     "location": "Pfaffenmatt, Erstfeld",
     "description": "ESC II – FC Eschenbach III",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995257",
+    "event_title": "Vortrag: Heimeintritt? Möglichkeiten, Kosten und Finanzierung",
+    "start_date": "2026-03-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kursraum Pro Senectute Uri , Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7010347",
+    "event_title": "Jahresversammlung",
+    "start_date": "2026-03-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Triff Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7403380",
+    "event_title": "Nie mehr für immer",
+    "start_date": "2026-03-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415377",
+    "event_title": "Kino: Der Astronaut - Projekt Hail Mary",
+    "start_date": "2026-03-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -129,7 +261,7 @@
     "end_datetime": null,
     "location": "Bitzistrasse 2, Gurtnellen",
     "description": "Ab 4. April Ostergitzi. Anmeldung bei Familie Dittli-Baumann, Telefon 041 885 16 28.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -140,7 +272,7 @@
     "end_datetime": "2026-03-28T16:30:00",
     "location": "Zeughaus, Lehnplatz 22, Altdorf",
     "description": "Wir suchen Ideen für unseren Kanton. Gemeinsam entwickeln wir kreative Lösungen für Uri zum Thema digitale Souveränität.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -151,7 +283,7 @@
     "end_datetime": "2026-03-28T17:00:00",
     "location": "Umfahrungsstrasse 2, Schattdorf",
     "description": "Gewinne ein E-Bike im Wert von Fr. 4000.–. Kinderschminken von 14.00 bis 16.30 Uhr und Festwirtschaft.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -162,7 +294,7 @@
     "end_datetime": "2026-03-28T19:00:00",
     "location": "Hellgasse 35, Boccia Anlage, Altdorf",
     "description": "Freies Boccia Paar Spiel. 2er Team.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -173,7 +305,7 @@
     "end_datetime": "2026-03-28T16:00:00",
     "location": "Amsteg",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -184,7 +316,7 @@
     "end_datetime": "2026-03-28T13:00:00",
     "location": "Militärstrasse 9a, Schattdorf",
     "description": "Ein gemütliches Frühstück mit feinen Plättli, Spezialkaffee und Live-Ländlermusik.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -195,7 +327,7 @@
     "end_datetime": "2026-03-28T15:30:00",
     "location": "Rossgiessenstrasse 10, Schattdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -206,7 +338,7 @@
     "end_datetime": "2026-03-28T19:00:00",
     "location": "Sporthalle Feldli, Altdorf",
     "description": "Finalspiele um regionale Titel der Alterskategorien U14 bis U23 – spannende Matches garantiert.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -217,7 +349,7 @@
     "end_datetime": "2026-03-28T16:00:00",
     "location": "Reussacherstrasse 24, Altdorf",
     "description": "20% auf alle Kindervelos. Entdecke viele weitere Angebote direkt bei uns im Laden. Vorbeischauen lohnt sich.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -228,7 +360,7 @@
     "end_datetime": "2026-03-28T16:00:00",
     "location": "Grund, Amsteg",
     "description": "25 Betriebe stellen sich vor.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -239,7 +371,7 @@
     "end_datetime": "2026-03-28T17:00:00",
     "location": "Radsporthalle Altdorf, Giessenstrasse 46, Altdorf",
     "description": "Radball Qualifikationsrunden der U11 ab 10.00 Uhr und der drei NLA-Teams ab 13.30 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -250,7 +382,7 @@
     "end_datetime": "2026-03-28T17:00:00",
     "location": "Diverse Urner AGVS-Garagen",
     "description": "Die Urner Garagisten mit verschiedenen Marken warten auf Sie. Kommen Sie vorbei und lassen Sie sich überraschen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -261,7 +393,7 @@
     "end_datetime": "2026-03-28T22:00:00",
     "location": "A Prostrasse 50, Seedorf",
     "description": "Vom 14. Januar bis 13. April zeigt Evelyn Imhof-Winkler eine Auswahl ihrer Werke im Schloss A Pro.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -272,7 +404,7 @@
     "end_datetime": "2026-03-28T15:30:00",
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, Altdorf",
     "description": "Grosseltern, Eltern, Gotti und Götti können gemeinsam mit Kindern und Enkelkindern die Welt der Games entdecken.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -283,7 +415,7 @@
     "end_datetime": null,
     "location": "Pfaffenmatt, Erstfeld",
     "description": "ESC C – FC Ibach Ca",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -294,7 +426,7 @@
     "end_datetime": "2026-03-28T17:00:00",
     "location": "Spitalstrasse 1, Altdorf",
     "description": "Fachpersonen, Lernende und Studierende geben Einblicke in Ausbildungswege, Berufsbilder im Gesundheitswesen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -305,7 +437,7 @@
     "end_datetime": "2026-03-28T21:00:00",
     "location": "Aula BWZ Uri, Attinghauserstrasse 12, Altdorf",
     "description": "Modeschauen um 15.00 und 18.00 Uhr. Bekleidungsgestalterinnen stellen die neuesten Trends vor.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -316,7 +448,7 @@
     "end_datetime": null,
     "location": "Pfaffenmatt, Erstfeld",
     "description": "ESC B – FC Altdorf",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -327,7 +459,7 @@
     "end_datetime": null,
     "location": "Kino Leuzinger, Altdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -338,7 +470,7 @@
     "end_datetime": "2026-03-28T18:30:00",
     "location": "Furkagasse, Andermatt",
     "description": "Live-Musik, Winterflair und das IGNIV Chalet mit feinen Drinks.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -349,7 +481,7 @@
     "end_datetime": "2026-03-28T18:30:00",
     "location": "Theater Uri, Schützengasse 11, Altdorf",
     "description": "Frei entwickelt nach einer Kurzgeschichte von Catharina Valckx. Tickets unter: www.theater-uri.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -360,7 +492,7 @@
     "end_datetime": "2026-03-28T18:30:00",
     "location": "Sporthalle Feldli, Altdorf",
     "description": "Spannung pur im Cupfinal des Swiss Volley Region Innerschweiz (SVRI) – Entscheidungsspiel der Damen live erleben.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -371,7 +503,7 @@
     "end_datetime": "2026-03-28T22:00:00",
     "location": "Eggberge 13, Altdorf",
     "description": "Wir präsentieren unsere neue Alpenraumküche. Anmeldung per Mail an info@berglodge37.com.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -382,7 +514,7 @@
     "end_datetime": "2026-03-28T19:00:00",
     "location": "Pfarrkirche St Ambrosius, Erstfeld",
     "description": "Mit dem Palmsonntag treten wir in die Heilige Woche, die Karwoche ein.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -393,7 +525,7 @@
     "end_datetime": null,
     "location": "Pfaffenmatt, Erstfeld",
     "description": "ESC I – FC Rotkreuz II",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -404,7 +536,7 @@
     "end_datetime": null,
     "location": "Kino Leuzinger, Altdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -415,7 +547,7 @@
     "end_datetime": "2026-03-28T02:00:00",
     "location": "Vogelsanggasse, Altdorf",
     "description": "Trapped Bull – Roher Rock aus den Schweizer Alpen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -426,7 +558,7 @@
     "end_datetime": "2026-03-28T21:00:00",
     "location": "Sporthalle Feldli, Altdorf",
     "description": "Spannung pur im Cupfinal des Swiss Volley Region Innerschweiz (SVRI) – Entscheidungsspiel live erleben.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -437,7 +569,7 @@
     "end_datetime": "2026-03-28T22:30:00",
     "location": "Mehrzweckhalle, Sisikon",
     "description": "Lustspiel von Nick Hasler und Vinzenz Steiner. Reservation via Website.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -448,7 +580,7 @@
     "end_datetime": null,
     "location": "Kino Leuzinger, Altdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -459,7 +591,7 @@
     "end_datetime": null,
     "location": "Pfaffenmatt, Erstfeld",
     "description": "ESC A – SG Küssnacht Weggis",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -470,7 +602,7 @@
     "end_datetime": null,
     "location": "Theater Uri, Schützengasse 11, Altdorf",
     "description": "Die FEMU Altdorf bringt wunderschöne Melodien zum Klingen. Kommen Sie mit auf eine musikalische Reise in den Norden.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -481,7 +613,139 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "Dieses Jahr steht das BiblioWeekend ganz im Zeichen des Spiels. Spielen verbindet! Grosseltern, Eltern, Gotti und Götti entdecken gemeinsam mit Kindern und Enkelkindern die Welt der Games. Eine grosse Auswahl digitaler Spiele wartet darauf, ausprobiert zu werden – für Spass und spannende Begegnungen zwischen den Generationen.\n\nOb gemeinsam eine Runde Bowling spielen mit dem Game \"Nintendo Switch Sports\" oder eines der Tablet-Games ausprobieren, für jeden ist etwas dabei. Kommen Sie vorbei und spielen Sie mit.\n\nDas Angebot findet unter der Leitung von Bettina Wegenast und Michele Salvatore von biblioplay statt.\n\n \n\nWo: Kantonsbibliothek Uri, Veranstaltungsraum \nWann: Samstag, 28. März 2026 13.30 bis 15.30 Uhr\nEintritt: kostenlos, ohne Anmeldung\n\nFlyer",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7007392",
+    "event_title": "BiblioWeekend - Generationen-Gaming in der Kantonsbibliothek",
+    "start_date": "2026-03-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7007425",
+    "event_title": "Eucharistiefeier mit Palmweihe, anschliessend Pfarreikaffee",
+    "start_date": "2026-03-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7359964",
+    "event_title": "Jahreskonzert der FEMU Altdorf",
+    "start_date": "2026-03-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7383508",
+    "event_title": "FEMU dreams",
+    "start_date": "2026-03-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7403365",
+    "event_title": "Nie mehr für immer",
+    "start_date": "2026-03-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415380",
+    "event_title": "Kino: Der Astronaut - Projekt Hail Mary",
+    "start_date": "2026-03-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415422",
+    "event_title": "Kino: Melodie",
+    "start_date": "2026-03-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415434",
+    "event_title": "Kino: Hoppers",
+    "start_date": "2026-03-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2492/eventdate/9640",
+    "event_title": "Oberalp Jam",
+    "start_date": "2026-03-28",
+    "start_time": "12:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Erlebe musikalische Highlights auf dem Oberalppass",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2454/eventdate/8560",
+    "event_title": "Après Ski Party mit Matty Valentino",
+    "start_date": "2026-03-28",
+    "start_time": "14:00:00",
+    "end_datetime": "2026-03-28T18:00:00",
+    "location": null,
+    "description": "Partygarantie mit Hits wie \"Auffe aufn Berg\" und \"Hurra die Gams\"",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2590/eventdate/9750",
+    "event_title": "Hans im Glück im Flicki-Café",
+    "start_date": "2026-03-28",
+    "start_time": "16:00:00",
+    "end_datetime": "2026-03-28T19:00:00",
+    "location": null,
+    "description": "\"Hans im Glück\" Tauschgeschäfte, Glück am Glücksrad und Märchengeschichten",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2575/eventdate/9641",
+    "event_title": "Last Dance - La Bonne Cave",
+    "start_date": "2026-03-28",
+    "start_time": "18:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Ein letztes Mal Bonne Cave: Anstossen, Tanzen, Abschied feiern.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -492,7 +756,7 @@
     "end_datetime": "2026-03-29T19:00:00",
     "location": "Sporthalle Feldli, Altdorf",
     "description": "Finalspiele um regionale Titel der Alterskategorien U14 bis U23 – spannende Matches garantiert.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -503,7 +767,7 @@
     "end_datetime": "2026-03-29T17:00:00",
     "location": "Radsporthalle Altdorf, Giessenstrasse 46, Altdorf",
     "description": "Radball Qualifikationsrunden der U15 ab 10.00 Uhr und der 2. Liga ab 13.30 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -514,7 +778,7 @@
     "end_datetime": "2026-03-29T17:00:00",
     "location": "Umfahrungsstrasse 2, Schattdorf",
     "description": "Gewinne ein E-Bike im Wert von Fr. 4000.–. Kinderschminken von 14.00 bis 16.30 Uhr und Festwirtschaft.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -525,7 +789,7 @@
     "end_datetime": "2026-03-29T16:00:00",
     "location": "Reussacherstrasse 24, Altdorf",
     "description": "20% auf alle Kindervelos. Entdecke viele weitere Angebote direkt bei uns im Laden. Vorbeischauen lohnt sich.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -536,7 +800,7 @@
     "end_datetime": "2026-03-29T17:00:00",
     "location": "Diverse Urner AGVS-Garagen",
     "description": "Die Urner Garagisten mit verschiedenen Marken warten auf Sie. Kommen Sie vorbei und lassen Sie sich überraschen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -547,7 +811,7 @@
     "end_datetime": null,
     "location": "Schützenmatte, Altdorf",
     "description": "FC Altdorf – FC Aegeri.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -558,7 +822,7 @@
     "end_datetime": null,
     "location": "Kino Leuzinger, Altdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -569,7 +833,7 @@
     "end_datetime": "2026-03-29T18:30:00",
     "location": "Pfarrkirche, Bürglen",
     "description": "Innehalten und ankommen am Palmsonntag. Konzert des Kirchenchors Bürglen. Eintritt frei.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -580,7 +844,7 @@
     "end_datetime": null,
     "location": "Kino Leuzinger, Altdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -591,7 +855,7 @@
     "end_datetime": "2026-03-29T21:30:00",
     "location": "Theater Uri, Schützengasse 11, Altdorf",
     "description": "Frei entwickelt nach einer Kurzgeschichte von Catharina Valckx. Tickets unter: www.theater-uri.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -602,7 +866,51 @@
     "end_datetime": null,
     "location": "Kino Leuzinger, Altdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7403374",
+    "event_title": "Nie mehr für immer",
+    "start_date": "2026-03-29",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415404",
+    "event_title": "Kino: Der Astronaut - Projekt Hail Mary",
+    "start_date": "2026-03-29",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415425",
+    "event_title": "Kino: Namaste Seelisberg",
+    "start_date": "2026-03-29",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415437",
+    "event_title": "Kino: Hoppers",
+    "start_date": "2026-03-29",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -613,7 +921,7 @@
     "end_datetime": "2026-03-30T15:00:00",
     "location": "Restaurant Lehnhof, Lehnplatz 18, Altdorf",
     "description": "Ankauf von Schmuck, Uhren, Münzen und anderem. Gewerblich autorisierter Edelmetallankäufer.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -624,7 +932,7 @@
     "end_datetime": "2026-03-30T16:00:00",
     "location": "Stiftung Papilio, Gotthardstrasse 14, Altdorf",
     "description": "Gedächtnistraining für Menschen mit Demenz. Anmeldung unter 078 770 40 76 oder e.raneri@bluewin.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -635,7 +943,7 @@
     "end_datetime": "2026-03-30T20:00:00",
     "location": "Aula Gräwimatt, Schattdorf",
     "description": "Die Schülerinnen und Schüler der Musikschule Uri freuen sich auf ihren Auftritt.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -646,7 +954,29 @@
     "end_datetime": "2026-03-30T21:30:00",
     "location": "Theater Uri, Schützengasse 11, Altdorf",
     "description": "Frei entwickelt nach einer Kurzgeschichte von Catharina Valckx. Tickets unter: www.theater-uri.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7403371",
+    "event_title": "Nie mehr für immer",
+    "start_date": "2026-03-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2579/eventdate/9751",
+    "event_title": "Internationale Zollskiwettkämpfe",
+    "start_date": "2026-03-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": null,
+    "description": "Rund 100 Athletinnen und Athleten aus fünf Ländern messen sich in Andermatt in alpinen und nordischen Disziplinen bei den 73. Internationalen Zollskiwettkämpfen.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -657,7 +987,7 @@
     "end_datetime": "2026-03-31T17:15:00",
     "location": "Gitschenstrasse 9, Altdorf",
     "description": "Haben Sie Fragen zur allgemeinen Bedienung Ihres Handys? Schüler der Kt. Mittelschule Uri helfen Ihnen gerne.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -668,7 +998,128 @@
     "end_datetime": "2026-03-31T21:30:00",
     "location": "Theater Uri, Schützengasse 11, Altdorf",
     "description": "Frei entwickelt nach einer Kurzgeschichte von Catharina Valckx. Tickets unter: www.theater-uri.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7007422",
+    "event_title": "Versöhnungsfeier",
+    "start_date": "2026-03-31",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7403386",
+    "event_title": "Nie mehr für immer",
+    "start_date": "2026-03-31",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2592/eventdate/9764",
+    "event_title": "Einladung zum Midänand Singä",
+    "start_date": "2026-03-31",
+    "start_time": "14:15:00",
+    "end_datetime": "2026-03-31T15:15:00",
+    "location": null,
+    "description": "Alle, die gerne singen oder einfach zuhören möchten, sind herzlich willkommen!",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6893200",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-04-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7289045",
+    "event_title": "Versöhungsfeier",
+    "start_date": "2026-04-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7386970",
+    "event_title": "Öffentliche Veranstaltung: Übergänge im Alter",
+    "start_date": "2026-04-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "APH Rosenberg, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7403383",
+    "event_title": "Nie mehr für immer",
+    "start_date": "2026-04-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415428",
+    "event_title": "Kino: Namaste Seelisberg",
+    "start_date": "2026-04-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415440",
+    "event_title": "Kino: Hoppers",
+    "start_date": "2026-04-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415443",
+    "event_title": "Kino: Der Super Mario Galaxy Film",
+    "start_date": "2026-04-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415446",
+    "event_title": "Sudiofilm: The President's Cake",
+    "start_date": "2026-04-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Cinema Leuzinger, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -679,7 +1130,7 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "Wo sind die Hasen?\n\nDie Hasen haben sich versteckt – und brauchen nun die Hilfe kleiner Spürnasen. Kinder sind herzlich eingeladen, vorbeizukommen und sich auf die spannende Suche zu machen. Wer alle versteckten Hasen findet, darf sich über eine kleine Osterüberraschung freuen.\n\nFür Kinder von 4 bis 7 Jahren, begleitet von einer erwachsenen Person.\n\n \n\nWo: Kantonsbibliothek Uri, Veranstaltungsraum \nWann: Donnerstag, 2. April 2026 um 16 – 16.30 Uhr\nEintritt: kostenlos, ohne Anmeldung\n\nFlyer",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "schule-altdorf.ch",
@@ -690,7 +1141,51 @@
     "end_datetime": null,
     "location": null,
     "description": "<p>Der Beitrag <a href=\"https://schule-altdorf.ch/event/ostertage-schulfrei/\">Ostertage (schulfrei)</a> erschien zuerst auf <a href=\"https://schule-altdorf.ch\">Schule Altdorf</a>.</p>",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7271192",
+    "event_title": "Abendmahlfeier mit den Erstkommunionkindern",
+    "start_date": "2026-04-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7276244",
+    "event_title": "TriffAltdorf: Mittagstreff",
+    "start_date": "2026-04-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Hotel zum Schwarzen Löwen, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7288949",
+    "event_title": "Osterhasensuche in der Bibliothek",
+    "start_date": "2026-04-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7359976",
+    "event_title": "Bänz Friedli",
+    "start_date": "2026-04-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -701,7 +1196,7 @@
     "end_datetime": "2026-04-03T18:30:00",
     "location": "Furkagasse, Andermatt",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -712,7 +1207,7 @@
     "end_datetime": "2026-04-03T22:00:00",
     "location": "Hellgasse 20, Altdorf",
     "description": "Freuen Sie sich auf ein festliches Menü bei frühlingshafter Atmosphäre.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -723,7 +1218,7 @@
     "end_datetime": null,
     "location": "Kirche St. Martin, Altdorf",
     "description": "Erweiterter Jugendchor Altdorf und Ad-hoc-Orchester.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -734,7 +1229,51 @@
     "end_datetime": "2026-04-03T02:00:00",
     "location": "Vogelsanggasse, Altdorf",
     "description": "Wenn du rappen willst, Blues in den Fingern hast oder Funky-Grooves liebst – die Bühne wartet auf dich.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7271195",
+    "event_title": "Kinderkreuzweg",
+    "start_date": "2026-04-03",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "St. Anna-Kapelle, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7271201",
+    "event_title": "Kreuzwegandacht in Bildern",
+    "start_date": "2026-04-03",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7271204",
+    "event_title": "Karfreitagsprozession zum Kapuzinerkloster",
+    "start_date": "2026-04-03",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7271207",
+    "event_title": "Karfreitagsliturgie, Cäcilienverein",
+    "start_date": "2026-04-03",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -745,7 +1284,7 @@
     "end_datetime": "2026-04-04T16:00:00",
     "location": "Attinghauserstrasse 142, Altdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -756,7 +1295,7 @@
     "end_datetime": "2026-04-04T20:00:00",
     "location": "Bitzistrasse 2, Gurtnellen",
     "description": "Reservationen: Telefon 041 885 16 28, Mail bergheim.gurtnellen@bluewin.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -767,7 +1306,40 @@
     "end_datetime": "2026-04-04T18:30:00",
     "location": "Furkagasse, Andermatt",
     "description": "Live-Musik, Winterflair und das IGNIV Chalet mit feinen Drinks.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7267229",
+    "event_title": "Osterhasen suchen in Altdorf",
+    "start_date": "2026-04-04",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Geschäfte Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7271213",
+    "event_title": "Osternachtfeier, festliche Musik, anschliessend Eiertitschä",
+    "start_date": "2026-04-04",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2466/eventdate/8027",
+    "event_title": "Season End mit Simon & Mac",
+    "start_date": "2026-04-04",
+    "start_time": "14:00:00",
+    "end_datetime": "2026-04-04T18:00:00",
+    "location": null,
+    "description": "Die beste Après Ski Party gibt es bei uns! Komm vorbei und überzeuge dich selbst.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -778,7 +1350,7 @@
     "end_datetime": "2026-04-05T20:00:00",
     "location": "Bitzistrasse 2, Gurtnellen",
     "description": "Reservationen: Telefon 041 885 16 28, Mail bergheim.gurtnellen@bluewin.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -789,7 +1361,7 @@
     "end_datetime": null,
     "location": "Andermatt Concert Hall, Bärengasse 1, Andermatt",
     "description": "Mit Swiss Orchestra, Schlagzeugensemble Uri, Lena-Lisa Wüstendörfer.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -800,7 +1372,62 @@
     "end_datetime": "2026-04-05T22:00:00",
     "location": "Hellgasse 20, Altdorf",
     "description": "Freuen Sie sich auf ein festliches Menü bei frühlingshafter Atmosphäre.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7289174",
+    "event_title": "Festgottesdienst mit Cäcilienverein und Orchester",
+    "start_date": "2026-04-05",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7289186",
+    "event_title": "Ostergottesdienst mit festlicher Musik",
+    "start_date": "2026-04-05",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7289201",
+    "event_title": "Familiengottesdienst, anschliessend \"Eiertitschä\"",
+    "start_date": "2026-04-05",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2582/eventdate/9730",
+    "event_title": "Wachthuus Cup",
+    "start_date": "2026-04-05",
+    "start_time": "11:00:00",
+    "end_datetime": "2026-04-05T16:30:00",
+    "location": null,
+    "description": "Erneut findet dieses Jahr am 05.04.26 der Wachthuus Cup bei der Bergstation Gütsch statt.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2417/eventdate/8028",
+    "event_title": "Andermatt Music: Donnerklang & Wirbelwind",
+    "start_date": "2026-04-05",
+    "start_time": "16:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Ein musikalischer Spass für Kinder ab 5 Jahren.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -811,7 +1438,7 @@
     "end_datetime": "2026-04-06T20:00:00",
     "location": "Bitzistrasse 2, Gurtnellen",
     "description": "Reservationen: Telefon 041 885 16 28, Mail bergheim.gurtnellen@bluewin.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -822,7 +1449,7 @@
     "end_datetime": "2026-04-06T16:00:00",
     "location": "Stiftung Papilio, Gotthardstrasse 14, Altdorf",
     "description": "Gedächtnistraining für Menschen mit Demenz. Anmeldung unter 078 770 40 76 oder e.raneri@bluewin.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -833,7 +1460,7 @@
     "end_datetime": null,
     "location": "Aula, Unterschächen",
     "description": "Tickets siehe Website oder Telefon 079 136 37 40. Montag und Donnerstag, jeweils 17.30 bis 19.00 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -844,7 +1471,7 @@
     "end_datetime": "2026-04-06T22:00:00",
     "location": "Hellgasse 20, Altdorf",
     "description": "Freuen Sie sich auf ein festliches Menü bei frühlingshafter Atmosphäre.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -855,7 +1482,29 @@
     "end_datetime": null,
     "location": "Aula, Unterschächen",
     "description": "Tickets siehe Website oder Telefon 079 136 37 40. Montag und Donnerstag, jeweils 17.30 bis 19.00 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2470/eventdate/9620",
+    "event_title": "Ostereiersuche 2026",
+    "start_date": "2026-04-06",
+    "start_time": null,
+    "end_datetime": null,
+    "location": null,
+    "description": "Ein unvergessliches Abenteuer für Kinder!",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2588/eventdate/9766",
+    "event_title": "Season End Party Wachthuus",
+    "start_date": "2026-04-06",
+    "start_time": "11:00:00",
+    "end_datetime": "2026-04-06T16:30:00",
+    "location": null,
+    "description": "Season end Party beim Wachthuus",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -866,7 +1515,7 @@
     "end_datetime": "2026-04-07T17:00:00",
     "location": "Stiftung Wohnen im Alter, Wohnhaus Alpenblick, Seelisberg",
     "description": "Kostenloses Beratungsangebot für Personen im AHV-Alter und deren Angehörige. Termine auf Voranmeldung.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -877,7 +1526,7 @@
     "end_datetime": "2026-04-07T20:00:00",
     "location": "Bitzistrasse 2, Gurtnellen",
     "description": "Reservationen: Telefon 041 885 16 28, Mail bergheim.gurtnellen@bluewin.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -888,7 +1537,62 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "Eine tragikomische Geschichte von zwei Menschen, die in einer engen Seilbahnkabine im Kanton Uri stecken geblieben sind und im stürmischen Föhn gemeinsam die Nacht hoch über dem Abgrund verbringen müssen.\n\nMit «Solo für Bottlang» legt der mehrfach preisgekrönte Journalist und Schrifsteller erstmals einen Roman vor. Musikalisch begleitet wird die Lesung von Alexander Kionke (Cello). Die Veranstaltung findet in Zusammenarbeit mit Bido AG und dem Lesetreff des TriffAltdorf statt.\n\n \n\n\"Ein Betriebsausfall und der stürmische Nachtföhn zwingen zwei ungleiche Helden in einer wackeligen Seilbahnkabine zur persönlichen Lebenskatharsis. Jörg Meier lässt unterhaltsam und reich recherchiert tief in das Leben zweier scheinbar fremder Männer blicken.\"\nHanspeter Mülller-Drossaart, Schauspieler und Autor\n\n \n\nWo: Kantonsbibliothek Uri, Veranstaltungsraum \nWann: Mittwoch, 8. April 2026 um 19 Uhr\nEintritt: kostenlos, ohne Anmeldung\n\nFlyer",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7219115",
+    "event_title": "Zämä spielä Kids",
+    "start_date": "2026-04-08",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Ludothek Altdorf , Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7288613",
+    "event_title": "Lesung \"Solo für Bottlang\" von Jörg Meier",
+    "start_date": "2026-04-08",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7371691",
+    "event_title": "29. Urner OL-Cup",
+    "start_date": "2026-04-08",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Tribüne Turnhallen Feldli, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7415536",
+    "event_title": "29. Urner OL-Cup 2026",
+    "start_date": "2026-04-08",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Sporthalle Feldli, Tribüne, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045712",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-04-08",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -899,7 +1603,7 @@
     "end_datetime": "2026-04-10T16:30:00",
     "location": "TriffAltdorf, Dätwylerstrasse 15, Altdorf",
     "description": "Kommen Sie spontan vorbei und klopfen Sie einen Jass.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -910,7 +1614,7 @@
     "end_datetime": "2026-04-10T17:00:00",
     "location": "Turnhalle Hagen, Altdorf",
     "description": "Gymnastik, Kraft, Ausdauer, Beweglichkeit, Spiel und Spass",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -921,7 +1625,7 @@
     "end_datetime": "2026-04-10T20:00:00",
     "location": "Gotthardstrasse 101, Erstfeld",
     "description": "Mit Beratung, Grillwurst und kühlen Getränken.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -932,7 +1636,7 @@
     "end_datetime": "2026-04-10T20:00:00",
     "location": "Kreisschulhaus, Spiringen",
     "description": "Durchgeführt durch den Samariterverein.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -943,7 +1647,7 @@
     "end_datetime": "2026-04-10T22:00:00",
     "location": "Wilerstrasse 2, Erstfeld",
     "description": "Gestalte kreative Kartengrüsse mit Handlettering.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -954,7 +1658,7 @@
     "end_datetime": "2026-04-10T22:00:00",
     "location": "Vogelsanggasse, Altdorf",
     "description": "Die positivste Stand-Up-Comedy-Show, die es je gegeben hat.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -965,7 +1669,7 @@
     "end_datetime": "2026-04-10T00:00:00",
     "location": "Gasthaus Krone, Attinghausen",
     "description": "Kasse geöffnet ab 18.30 Uhr. Lebensmittel-Gutschein, Früchtekörbe, Käse.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -976,7 +1680,18 @@
     "end_datetime": null,
     "location": "Aula, Unterschächen",
     "description": "Tickets siehe Website oder Telefon 079 136 37 40. Montag und Donnerstag, jeweils 17.30 bis 19.00 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7267238",
+    "event_title": "Jass-Treff",
+    "start_date": "2026-04-10",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -987,7 +1702,7 @@
     "end_datetime": "2026-04-11T19:00:00",
     "location": "Tennisclub Dätwyler, Hellgasse 35, Altdorf",
     "description": "Sie und Er Plauschturnier. 2er-Team-Anmeldung. Auch Nichtmitglieder sind als Zuschauer herzlich willkommen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -998,7 +1713,7 @@
     "end_datetime": "2026-04-11T15:30:00",
     "location": "Rossgiessenstrasse 10, Schattdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1009,7 +1724,7 @@
     "end_datetime": "2026-04-11T11:00:00",
     "location": "Bahnhofstrasse 13, Altdorf",
     "description": "1. Durchgang 9.30 Uhr.  2. Durchgang 10.30 Uhr. Für Kinder von 1 bis 4 Jahren, begleitet durch eine erwachsene Person.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1020,7 +1735,7 @@
     "end_datetime": "2026-04-11T17:00:00",
     "location": "Gotthardstrasse 72, Altdorf",
     "description": "15% auf alle Kleider. Diverse Sonderangebote. Wettbewerb mit tollen Preisen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1031,7 +1746,7 @@
     "end_datetime": "2026-04-11T15:00:00",
     "location": "Gotthardstrasse 14, Altdorf",
     "description": "Sie sind herzlich eingeladen die Räumlichkeiten und den Spielgruppenalltag kennenzulernen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1042,7 +1757,7 @@
     "end_datetime": "2026-04-11T04:00:00",
     "location": "Schützengasse 11, Altdorf",
     "description": "Die 21. Ausgabe des Tonartfestivals! \r\nLine-Up: Bibiza/Veronica Fusaro/Ilira/Animal Trainer",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1053,7 +1768,7 @@
     "end_datetime": null,
     "location": "Aula, Unterschächen",
     "description": "Tickets siehe Website oder Telefon 079 136 37 40. Montag und Donnerstag, jeweils 17.30 bis 19.00 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -1064,7 +1779,29 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "Wir zeigen, wie Sie Ihr Kind mit Versen, Fingerspielen und Geschichten\n in  seinem Spracherwerb unterstützen können. \n\nSie und Ihr Kleinkind (von 1 - 4 Jahren) sind herzlich willkommen. Grössere Geschwister sind ebenfalls willkommen!\n\n1. Durchgang: 09.30 - 10.00 Uhr\n\n2. Durchgang: 10.30 - 11.00 Uhr\n\nFreier Eintritt und freier Austritt. Bei der Veranstaltung wird das aktuelle Buchstartpaket abgegeben.\n\nFlyer Frühling 2026",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6814774",
+    "event_title": "VaKi-Turnen Altdorf",
+    "start_date": "2026-04-11",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Feldli Turnhalle, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7005022",
+    "event_title": "Värslischtund mit Nati",
+    "start_date": "2026-04-11",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1075,7 +1812,7 @@
     "end_datetime": "2026-04-12T16:00:00",
     "location": "Gotthardstrasse 72, Altdorf",
     "description": "15% auf alle Kleider. Diverse Sonderangebote. Wettbewerb mit tollen Preisen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1086,7 +1823,29 @@
     "end_datetime": "2026-04-12T18:30:00",
     "location": "Evang.-ref. Kirchgemeindehaus, Bahnhofstrasse 29, Altdorf",
     "description": "Die Kinder spielen Pop-Hits mit Gitarren und Gesang. Dazu Einblicke in die Projekte. Peruanischer Basarstand.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7289183",
+    "event_title": "Erstkommunionfeier",
+    "start_date": "2026-04-12",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7289198",
+    "event_title": "Erstkommunion",
+    "start_date": "2026-04-12",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1097,7 +1856,7 @@
     "end_datetime": "2026-04-13T16:00:00",
     "location": "Stiftung Papilio, Gotthardstrasse 14, Altdorf",
     "description": "Gedächtnistraining für Menschen mit Demenz. Anmeldung unter 078 770 40 76 oder e.raneri@bluewin.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1108,7 +1867,7 @@
     "end_datetime": "2026-04-13T16:30:00",
     "location": "TriffAltdorf, Dätwylerstrasse 15, Altdorf",
     "description": "Für alle Schachinteressierten. Informationen: Telefon 041 870 42 12. Mail: info@ur.prosenectute.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1119,7 +1878,7 @@
     "end_datetime": "2026-04-13T18:45:00",
     "location": "Fussballplatz Schützenmatte, Altdorf",
     "description": "Für Kinder mit Jahrgang 2019 bis 2020.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1130,7 +1889,7 @@
     "end_datetime": "2026-04-13T20:00:00",
     "location": "Klosterkirche St. Lazarus, Seedorf",
     "description": "Die Schülerinnen und Schüler der Musikschule Uri freuen sich auf ihren Auftritt.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1141,7 +1900,7 @@
     "end_datetime": "2026-04-13T21:30:00",
     "location": "Aula, Bürglen",
     "description": "Lerne  an diesem Abend Tanzschritte und einen einfachen Trachtentanz. Keine Anmeldung nötig. Auskunft: 079 563 82 69.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1152,7 +1911,106 @@
     "end_datetime": null,
     "location": "Kantonale Mittelschule Uri, Gotthardstrasse 59, Altdorf",
     "description": "Antibiotika retten Leben, doch immer mehr Bakterien werden dagegen resistent. Mit Dr. Thomas Häusler.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7276250",
+    "event_title": "TriffAltdorf: Mittagstreff",
+    "start_date": "2026-04-14",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Confiserie Café Danioth, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7371616",
+    "event_title": "Vortrag «Phagentherapie – die Medizin geht viral»",
+    "start_date": "2026-04-14",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kapelle, Kantonale Mittelschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045880",
+    "event_title": "Kartonsammlung",
+    "start_date": "2026-04-14",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894550",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-04-15",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027702",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Französisch)",
+    "start_date": "2026-04-15",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027708",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Englisch)",
+    "start_date": "2026-04-15",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027720",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Italienisch)",
+    "start_date": "2026-04-15",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7288595",
+    "event_title": "Kaffeekränzli der Frauengemeinschaft Altdorf",
+    "start_date": "2026-04-15",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Dorotheasaal, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7288937",
+    "event_title": "\"Gaming am Mittwoch\"",
+    "start_date": "2026-04-15",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "musikschule-uri.ch",
@@ -1163,7 +2021,40 @@
     "end_datetime": null,
     "location": "Vogelsang, Altdorf",
     "description": "Unsere Bands Rockit, The swinging light Band und der JazzWorkshop stellen sich vor. Es werden viele Gesangstalente auftreten, welche von einer Band live begleitet werden.\nFreuen Sie sich auf einen gemütlichen Konzertabend mit jazzig, rockig und poppigen Klängen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894565",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-04-16",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Vogelsang, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995281",
+    "event_title": "Vortrag: Testament und Erbschaft",
+    "start_date": "2026-04-16",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kursraum Pro Senectute Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7051937",
+    "event_title": "TriffAltdorf: Heilige Messe",
+    "start_date": "2026-04-16",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1174,7 +2065,7 @@
     "end_datetime": "2026-04-17T17:00:00",
     "location": "Turnhalle Hagen, Altdorf",
     "description": "Gymnastik, Kraft, Ausdauer, Beweglichkeit, Spiel und Spass",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1185,7 +2076,7 @@
     "end_datetime": "2026-04-17T20:00:00",
     "location": "Gotthardstrasse 101, Erstfeld",
     "description": "Mit Beratung, Grillwurst und kühlen Getränken.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1196,7 +2087,7 @@
     "end_datetime": "2026-04-17T21:00:00",
     "location": "Weidstrasse 10, Seedorf",
     "description": "Für Jahrgänge 2006 - 2016. 15 Trainings à 90 Minuten, Freitagabend.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1207,7 +2098,7 @@
     "end_datetime": null,
     "location": "Stiftung Behindertenbetriebe Uri, Schattdorf",
     "description": "Alle TCS-Mitglieder aus Uri sind eingeladen. Anmeldung: sectionur@tcs.ch / Telefon 041 870 47 41 oder Website.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1218,7 +2109,7 @@
     "end_datetime": null,
     "location": "Aula Gräwimatt, Schattdorf",
     "description": "Brass Band Uri und Brass Band Schattdorf laden ein zum solistischen Jahreskonzert unter dem Motto «Brass Spotlight».",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1229,7 +2120,7 @@
     "end_datetime": null,
     "location": "Theater Uri, Schützengasse 11, Altdorf",
     "description": "Mit dem Kinderchor Freemen Village People unter der Leitung von Wädi Wipfli.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1240,7 +2131,7 @@
     "end_datetime": null,
     "location": "Winkel, Altdorf",
     "description": "Schwank in drei Akten. Türkollekte. Theaterbeizli offen ab 18.30 Uhr. Reservation: 077 509 12 03 oder via Website.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1251,7 +2142,29 @@
     "end_datetime": null,
     "location": "Aula, Unterschächen",
     "description": "Tickets siehe Website oder Telefon 079 136 37 40. Montag und Donnerstag, jeweils 17.30 bis 19.00 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7289330",
+    "event_title": "Fiirä mit dä Chliinä",
+    "start_date": "2026-04-17",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7350706",
+    "event_title": "\"This is us\" - Konzert Chor Uri",
+    "start_date": "2026-04-17",
+    "start_time": null,
+    "end_datetime": "2026-04-19",
+    "location": "Theater Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1262,7 +2175,7 @@
     "end_datetime": "2026-04-18T12:00:00",
     "location": "Unterlehn, Altdorf",
     "description": "An der beliebten Velobörse des VCS Uri können Velos und Velozubehör zum Verkauf angeboten oder gekauft werden.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1273,7 +2186,7 @@
     "end_datetime": "2026-04-18T12:45:00",
     "location": "TCS/VAZ, Breiteli 22, Erstfeld",
     "description": "Ideale Vorbereitung für die Feriensaison. Anmeldung: www.vaz-tcs.ch, info@vaz-tcs.ch, 041 88 4 80 90.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1284,7 +2197,7 @@
     "end_datetime": null,
     "location": "Bauernschule, A Prostrasse 44 A, Seedorf",
     "description": "Spezialwettbewerb, Kinderattraktionen, festlicher Abzug der Tiere, Festwirtschaft und Musik.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1295,7 +2208,7 @@
     "end_datetime": "2026-04-18T11:30:00",
     "location": "Stiftung Papilio, Gotthardstrasse 14, Altdorf",
     "description": "Konsum, Handel, Herausforderungen. Mit Walter Zberg, Kantonspolizei Uri.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1306,7 +2219,7 @@
     "end_datetime": "2026-04-18T12:00:00",
     "location": "Arnold AG, Umfahrungsstrasse 18, Schattdorf",
     "description": "Die Heizungsspezialisten der Arnold AG kennen effiziente, komfortable und wirtschaftliche Lösungen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1317,7 +2230,7 @@
     "end_datetime": "2026-04-18T12:00:00",
     "location": "Oberstufenschulhaus Bernarda, Altdorf",
     "description": "Welches Instrument passt zu dir?",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1328,7 +2241,7 @@
     "end_datetime": "2026-04-18T17:00:00",
     "location": "Gotthardstrasse 59, Altdorf",
     "description": "",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1339,7 +2252,7 @@
     "end_datetime": null,
     "location": "Theater Uri, Schützengasse 11, Altdorf",
     "description": "Mit dem Kinderchor Freemen Village People unter der Leitung von Wädi Wipfli.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1350,7 +2263,7 @@
     "end_datetime": null,
     "location": "Winkel, Altdorf",
     "description": "Schwank in drei Akten. Türkollekte. Theaterbeizli offen ab 18.30 Uhr. Reservation: 077 509 12 03 oder via Website.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1361,7 +2274,7 @@
     "end_datetime": "2026-04-18T23:55:00",
     "location": "Hellgasse 25, Altdorf",
     "description": "Konzertabend mit Songs aus drei Jahrzehnten - akustisch aber auch mit elektronischer Unterstützung. Eintritt frei.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1372,7 +2285,7 @@
     "end_datetime": null,
     "location": "Aula, Unterschächen",
     "description": "Tickets siehe Website oder Telefon 079 136 37 40. Montag und Donnerstag, jeweils 17.30 bis 19.00 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "musikschule-uri.ch",
@@ -1383,7 +2296,51 @@
     "end_datetime": null,
     "location": "Oberstufenschulhaus Bernarda, Altdorf",
     "description": "Die Musikschule Uri freut sich auf deinen Besuch beim Instrumentenparcours. Komm vorbei und probiere die verschiedenen Instrumente gleich selber aus.\nEs finden verschiedene Konzerte des Kinder- und Jugendchor und der Grundschule statt. Die 2. Oberstufe Altdorf betreibt ein Café mit Getränken und Kuchen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7398844",
+    "event_title": "Urner Velobörse",
+    "start_date": "2026-04-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Unterlehn Altdorf, Altdorf ",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7413787",
+    "event_title": "Konzert Blues and More",
+    "start_date": "2026-04-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Vereinslokal IG-Future, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045817",
+    "event_title": "Papiersammlung",
+    "start_date": "2026-04-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2494/eventdate/8030",
+    "event_title": "80’s Day Gemsstock",
+    "start_date": "2026-04-18",
+    "start_time": "08:30:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Feier den Saisonabschluss am Gemsstock mit einem wilden 80s-Look: Gratis Skifahren für alle im knallbunten Hotdogger-Outfit – je verrückter, desto besser!",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1394,7 +2351,7 @@
     "end_datetime": "2026-04-19T18:00:00",
     "location": "Feldli, Altdorf, Altdorf",
     "description": "Teams von der 3. Primarklasse bis zur 9. Klasse spielen in verschiedenen Alterskategorien gegeneinander.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1405,7 +2362,7 @@
     "end_datetime": "2026-04-19T17:00:00",
     "location": "Mehrzweckgebäude Winkel, Gemeindehausplatz 4, Altdorf",
     "description": "Der Kurs widmet sich der Schweizer Volksmusik vor 1900, als Blas- und Streichinstrumente den Ton angaben.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1416,7 +2373,7 @@
     "end_datetime": null,
     "location": "Kapuzinerweg 22, Altdorf",
     "description": "Die Märchen eröffnen einen inspirierenden Blick auf die Weisheit, den Selbstwert und die Würde, die im Altwerden liegen.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1427,7 +2384,7 @@
     "end_datetime": null,
     "location": "Aula, Unterschächen",
     "description": "Tickets siehe Website oder Telefon 079 136 37 40. Montag und Donnerstag, jeweils 17.30 bis 19.00 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1438,7 +2395,7 @@
     "end_datetime": null,
     "location": "Aula Gräwimatt, Schattdorf",
     "description": "Brass Band Uri und Brass Band Schattdorf laden ein zum solistischen Jahreskonzert unter dem Motto «Brass Spotlight».",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1449,7 +2406,7 @@
     "end_datetime": null,
     "location": "Theater Uri, Schützengasse 11, Altdorf",
     "description": "Mit dem Kinderchor Freemen Village People unter der Leitung von Wädi Wipfli.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1460,7 +2417,62 @@
     "end_datetime": null,
     "location": "Aula, Unterschächen",
     "description": "Tickets siehe Website oder Telefon 079 136 37 40. Montag und Donnerstag, jeweils 17.30 bis 19.00 Uhr.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995872",
+    "event_title": "TriffAltdorf: TanzCafé",
+    "start_date": "2026-04-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7206710",
+    "event_title": "Märchenmatinée \"Das Geschenk des Altwerdens\"",
+    "start_date": "2026-04-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kulturkloster Altdorf / Refektorium, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7285961",
+    "event_title": "Eucharistiefeier mit Bruder Remigi in der Klosterkirche",
+    "start_date": "2026-04-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Klosterkirche - Kulturkloster Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300874",
+    "event_title": "Eucharistiefeier, Pfarreikaffee",
+    "start_date": "2026-04-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7381270",
+    "event_title": "Workshop \"Zum Tanz geblasen\"",
+    "start_date": "2026-04-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Mehrzweckgebäude Winkel, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1471,7 +2483,7 @@
     "end_datetime": "2026-04-20T12:00:00",
     "location": "Arnold AG, Umfahrungsstrasse 18, Schattdorf",
     "description": "Die Badspezialisten der Arnold AG zeigen die vielfältigen Möglichkeiten hinsichtlich Formen, Farben und Materialien.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1482,7 +2494,7 @@
     "end_datetime": "2026-04-20T16:00:00",
     "location": "Stiftung Papilio, Gotthardstrasse 14, Altdorf",
     "description": "Gedächtnistraining für Menschen mit Demenz. Anmeldung unter 078 770 40 76 oder e.raneri@bluewin.ch.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1493,7 +2505,7 @@
     "end_datetime": "2026-04-20T18:00:00",
     "location": "Haus für Kunst, Herrengasse 4, Altdorf",
     "description": "Um Trauer auszudrücken, kann es hilfreich sein, auf dem Weg anderen Menschen zu begegnen und einen Moment innezuhalten.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1504,7 +2516,7 @@
     "end_datetime": "2026-04-20T18:45:00",
     "location": "Fussballplatz Schützenmatte, Altdorf",
     "description": "Für Kinder mit Jahrgang 2019 bis 2020.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "urnerwochenblatt.ch",
@@ -1515,7 +2527,7 @@
     "end_datetime": "2026-04-20T21:30:00",
     "location": "Aula, Bürglen",
     "description": "Lerne  an diesem Abend Tanzschritte und einen einfachen Trachtentanz. Keine Anmeldung nötig. Auskunft: 079 563 82 69.",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -1526,7 +2538,62 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "Die Daten und die Bücher für den Zentralschweizer Literaturzirkel 2026 des lit.z Literaturzhaus Zentralschweiz in der Kantonsbibliothek Uri stehen fest. Melden Sie sich bis Ende Januar an und nehmen Sie beim beliebten Lese- und Diskussionsformat in Altdorf teil. \n\nDer Zirkel wird in Zusammenarbeit mit dem lit.z Literaturhaus Zentralschweiz durchgeführt und die Leitung übernimmt auch in diesem Jahr Julia Knapp, Literaturvermittlerin, Literatur auf der Bühne. \n\nWo: Kantonsbibliothek Uri, Veranstaltungsraum / Schlussrunde im lit.z Literaturhaus Zentralschweiz\nWann: Montag, 09.02.26, 19 Uhr - Reinhard Kaiser-Mühlecker, Willderer, S. Fischer 2022Montag, 20.04.26, 19 Uhr - Arundhati Roy, Meine Zuflucht und mein Sturm, S. Fischer, 2025Montag, 18.05.26, 19 Uhr - Leon Engler, Botanik des Wahnsinns, Dumont, 2025Sonntag, 31.05.26 Gemeinsame Schlussrunde im lit.z Literaturhaus Zentralschweiz in Stans: Öffentliche Lesung mit Julia Weber, Weil ich Ruth bin, Limmat Verlag, 2026 \tSonntag, 31.05.26, 17.30 bis 18.30 Uhr - Diskussionen in EinzelgruppenSonntag, 31.05.26, 18.30 bis 19.30 Uhr - Apéro &amp; SommersuppeSonntag, 31.05.26, 19.30 Uhr Lesung &amp; Gespräch mit Julia WeberTeilnehmer:innen pro Zirkel: max. 12 Personen\nTeilnahmegebühr: CHF 150.- (inkl. Abschlusslesung &amp; Apéro; Ermässigungen sind nach Absprache möglich.)\nAnmeldung: Anmeldung bis Montag, 26.1.2026, an info@lit-z.ch, mit der Bitte um Angabe des Zirkels Altdorf, Email, Telefonnummer und postalischer Adresse. Es wird vorausgesetzt, dass die Teilnehmenden das im Zentrum des Abends stehende Buch gelesen haben und wenn möglich an an allen Abenden teilnehmen.\nWeitere Auskünfte: Sabine Graf, Intendantin lit.z, sabine.graf@lit.z.ch, 041 610 03 65\n\nFlyer",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995248",
+    "event_title": "Workshop: Patientenverfügung",
+    "start_date": "2026-04-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kursraum Pro Senectute Uri , Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995260",
+    "event_title": "Workshop: Vorsorgeauftrag",
+    "start_date": "2026-04-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kursraum Pro Senectute Uri , Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7288643",
+    "event_title": "Vortrag \"Frau Chlämmerlisack\" #teamsälbermache#",
+    "start_date": "2026-04-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Dorotheasaal, Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045715",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-04-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2598/eventdate/9785",
+    "event_title": "Im Dialog mit der Andermatt Swiss Alps AG und der Andermatt - Sedrun Sport AG",
+    "start_date": "2026-04-21",
+    "start_time": "19:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Im Dialog mit der Andermatt Swiss Alps AG auf der Piazza Gottardo",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -1537,7 +2604,249 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "In der \"Gschichtäschtund\" erzählt Madlen Arnold eine spannende und lustige Geschichte in Dialekt.\n\nIdeal für Kinder von 4 - 7 Jahren, begleitet durch eine erwachsene Person. Auch ältere oder jüngere Geschwister sind herzlich willkommen.\n\nFlyer Frühling 2026",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7005007",
+    "event_title": "Gschichtäschtund mit Madlen",
+    "start_date": "2026-04-22",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7096040",
+    "event_title": "zämä spilä Jugendliche/Erwachsene",
+    "start_date": "2026-04-22",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7219106",
+    "event_title": "Zämä spielä Kids",
+    "start_date": "2026-04-22",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Ludothek Altdorf , Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7359973",
+    "event_title": "Reeto von Gunten",
+    "start_date": "2026-04-22",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894586",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-04-24",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995884",
+    "event_title": "TriffAltdorf: Offenes Singen",
+    "start_date": "2026-04-24",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7359967",
+    "event_title": "Das Tagebuch der Anne Frank",
+    "start_date": "2026-04-24",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6814771",
+    "event_title": "VaKi-Turnen Altdorf",
+    "start_date": "2026-04-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Feldli Turnhalle, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894601",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-04-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7372024",
+    "event_title": "Festival der Musikschule Uri",
+    "start_date": "2026-04-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7376431",
+    "event_title": "Thank you for the Music",
+    "start_date": "2026-04-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "IG Future, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7378585",
+    "event_title": "Welttag Taiji & Qigong. EINE WELT - EIN ATEM",
+    "start_date": "2026-04-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Haus der Musik, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2597/eventdate/9784",
+    "event_title": "Unterhaltungskonzert Feldmusik Andermatt",
+    "start_date": "2026-04-25",
+    "start_time": "20:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Unterhaltung und gemütliches Beisammensein!",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300877",
+    "event_title": "Eucharistiefeier, Freunde der Kirchenmusik",
+    "start_date": "2026-04-26",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300880",
+    "event_title": "Eucharistiefeier, Pfarreikaffee",
+    "start_date": "2026-04-26",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7364611",
+    "event_title": "Boxopera: Carmen",
+    "start_date": "2026-04-26",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7295867",
+    "event_title": "Safety 360° Summit",
+    "start_date": "2026-04-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Personalhaus Dätwyler AG, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300916",
+    "event_title": "Fiirä mit dä Chliinä",
+    "start_date": "2026-04-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894604",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-04-29",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7206734",
+    "event_title": "Raum zu Stille",
+    "start_date": "2026-04-29",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kulturkloster Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7364614",
+    "event_title": "#20 Greedi Üüsä",
+    "start_date": "2026-04-29",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7276256",
+    "event_title": "TriffAltdorf: Mittagstreff",
+    "start_date": "2026-04-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Restaurant Pizzeria Wilhelm Tell, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "schule-altdorf.ch",
@@ -1548,7 +2857,172 @@
     "end_datetime": null,
     "location": null,
     "description": "<p>Der Beitrag <a href=\"https://schule-altdorf.ch/event/fruehlingsferien-4/\">Frühlingsferien</a> erschien zuerst auf <a href=\"https://schule-altdorf.ch\">Schule Altdorf</a>.</p>",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7405114",
+    "event_title": "Michael Elsener",
+    "start_date": "2026-05-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7060844",
+    "event_title": "Flohmarkt Altdorf",
+    "start_date": "2026-05-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Unterlehn, Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7060850",
+    "event_title": "Repair Café",
+    "start_date": "2026-05-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Zeughaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7068404",
+    "event_title": "Gaming- und Sportcamp in Altdorf",
+    "start_date": "2026-05-04",
+    "start_time": null,
+    "end_datetime": "2026-05-08",
+    "location": "Turnhallen Feldli, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7071545",
+    "event_title": "Polysportcamp in Altdorf",
+    "start_date": "2026-05-04",
+    "start_time": null,
+    "end_datetime": "2026-05-08",
+    "location": "Turnhallen Feldli, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045721",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-05-05",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027732",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Englisch)",
+    "start_date": "2026-05-06",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027738",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Italienisch)",
+    "start_date": "2026-05-06",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027747",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Französisch)",
+    "start_date": "2026-05-06",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300913",
+    "event_title": "Kant. Tellenfahrt, ab Schiffstation Flüelen",
+    "start_date": "2026-05-08",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "zur Tellskapelle Sisikon, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300910",
+    "event_title": "Eucharistiefeier, Pfarreikaffee",
+    "start_date": "2026-05-10",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7405111",
+    "event_title": "Pippo Pollina",
+    "start_date": "2026-05-10",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7276259",
+    "event_title": "TriffAltdorf: Mittagstreff",
+    "start_date": "2026-05-12",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Restaurant Kolpingstube, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300919",
+    "event_title": "Flurprozession von Bruder Klaus nach St. Martin",
+    "start_date": "2026-05-14",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300922",
+    "event_title": "Eucharistiefeier für beide Pfarreien, Vereinigte Jodlerchöre",
+    "start_date": "2026-05-14",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -1559,7 +3033,62 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "Die Daten und die Bücher für den Zentralschweizer Literaturzirkel 2026 des lit.z Literaturzhaus Zentralschweiz in der Kantonsbibliothek Uri stehen fest. Melden Sie sich bis Ende Januar an und nehmen Sie beim beliebten Lese- und Diskussionsformat in Altdorf teil. \n\nDer Zirkel wird in Zusammenarbeit mit dem lit.z Literaturhaus Zentralschweiz durchgeführt und die Leitung übernimmt auch in diesem Jahr Julia Knapp, Literaturvermittlerin, Literatur auf der Bühne. \n\nWo: Kantonsbibliothek Uri, Veranstaltungsraum / Schlussrunde im lit.z Literaturhaus Zentralschweiz\nWann: Montag, 09.02.26, 19 Uhr - Reinhard Kaiser-Mühlecker, Willderer, S. Fischer 2022Montag, 20.04.26, 19 Uhr - Arundhati Roy, Meine Zuflucht und mein Sturm, S. Fischer, 2025Montag, 18.05.26, 19 Uhr - Leon Engler, Botanik des Wahnsinns, Dumont, 2025Sonntag, 31.05.26 Gemeinsame Schlussrunde im lit.z Literaturhaus Zentralschweiz in Stans: Öffentliche Lesung mit Julia Weber, Weil ich Ruth bin, Limmat Verlag, 2026 \tSonntag, 31.05.26, 17.30 bis 18.30 Uhr - Diskussionen in EinzelgruppenSonntag, 31.05.26, 18.30 bis 19.30 Uhr - Apéro &amp; SommersuppeSonntag, 31.05.26, 19.30 Uhr Lesung &amp; Gespräch mit Julia WeberTeilnehmer:innen pro Zirkel: max. 12 Personen\nTeilnahmegebühr: CHF 150.- (inkl. Abschlusslesung &amp; Apéro; Ermässigungen sind nach Absprache möglich.)\nAnmeldung: Anmeldung bis Montag, 26.1.2026, an info@lit-z.ch, mit der Bitte um Angabe des Zirkels Altdorf, Email, Telefonnummer und postalischer Adresse. Es wird vorausgesetzt, dass die Teilnehmenden das im Zentrum des Abends stehende Buch gelesen haben und wenn möglich an an allen Abenden teilnehmen.\nWeitere Auskünfte: Sabine Graf, Intendantin lit.z, sabine.graf@lit.z.ch, 041 610 03 65\n\nFlyer",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7288640",
+    "event_title": "Frühlingsmesse der Frauengemeinschaft Altdorf",
+    "start_date": "2026-05-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045727",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-05-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995989",
+    "event_title": "TriffAltdorf: Lesetreff",
+    "start_date": "2026-05-20",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7288958",
+    "event_title": "\"Gaming am Mittwoch\"",
+    "start_date": "2026-05-20",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7371658",
+    "event_title": "Vortrag «Der SAC Gotthard im Spannungsfeld zwischen Bergsport und Alpenschutz»",
+    "start_date": "2026-05-20",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kapelle, Kantonale Mittelschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -1570,7 +3099,106 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "Während viele Gedichte und Kurzgeschichten zum ersten Mal erscheinen, enthält der Band auch Lyrik aus früheren Schaffensperioden, die von der grossen Kontinuität ihres Schaffen zeugen. Moderiert wird die Lesung von Noëlle Gogniat. \n\nDie in Bürglen geborene Schriftstellerin lebt seit vielen Jahren in Walenstadt St. Gallen. Der Bezug zu ihren Wurzeln ist jedoch sehr lebendig – das kommt auch in ihrem neuesten Buch zum Ausdruck, das im November 2025 im bildfluss-Verlag, Altdorf erschienen ist. Die Lesung wird in Zusammenarbeit mit Amstäg! durchgeführt.\n\n\"Lisa Elsässer setzt überraschende Wendungen, unerwartete Bilder, die den Lesenden unmittelbar körperlich umfangen, einnehmen.\"\nHanspeter Mülller-Drossaart, Schauspieler und Autor\n\n \n\nWo: Kantonsbibliothek Uri, Veranstaltungsraum \nWann: Donnerstag, 21. Mai 2026 um 19 Uhr\nEintritt: kostenlos, ohne Anmeldung\nKooperation: Amstäg!\n\nFlyer",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7051940",
+    "event_title": "TriffAltdorf: Heilige Messe",
+    "start_date": "2026-05-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301099",
+    "event_title": "Lesung «Vögel beschriften die Luft» von Lisa Elsässer mit Noëlle Gogniat",
+    "start_date": "2026-05-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7418443",
+    "event_title": "Lesung «Vögel beschriften die Luft» von Lisa Elsässer",
+    "start_date": "2026-05-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6173617",
+    "event_title": "Rechnungsgemeinde",
+    "start_date": "2026-05-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995899",
+    "event_title": "TriffAltdorf: Offenes Singen",
+    "start_date": "2026-05-22",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300931",
+    "event_title": "Familiengottesdienst, anschliessend bräteln auf dem Feuer",
+    "start_date": "2026-05-23",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7381264",
+    "event_title": "Workshop \"Zum Tanz geblasen\"",
+    "start_date": "2026-05-23",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Mehrzweckgebäude Winkel, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7418452",
+    "event_title": "Tanz im Dorf Vol. 2",
+    "start_date": "2026-05-23",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Unterlehn Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2418/eventdate/8031",
+    "event_title": "Andermatt Music: Igor Levit",
+    "start_date": "2026-05-23",
+    "start_time": "19:30:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Aufregende Interpretation, technische Brillanz, kompromisslose Haltung: Der Ausnahmepianist und Glücksfall Igor Levit beehrt die Andermatt Konzerthalle.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "schule-altdorf.ch",
@@ -1581,7 +3209,95 @@
     "end_datetime": null,
     "location": null,
     "description": "<p>Der Beitrag <a href=\"https://schule-altdorf.ch/event/pfingstmontag-schulfrei-3/\">Pfingstmontag (schulfrei)</a> erschien zuerst auf <a href=\"https://schule-altdorf.ch\">Schule Altdorf</a>.</p>",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300928",
+    "event_title": "Festgottesdienst, Cäcilienverein",
+    "start_date": "2026-05-24",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2419/eventdate/8032",
+    "event_title": "Andermatt Music: Verführung Schweizer Klassik",
+    "start_date": "2026-05-24",
+    "start_time": "19:30:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Der französisch-schweizerische Flötist Emmanuel Pahud und das Swiss Orchestra verführen Sie in die Welt der klassischen Musik.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2523/eventdate/9294",
+    "event_title": "Bittgang zur Kapelle Mariahilf",
+    "start_date": "2026-05-26",
+    "start_time": "17:30:00",
+    "end_datetime": "2026-05-26T20:00:00",
+    "location": null,
+    "description": "Treffpunkt bei der Pfarrkirche St. Peter und Paul in Andermatt.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894607",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-05-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995278",
+    "event_title": "Vortrag: Raiffeisen E- Banking, Twint &Kartenzahlung",
+    "start_date": "2026-05-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Andermatt, Andermatt",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7206773",
+    "event_title": "Raum zu Stille",
+    "start_date": "2026-05-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kulturkloster Altdorf - Kirche, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7072202",
+    "event_title": "Fabian Unteregger",
+    "start_date": "2026-05-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7276265",
+    "event_title": "TriffAltdorf: Mittagstreff",
+    "start_date": "2026-05-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Café Rondo, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -1592,7 +3308,117 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "Was verraten uns tierische Knochen?Erfahren Sie von der Knochenexpertin Sonja Ramseyer, wie sich anhand von Schädeln und anderen tierischen Knochen einheimische Wildtierarten bestimmen lassen.\n\nIn ihrem Vortrag zeigt sie, wo man Knochen in der Natur findet, wie sie fachgerecht gereinigt werden und welche Merkmale Hinweise auf das jeweilige Tier geben. Sie bringt eine Auswahl ihrer Funde aus dem Urner Wald mit. Wenn Sie selbst ein spannendes Fundstück besitzen, dürfen Sie es gerne mitbringen – vielleicht lüftet sich das Geheimnis um dessen Ursprung.\n\nNeue Veranstaltungsreihe: «Forschung für alle - Naturwissenschaften entdecken»\n\nMit dieser neuen Reihe möchten wir naturwissenschaftliche Themen für die Urner Bevölkerung zugänglich und erlebbar machen. Die Veranstaltungen entstehen in Kooperation mit der Naturforschenden Gesellschaft Uri und der Kantonsbibliothek Uri.\n\nVormerken:\n Am 31. Oktober 2026 folgt der zweite Anlass:„Vom Meer bis zum Hochgebirge – Wie die Urner Berge entstanden sind“ mit Prof. Dr. Marco Herwegh von der Universität Bern. \n\n \n\nWo: Kantonsbibliothek Uri, Veranstaltungsraum \nWann: Samstag, 30. Mai 2026 um 10 Uhr (Vortrag ca. 1 Stunde, anschliessend Fragerunde)\nEintritt: kostenlos, ohne Anmeldung\nTeilnahme: Erwachsene und Kinder ab 8 Jahren",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300982",
+    "event_title": "Eucharistiefeier, Pfarreikaffee",
+    "start_date": "2026-05-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300988",
+    "event_title": "Firmgottesdienst, Jugendchor St. Martin",
+    "start_date": "2026-05-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301702",
+    "event_title": "Forschung für alle – Tierische Knochenfunde aus dem Urner Wald",
+    "start_date": "2026-05-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7418455",
+    "event_title": "Tierische Knochenfunde aus dem Urner Wald – Vortrag von Sonja Ramseyer",
+    "start_date": "2026-05-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2574/eventdate/9627",
+    "event_title": "Eröffnungsfeier mit Stubete in der Kristallkaverne",
+    "start_date": "2026-05-30",
+    "start_time": "11:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Feiere die Saisoneröffnung im Sasso San Gottardo mit einer traditionellen Stubete, musikalischer Unterhaltung und einem geführten Rundgang durch die historische Festung.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7206770",
+    "event_title": "Konzert - Duo Maria und Fränggi Gehrig",
+    "start_date": "2026-05-31",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kulturkloster Altdorf - Garten oder Kirche, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7268012",
+    "event_title": "Zämä güät ässä",
+    "start_date": "2026-05-31",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Winkel, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300976",
+    "event_title": "Eucharistiefeier, Chor Uri",
+    "start_date": "2026-05-31",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300979",
+    "event_title": "Eucharistiefeier, Freunde der Kirchenmusik",
+    "start_date": "2026-05-31",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2536/eventdate/9373",
+    "event_title": "Wald und Klima Ursern - Waldeinsätze in Andermatt",
+    "start_date": "2026-05-31",
+    "start_time": "09:00:00",
+    "end_datetime": "2026-05-31T11:30:00",
+    "location": null,
+    "description": "An unseren Waldeinsätzen sind alle herzlich willkommen!",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "schule-altdorf.ch",
@@ -1603,7 +3429,29 @@
     "end_datetime": null,
     "location": null,
     "description": "<p>Der Beitrag <a href=\"https://schule-altdorf.ch/event/schnuppernachmittag-fuer-die-neuen-kindergartenkinder/\">Schnuppernachmittag für die neuen Kindergartenkinder</a> erschien zuerst auf <a href=\"https://schule-altdorf.ch\">Schule Altdorf</a>.</p>",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894610",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-06-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045736",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-06-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "schule-altdorf.ch",
@@ -1614,7 +3462,7 @@
     "end_datetime": null,
     "location": null,
     "description": "<p>Der Beitrag <a href=\"https://schule-altdorf.ch/event/unterricht-am-mittwochnachmittag-3/\">Unterricht am Mittwochnachmittag</a> erschien zuerst auf <a href=\"https://schule-altdorf.ch\">Schule Altdorf</a>.</p>",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "schule-altdorf.ch",
@@ -1625,7 +3473,480 @@
     "end_datetime": null,
     "location": null,
     "description": "<p>Der Beitrag <a href=\"https://schule-altdorf.ch/event/fronleichnam-mit-bruecke-schulfrei-3/\">Fronleichnam mit Brücke (schulfrei)</a> erschien zuerst auf <a href=\"https://schule-altdorf.ch\">Schule Altdorf</a>.</p>",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027762",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Englisch)",
+    "start_date": "2026-06-03",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027771",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Italienisch)",
+    "start_date": "2026-06-03",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027777",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Französisch)",
+    "start_date": "2026-06-03",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7354429",
+    "event_title": "TriffAltdorf: Grosseltern- und Grosskindernachmittag",
+    "start_date": "2026-06-03",
+    "start_time": null,
+    "end_datetime": null,
+    "location": null,
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301000",
+    "event_title": "Fronleichnamgottesdienst, anschliessend Brunch",
+    "start_date": "2026-06-04",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Unterlehn oder Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2347/eventdate/9517",
+    "event_title": "Birdies & BBQ – der entspannte Abend auf der Driving Range",
+    "start_date": "2026-06-05",
+    "start_time": "17:30:00",
+    "end_datetime": "2026-06-05T20:00:00",
+    "location": null,
+    "description": "Drinks, Abschläge & BBQ auf der Driving Range – kostenlos, ungezwungen und offen für alle. Komm vorbei und geniesse einen entspannten Sommerabend.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7276274",
+    "event_title": "TriffAltdorf: Mittagstreff",
+    "start_date": "2026-06-09",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Bistro & Lounge Baggenstos, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7300997",
+    "event_title": "Fiirä mit dä Chliinä mit Segnung der künftigen Kindergartenkinder",
+    "start_date": "2026-06-09",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2300/eventdate/9642",
+    "event_title": "Warenmarkt Andermatt",
+    "start_date": "2026-06-10",
+    "start_time": "08:00:00",
+    "end_datetime": "2026-06-10T18:00:00",
+    "location": null,
+    "description": "Markt mit traditionellen Ständen von Kleider über Schmuck bis Magenbrot, Esswaren und Traditionelles.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894667",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-06-12",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301090",
+    "event_title": "Abendwallfahrt nach Flüeli-Ranft",
+    "start_date": "2026-06-12",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Treffpunkt Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2577/eventdate/9645",
+    "event_title": "Kräuter Genuss im Urserntal",
+    "start_date": "2026-06-12",
+    "start_time": "13:30:00",
+    "end_datetime": "2026-06-12T18:00:00",
+    "location": null,
+    "description": "Wissen über Pflanzen und genussvoll geniessen!",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301117",
+    "event_title": "Eucharistiefeier, musikalisch mitgestaltet durch das Volksmusikfestival, Pfarreikaffee",
+    "start_date": "2026-06-14",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6981634",
+    "event_title": "Abstimmung vom 14. Juni 2026",
+    "start_date": "2026-06-14",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Gemeindehaus\r\n, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2420/eventdate/8034",
+    "event_title": "Andermatt Music: Vier Jahreszeiten",
+    "start_date": "2026-06-14",
+    "start_time": "17:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Neben Vivaldis «Vier Jahreszeiten» erklingen eigens für dieses Konzert komponierte sinfonische Volksmusik-Werke von Fränggi & Maria Gehrig, Dani Häusler, Nadja Räss und Christoph Pfändler.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301114",
+    "event_title": "Kirchgemeindeversammlung",
+    "start_date": "2026-06-15",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Pfarreizentrum St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301108",
+    "event_title": "Konzert mit der Chororgel und Freunde der Kirchenmusik",
+    "start_date": "2026-06-16",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045739",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-06-16",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2528/eventdate/9288",
+    "event_title": "Senioren Fahrt ins Blaue",
+    "start_date": "2026-06-16",
+    "start_time": "07:45:00",
+    "end_datetime": "2026-06-16T17:00:00",
+    "location": null,
+    "description": "Eine schöne Reise ins Ungewisse mit Gleichgesinnten. Das Ziel wird erst bei Abreise bekanntgegeben.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894712",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-06-17",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7289192",
+    "event_title": "Gaming am Mittwoch",
+    "start_date": "2026-06-17",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kantonsbibliothek Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7051943",
+    "event_title": "TriffAltdorf: Heilige Messe",
+    "start_date": "2026-06-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7288829",
+    "event_title": "Vereinsreise  Einsiedeln Frauengemeinschaft Altdorf",
+    "start_date": "2026-06-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Winkelplatz, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7268030",
+    "event_title": "Altdorfer Fiirabig",
+    "start_date": "2026-06-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Unterlehn, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301096",
+    "event_title": "Familiengottesdienst, Ministranten Aufnahme und Verabschiedung",
+    "start_date": "2026-06-20",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045844",
+    "event_title": "Papiersammlung",
+    "start_date": "2026-06-20",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2302/eventdate/9636",
+    "event_title": "Octopus Gravel",
+    "start_date": "2026-06-20",
+    "start_time": "08:00:00",
+    "end_datetime": "2026-06-20T24:00:00",
+    "location": null,
+    "description": "Mit einer atemberaubenden Eventstrecke, einmaligem Konzept und Festivalstimmung. Der optimale Treffpunkt für Gravelfreaks und Bergliebhaber.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301105",
+    "event_title": "gebärdete Eucharistiefeier",
+    "start_date": "2026-06-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2330/eventdate/8036",
+    "event_title": "Firmung",
+    "start_date": "2026-06-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": null,
+    "description": "Die Firmung ist in der katholischen Kirche das Sakrament, in dem die Taufe bekräftigt und die Gabe des Heiligen Geistes gespendet wird.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7288823",
+    "event_title": "Spaziergottesdienst der Frauengemeinschaft Altdorf",
+    "start_date": "2026-06-23",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "St. Anna Kapelle Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045892",
+    "event_title": "Kartonsammlung",
+    "start_date": "2026-06-23",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6894742",
+    "event_title": "Vortragsübungen/Konzerte",
+    "start_date": "2026-06-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Musikschule Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7276280",
+    "event_title": "TriffAltdorf: Mittagstreff",
+    "start_date": "2026-06-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Café Central, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995905",
+    "event_title": "TriffAltdorf: Offenes Singen",
+    "start_date": "2026-06-26",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301129",
+    "event_title": "Fiirä mit dä Chliinä mit Segnung der künftigen Kindergartenkinder",
+    "start_date": "2026-06-26",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301126",
+    "event_title": "Eucharistiefeier mit Freunden der Kirchenmusik",
+    "start_date": "2026-06-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche St. Martin, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2473/eventdate/9487",
+    "event_title": "Chasing Cancellara Zürich - Andermatt",
+    "start_date": "2026-06-27",
+    "start_time": "14:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Bist du bereit für die ultimative Challenge durch die Schweizer Berge?",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2559/eventdate/9755",
+    "event_title": "Verkehrsfreier Samstag",
+    "start_date": "2026-06-27",
+    "start_time": "15:00:00",
+    "end_datetime": "2026-06-27T22:00:00",
+    "location": null,
+    "description": "Geniesse an verschiedenen Samstagen den verkehrsfreien Dorfkern von Andermatt zum Flanieren, Verweilen und Einkaufen.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301120",
+    "event_title": "Eucharistiefeier, anschliessend Pfarreikaffee",
+    "start_date": "2026-06-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Kirche Bruder Klaus, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7301123",
+    "event_title": "Alpgottesdienst Gisleralp, Ausflug der Pfarreien",
+    "start_date": "2026-06-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Gisleralp, Spiringen",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2578/eventdate/9646",
+    "event_title": "Blasmusik Matinée",
+    "start_date": "2026-06-28",
+    "start_time": "11:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Brass Band Gurtnellen beim Talmuseum",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045742",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-06-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2584/eventdate/9718",
+    "event_title": "Ländlerabende in Andermatt",
+    "start_date": "2026-07-01",
+    "start_time": "19:00:00",
+    "end_datetime": "2026-07-01T22:00:00",
+    "location": null,
+    "description": "Die Ländlerabende im Sommer 2026 werden von der Kulturkommission Andermatt organisiert.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "schule-altdorf.ch",
@@ -1636,7 +3957,7 @@
     "end_datetime": null,
     "location": null,
     "description": "<p>Der Beitrag <a href=\"https://schule-altdorf.ch/event/schulschlussfeier-3-oberstufe/\">Schulschlussfeier 3. Oberstufe</a> erschien zuerst auf <a href=\"https://schule-altdorf.ch\">Schule Altdorf</a>.</p>",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "schule-altdorf.ch",
@@ -1647,7 +3968,106 @@
     "end_datetime": null,
     "location": null,
     "description": "<p>Der Beitrag <a href=\"https://schule-altdorf.ch/event/schuljahresende-2025-2026-11-00-uhr/\">Schuljahresende 2025/2026 (11.00 Uhr)</a> erschien zuerst auf <a href=\"https://schule-altdorf.ch\">Schule Altdorf</a>.</p>",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2576/eventdate/9649",
+    "event_title": "Goethe Tage Andermatt 2026",
+    "start_date": "2026-07-04",
+    "start_time": "11:00:00",
+    "end_datetime": "2026-07-04T19:00:00",
+    "location": null,
+    "description": "Erlebe die Goethe-Tage in Andermatt mit Themenweg-Eröffnung, Dorfrundgang, Konzert sowie Theater und Wortkunst – auf den Spuren von Johann Wolfgang von Goethe in der Gotthardregion.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2421/eventdate/8038",
+    "event_title": "Andermatt Music: Auf Schweizerreise",
+    "start_date": "2026-07-04",
+    "start_time": "19:30:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Der Pianist Oliver Schnyder spielt den ersten, der Schweiz gewidmeten Teil von Franz Liszts «Années de Pèlerinage».",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045745",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-07-14",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2566/eventdate/9510",
+    "event_title": "Quartierfest Reuss",
+    "start_date": "2026-07-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": null,
+    "description": "Sommer feiern, Gemeinschaft erleben",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045751",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-07-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6994537",
+    "event_title": "Risotteria am 1. August",
+    "start_date": "2026-08-01",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Unterlehn, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2560/eventdate/9450",
+    "event_title": "Tavolata Andermatt",
+    "start_date": "2026-08-08",
+    "start_time": "15:00:00",
+    "end_datetime": "2026-08-08T22:00:00",
+    "location": null,
+    "description": "SAVE THE DATE",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045757",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-08-11",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7268033",
+    "event_title": "Altdorfer Fiirabig",
+    "start_date": "2026-08-14",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Unterlehn, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "schule-altdorf.ch",
@@ -1658,7 +4078,62 @@
     "end_datetime": null,
     "location": null,
     "description": "<p>Der Beitrag <a href=\"https://schule-altdorf.ch/event/schuljahresbeginn-2026-27/\">Schuljahresbeginn 2026/27</a> erschien zuerst auf <a href=\"https://schule-altdorf.ch\">Schule Altdorf</a>.</p>",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045895",
+    "event_title": "Kartonsammlung",
+    "start_date": "2026-08-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7051952",
+    "event_title": "TriffAltdorf: Heilige Messe",
+    "start_date": "2026-08-20",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2539/eventdate/9550",
+    "event_title": "Nordic Weekend 2026",
+    "start_date": "2026-08-21",
+    "start_time": null,
+    "end_datetime": null,
+    "location": null,
+    "description": "Die nordischen Disziplinen von Swiss-Ski",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2489/eventdate/8039",
+    "event_title": "4. Wallfahrt der Talschaft Ursern von Andermatt zum Kloster Disentis",
+    "start_date": "2026-08-23",
+    "start_time": null,
+    "end_datetime": null,
+    "location": null,
+    "description": "Anlässlich der Wahl des neuen Talammanns pilgert die Talschaft Ursern zum vierten Mal von Andermatt zum Kloster Disentis.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045769",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-08-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -1669,7 +4144,205 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "In der \"Gschichtäschtund unterwägs\" läuft Caroline Jauch gemeinsam mit den Kindern vom Kirchplatz St. Martin zum Kulturkloster Altdorf und erzählt ihnen auf dem Weg eine spannende und lustige Geschichte in Dialekt. Beim Kulturkloster endet die Gschichtäschtund und die Kinder erhalten zum Abschluss noch etwas zu Trinken.\n\nIdeal für Kinder von 4 - 7 Jahren, begleitet durch eine erwachsene Person. Auch ältere oder jüngere Geschwister sind herzlich willkommen. Der Weg ist nicht geeignet für Kinderwagen.\n\nBei schlechtem Wetter findet die Gschichtäschtund in der Kantonsbibliothek statt.\n\nTreffpunkt: Kirchplatz St. Martin\n (bei schlechtem Wetter in der Kantonsbibliothek)",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2580/eventdate/9706",
+    "event_title": "2-Tages Bergwanderung zwischen Gipfeln + Pässen im Gotthardgebiet (Etappe 20/21)",
+    "start_date": "2026-08-28",
+    "start_time": "07:59:00",
+    "end_datetime": "2026-08-28T14:30:00",
+    "location": null,
+    "description": "Die zweitägige Wanderung führt vom Oberalppass über idyllische Wiesen, Bergseen und eindrucksvolle Hochgebirgslandschaften via Vermigelhütte und Piz Giübin bis zum historischen Gotthardpass.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2594/eventdate/9778",
+    "event_title": "Mit Kit Armstrong zu Goethe und Liszt am Gotthard",
+    "start_date": "2026-08-31",
+    "start_time": "14:00:00",
+    "end_datetime": "2026-08-31T17:00:00",
+    "location": null,
+    "description": "Der weltbekannte Pianist Kit Armstong begibt sich auf die Spuren von Liszt und Goethe und interpretiert in der Kristallkaverne Werke von Franz Liszt.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2596/eventdate/9781",
+    "event_title": "Sasso San Gottardo präsentiert : Musik in der Kristallkaverne",
+    "start_date": "2026-08-31",
+    "start_time": "15:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Hochkarätiges Klavierkonzert mit Kit Armstrong - mit Goethe und Liszt am Gotthard",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2475/eventdate/8040",
+    "event_title": "Swiss Cycling Alpenbrevet",
+    "start_date": "2026-09-05",
+    "start_time": "06:00:00",
+    "end_datetime": "2026-09-05T21:00:00",
+    "location": null,
+    "description": "Andermatt, der ideale Ausgangspunkt für Rennvelotouren und Trainingsfahrten.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2561/eventdate/9473",
+    "event_title": "Anna Lipiak - Klavier",
+    "start_date": "2026-09-07",
+    "start_time": "19:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "„Musik für die Seele” – Klavierkonzert – Anna Lipiak - Klavier",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045775",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-09-08",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027840",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Englisch)",
+    "start_date": "2026-09-09",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027846",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Italienisch)",
+    "start_date": "2026-09-09",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027858",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Französisch)",
+    "start_date": "2026-09-09",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7219109",
+    "event_title": "Zämä spielä Kids",
+    "start_date": "2026-09-09",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Ludothek Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7268036",
+    "event_title": "Altdorfer Fiirabig",
+    "start_date": "2026-09-11",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Unterlehn, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7419907",
+    "event_title": "25 Jahre Summer Jam Altdorf",
+    "start_date": "2026-09-12",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Bunker/Winkel, Altdorf UR",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045850",
+    "event_title": "Papiersammlung",
+    "start_date": "2026-09-12",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2583/eventdate/9727",
+    "event_title": "Andermatt Slam",
+    "start_date": "2026-09-12",
+    "start_time": "20:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Poetry Slam mit Etrit Hasler",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7051958",
+    "event_title": "TriffAltdorf: Heilige Messe",
+    "start_date": "2026-09-17",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7060847",
+    "event_title": "Flohmarkt Altdorf",
+    "start_date": "2026-09-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Unterlehn, Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995875",
+    "event_title": "TriffAltdorf: TanzCafé",
+    "start_date": "2026-09-20",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045781",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-09-22",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   },
   {
     "source_name": "kbu.ch",
@@ -1680,6 +4353,589 @@
     "end_datetime": null,
     "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
     "description": "In der \"Gschichtäschtund\" erzählt Gabriela Bonetti eine spannende und lustige Geschichte in Dialekt.\n\nIdeal für Kinder von 4 - 7 Jahren, begleitet durch eine erwachsene Person. Auch ältere oder jüngere Geschwister sind herzlich willkommen",
-    "extracted_at": "2026-03-27T15:53:16.026958+00:00"
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7219124",
+    "event_title": "Zämä spielä Kids",
+    "start_date": "2026-09-23",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Ludothek Altdorf , Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995908",
+    "event_title": "TriffAltdorf: Offenes Singen",
+    "start_date": "2026-09-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6981637",
+    "event_title": "Abstimmung vom 27. September 2026",
+    "start_date": "2026-09-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Gemeindehaus\r\n, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2524/eventdate/9295",
+    "event_title": "Kolumbanschilbi",
+    "start_date": "2026-09-27",
+    "start_time": "10:00:00",
+    "end_datetime": "2026-09-27T11:00:00",
+    "location": null,
+    "description": "Eucharistiefeier in der Talkirche St. Kolubman. Die Feldmusik Andermatt wird die heilige Messe musikalisch umrahmen.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7299341",
+    "event_title": "TriffAltdorf: Grosseltern- und Grosskindernachmittag",
+    "start_date": "2026-09-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2525/eventdate/9296",
+    "event_title": "Erntedankfest",
+    "start_date": "2026-10-04",
+    "start_time": "09:00:00",
+    "end_datetime": "2026-10-04T10:00:00",
+    "location": null,
+    "description": "Eucharistiefeier",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2428/eventdate/8041",
+    "event_title": "Hoch hinaus : Abenteuer Pamir Highway",
+    "start_date": "2026-10-04",
+    "start_time": "20:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Ein 90-minütiger Film erzählt die abenteuerliche Reise von Andermatt bis Zentralasien – 18'000 Kilometer voller Natur, Begegnungen und Entdeckungen.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045784",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-10-06",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027864",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Englisch)",
+    "start_date": "2026-10-07",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027873",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Italienisch)",
+    "start_date": "2026-10-07",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027882",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Französisch)",
+    "start_date": "2026-10-07",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2567/eventdate/9521",
+    "event_title": "Herbstmarkt Andermatt Reuss",
+    "start_date": "2026-10-10",
+    "start_time": "13:00:00",
+    "end_datetime": "2026-10-10T18:00:00",
+    "location": null,
+    "description": "Herbstzauber in Andermatt Reuss – der Herbstmarkt bietet regionale Spezialitäten, Handwerkskunst und eine gemütliche Marktatmosphäre auf der Piazza Gottardo. Ein Genuss für alle Sinne.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045904",
+    "event_title": "Kartonsammlung",
+    "start_date": "2026-10-13",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045790",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-10-20",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7051961",
+    "event_title": "TriffAltdorf: Heilige Messe",
+    "start_date": "2026-10-22",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2540/eventdate/9760",
+    "event_title": "Woldmanndli Umzug",
+    "start_date": "2026-10-24",
+    "start_time": "13:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Traditioneller Woldmanndli Umzug",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2526/eventdate/9297",
+    "event_title": "Chilbisonntag: Kirchweihe St. Peter und Paul",
+    "start_date": "2026-10-25",
+    "start_time": "10:00:00",
+    "end_datetime": "2026-10-25T11:00:00",
+    "location": null,
+    "description": "Festtagsgottesdienst",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2586/eventdate/9735",
+    "event_title": "Chilbikonzert",
+    "start_date": "2026-10-25",
+    "start_time": "17:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Chilbikonzert bei der Pfarrkirche St. Peter und Paul",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995914",
+    "event_title": "TriffAltdorf: Offenes Singen",
+    "start_date": "2026-10-30",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2527/eventdate/9298",
+    "event_title": "Allerheiligen: Gedächtnis der Verstorbenen und Friedhofsbesuch",
+    "start_date": "2026-11-01",
+    "start_time": "13:30:00",
+    "end_datetime": "2026-11-01T14:30:00",
+    "location": null,
+    "description": "Allerheiligen/Allerseelen - Miteinander gedenken und beten",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045793",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-11-03",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027888",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Englisch)",
+    "start_date": "2026-11-04",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027894",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Italienisch)",
+    "start_date": "2026-11-04",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027906",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Französisch)",
+    "start_date": "2026-11-04",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7097513",
+    "event_title": "Ludothek Spielnacht",
+    "start_date": "2026-11-07",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Mehrzweckgebäude Winkel Altdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045859",
+    "event_title": "Papiersammlung",
+    "start_date": "2026-11-07",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6173620",
+    "event_title": "Budgetversammlung",
+    "start_date": "2026-11-12",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045799",
+    "event_title": "Grünabfuhr",
+    "start_date": "2026-11-17",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7219121",
+    "event_title": "Zämä spielä Kids",
+    "start_date": "2026-11-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Ludothek Altdorf , Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7051964",
+    "event_title": "TriffAltdorf: Heilige Messe",
+    "start_date": "2026-11-19",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995878",
+    "event_title": "TriffAltdorf: TanzCafé",
+    "start_date": "2026-11-22",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995992",
+    "event_title": "TriffAltdorf: Lesetreff",
+    "start_date": "2026-11-25",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6995917",
+    "event_title": "TriffAltdorf: Offenes Singen",
+    "start_date": "2026-11-27",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6994534",
+    "event_title": "Samichlauseinzug",
+    "start_date": "2026-11-28",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Altdorf Dorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2537/eventdate/9480",
+    "event_title": "Weihnachtsmarkt Andermatt 2026",
+    "start_date": "2026-11-28",
+    "start_time": "11:00:00",
+    "end_datetime": "2026-11-28T19:00:00",
+    "location": null,
+    "description": "Glühwein- und Zimtduft in der Nase, Lichterketten und Zeit für besinnliches Zusammensein.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6981643",
+    "event_title": "Abstimmung vom 11. November 2026",
+    "start_date": "2026-11-29",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Gemeindehaus\r\n, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2587/eventdate/9736",
+    "event_title": "Adventskonzert",
+    "start_date": "2026-11-29",
+    "start_time": "17:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Die Kulturkommission Andermatt lädt zum Adventskonzert in der Pfarrkirche Andermatt ein.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027912",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Englisch)",
+    "start_date": "2026-12-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027924",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Italienisch)",
+    "start_date": "2026-12-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7027933",
+    "event_title": "TriffAltdorf: \"Sprachentreff\" (Französisch)",
+    "start_date": "2026-12-02",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2564/eventdate/9488",
+    "event_title": "Verve Festival",
+    "start_date": "2026-12-04",
+    "start_time": "15:00:00",
+    "end_datetime": "2026-12-04T24:00:00",
+    "location": null,
+    "description": "Das Technofestival in Andermatt.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7354438",
+    "event_title": "TriffAltdorf: Grosseltern- und Grosskindernachmittag",
+    "start_date": "2026-12-09",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2529/eventdate/9287",
+    "event_title": "Senioren Kafichränzli",
+    "start_date": "2026-12-12",
+    "start_time": "14:00:00",
+    "end_datetime": "2026-12-12T17:00:00",
+    "location": null,
+    "description": "Geselliger Nachmittag mit Unterhaltung und gemeinsamen Singen",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2565/eventdate/9536",
+    "event_title": "Season Opening Concert",
+    "start_date": "2026-12-12",
+    "start_time": "15:00:00",
+    "end_datetime": "2026-12-12T18:30:00",
+    "location": null,
+    "description": "Wir eröffnen die neue Saison in Andermatt Reuss erneut mit einem traditionellen Konzert.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7045925",
+    "event_title": "Kartonsammlung",
+    "start_date": "2026-12-15",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Strassensammlung",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/7051967",
+    "event_title": "TriffAltdorf: Heilige Messe",
+    "start_date": "2026-12-17",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "TriffAltdorf, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2589/eventdate/9737",
+    "event_title": "Weihnachtskonzert",
+    "start_date": "2026-12-26",
+    "start_time": "17:00:00",
+    "end_datetime": null,
+    "location": null,
+    "description": "Weihnachtliche Stimmung in der Pfarrkirche Andermatt",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2568/eventdate/9522",
+    "event_title": "Wintermarkt Andermatt Reuss",
+    "start_date": "2026-12-27",
+    "start_time": "13:00:00",
+    "end_datetime": "2026-12-27T18:00:00",
+    "location": null,
+    "description": "Wintermarkt Andermatt Reuss mit regionalen Spezialitäten, würzigem Käse, handgefertigten Produkten und Attraktionen für Kinder. Ein stimmungsvoller Treffpunkt im Winter.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6173623",
+    "event_title": "Rechnungsgemeinde",
+    "start_date": "2027-05-20",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "gemeinde-andermatt.ch",
+    "source_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/132/event/2595/eventdate/9779",
+    "event_title": "Firmung",
+    "start_date": "2027-06-06",
+    "start_time": "10:00:00",
+    "end_datetime": "2027-06-06T12:00:00",
+    "location": null,
+    "description": "Die Firmung ist in der katholischen Kirche das Sakrament, in dem die Taufe bekräftigt und die Gabe des Heiligen Geistes gespendet wird.",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6173626",
+    "event_title": "Budgetversammlung",
+    "start_date": "2027-11-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6173629",
+    "event_title": "Rechnungsgemeinde",
+    "start_date": "2028-05-18",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
+  },
+  {
+    "source_name": "altdorf.ch",
+    "source_url": "https://www.altdorf.ch/_rte/anlass/6173632",
+    "event_title": "Budgetversammlung",
+    "start_date": "2028-11-16",
+    "start_time": null,
+    "end_datetime": null,
+    "location": "Theater Uri, Altdorf",
+    "description": "",
+    "extracted_at": "2026-03-27T16:22:29.574824+00:00"
   }
 ]
