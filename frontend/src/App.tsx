@@ -1,4 +1,4 @@
-import type { Component } from 'solid-js';
+import { createResource, For, Match, Suspense, Switch, type Component } from 'solid-js';
 import Header from './Header';
 import Card from './Card';
 import { Event } from './event';
@@ -57,30 +57,39 @@ const TEST_DATA: Event[] = [
 
 const dayHeaderClasses = 'font-bold text-lg sticky top-0 bg-white block px-4 w-[100%] text-center mt-4';
 
+// TODO: hardcoded silliness
+const today = '2026-03-27';
+const api = `http://178.104.80.19/api/events?date=${today}`;
+
+const fetchDataToday = async () => {
+  const response = await fetch(api);
+  return response.json();
+}
+
 const App: Component = () => {
+
+  const [events] = createResource(fetchDataToday)
+
 
   return (
     <>
       <Header />
       <main class='flex flex-col items-center gap-3 px-10 py-4'>
-        <h2 class={dayHeaderClasses}>Heute</h2>
-        <Card event={TEST_DATA[0]} />
-        <Card event={TEST_DATA[1]} />
-
-        <h2 class={dayHeaderClasses}>Morgen</h2>
-        <Card event={TEST_DATA[2]} />
-        <Card event={TEST_DATA[3]} />
-
-        <h2 class={dayHeaderClasses}>In zwei Tagen</h2>
-        <Card event={TEST_DATA[2]} />
-        <Card event={TEST_DATA[3]} />
-
-        <h2 class={dayHeaderClasses}>In drei Tagen</h2>
-        <Card event={TEST_DATA[2]} />
-        <Card event={TEST_DATA[3]} />
-        <h2 class={dayHeaderClasses}>In vier Tagen</h2>
-        <Card event={TEST_DATA[2]} />
-        <Card event={TEST_DATA[3]} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            <Match when={events.error}>
+              <span>Something broke</span>
+            </Match>
+            <Match when={events()}  >
+              <h2 class={dayHeaderClasses}>Heute</h2>
+              <For each={events()}>
+                {(item, _index) =>
+                  <Card event={item} />
+                }
+              </For>
+            </Match>
+          </Switch>
+        </Suspense>
       </main>
     </>
   );

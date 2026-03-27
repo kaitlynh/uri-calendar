@@ -14,7 +14,7 @@ const Card: Component<EventProps> = (props) => {
       </div>
       <p>{props.event.description || "empty"}</p>
       <div class='flex justify-between gap-4 mt-2'>
-        <p>start (- end)</p>
+        <p>{props.event.start_time}</p>
         <p>{props.event.location}</p>
       </div>
     </a>
