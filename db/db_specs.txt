@@ -1,0 +1,25 @@
+                             Table "public.sources"
+   Column    |           Type           | Collation | Nullable |      Default      
+-------------+--------------------------+-----------+----------+-------------------
+ source_id   | uuid                     |           | not null | gen_random_uuid()
+ source_name | text                     |           | not null | 
+ base_url    | text                     |           | not null | 
+ created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP
+
+
+                               Table "public.events"
+     Column     |           Type           | Collation | Nullable |      Default      
+----------------+--------------------------+-----------+----------+-------------------
+ event_id       | uuid                     |           | not null | gen_random_uuid()
+ source_id      | uuid                     |           |          | 
+ event_title    | text                     |           | not null | 
+ start_datetime | timestamp with time zone |           | not null | 
+ end_datetime   | timestamp with time zone |           |          | 
+ location       | text                     |           |          | 
+ description    | text                     |           |          | 
+ category       | text                     |           |          | 
+ source_url     | text                     |           |          | 
+ status         | text                     |           |          | 'active'::text
+ version        | integer                  |           |          | 1
+ extracted_at   | timestamp with time zone |           |          | CURRENT_TIMESTAMP
+ created_at     | timestamp with time zone |           |          | CURRENT_TIMESTAMP

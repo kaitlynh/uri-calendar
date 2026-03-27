@@ -51,7 +51,7 @@ No programming required.
 
 ### Track 3: Data Formatting (JSON to Database)
 
-- [ ] **Define the data schema** (do this first — Track 2 needs it before they can build the AI prompt): Specify the exact JSON structure the AI must return. At minimum: `source_url`, `event_title`, `start_datetime`, `end_datetime` (optional), `location`, `description`, `category` (optional). Share this schema with the AI & Scraping team immediately.
+- [x] **Define the data schema** (do this first — Track 2 needs it before they can build the AI prompt): Specify the exact JSON structure the AI must return. At minimum: `source_url`, `event_title`, `start_datetime`, `end_datetime` (optional), `location`, `description`, `category` (optional). Share this schema with the AI & Scraping team immediately.
 - [ ] **Design and build the event database**: Implement persistent storage for events using PostgreSQL or SQLite. Include lifecycle tracking (active, rescheduled, cancelled), version history for debugging, and confirm backup automation is in place with Track 1.
 - [ ] **Build the deduplication and update logic**: Match incoming scraped events to existing database records to determine create vs. update vs. duplicate. Note: not every event will have a stable source URL — text-only listing pages require fuzzy matching on title, location, and approximate date.
 - [ ] **Data transformation and publishing (Python)**: Parse the AI JSON, validate it, and write normalized event records into the live database.
