@@ -1,12 +1,13 @@
 """
 Events API for the Uri Calendar.
 
-Provides a single endpoint for the frontend to fetch events by date:
+Endpoints:
 
-    GET /api/events?date=2026-03-28
+    GET /api/events?date=2026-03-28   — events for a given date
+    GET /api/sources                  — list all event sources
 
-Returns a JSON array of event objects. See template_data.json for the
-response shape. Events without a start_time (all-day events) appear first.
+See template_data.json for the event response shape.
+Events without a start_time (all-day events) appear first.
 
 Setup:
     pip install -r requirements.txt
@@ -92,6 +93,34 @@ def get_events():
         conn.close()
 
     return jsonify([serialize_event(r) for r in rows])
+
+
+@app.route("/api/sources")
+def get_sources():
+    """List all event sources (websites we scrape from)."""
+    conn = get_db()
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            cur.execute(
+                """
+                SELECT source_id, source_name, source_url, created_at
+                FROM sources
+                ORDER BY source_name ASC
+                """
+            )
+            rows = cur.fetchall()
+    finally:
+        conn.close()
+
+    return jsonify([
+        {
+            "source_id": str(r["source_id"]),
+            "source_name": r["source_name"],
+            "source_url": r["source_url"],
+            "created_at": r["created_at"].isoformat() if r["created_at"] else None,
+        }
+        for r in rows
+    ])
 
 
 @app.after_request
