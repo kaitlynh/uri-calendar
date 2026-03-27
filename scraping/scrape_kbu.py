@@ -121,7 +121,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
         "end_datetime": None,
         "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
         "description": event["description"],
-        "category": ", ".join(event["categories"]) if event["categories"] else None,
+        "category": None,
         "extracted_at": extracted_at,
     }
 
