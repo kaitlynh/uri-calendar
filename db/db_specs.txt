@@ -1,13 +1,4 @@
-                             Table "public.sources"
-   Column    |           Type           | Collation | Nullable |      Default      
--------------+--------------------------+-----------+----------+-------------------
- source_id   | uuid                     |           | not null | gen_random_uuid()
- source_name | text                     |           |          | 
- source_url  | text                     |           | not null | 
- created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP
-
-
-                               Table "public.events"
+                              Table "public.events"
     Column    |           Type           | Collation | Nullable |      Default      
 --------------+--------------------------+-----------+----------+-------------------
  event_id     | uuid                     |           | not null | gen_random_uuid()
@@ -20,5 +11,12 @@
  description  | text                     |           |          | 
  extracted_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP
  created_at   | timestamp with time zone |           |          | CURRENT_TIMESTAMP
+ source_url   | text                     |           | not null | 
 
-
+                              Table "public.sources"
+   Column    |           Type           | Collation | Nullable |      Default      
+-------------+--------------------------+-----------+----------+-------------------
+ source_id   | uuid                     |           | not null | gen_random_uuid()
+ source_name | text                     |           |          | 
+ base_url    | text                     |           | not null | 
+ created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP

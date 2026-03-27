@@ -122,6 +122,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
     return {
         "event_id": f"kbu-{event['id']}",
         "source_name": "kbu.ch",
+        "base_url": "https://www.kbu.ch/treffpunkt/veranstaltungen/",
         "source_url": event["detail_url"],
         "event_title": event["title"],
         "start_date": _parse_date(event["date"]),

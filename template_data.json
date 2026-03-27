@@ -1,6 +1,7 @@
 {
   "event_id": "string (unique identifier)",
   "source_name": "string",
+  "base_url": "string",
   "source_url": "string (url)",
   "event_title": "string",
   "start_date": "string (YYYY-MM-DD)",
