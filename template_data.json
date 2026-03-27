@@ -3,10 +3,10 @@
   "source_name": "string",
   "source_url": "string (url)",
   "event_title": "string",
-  "start_datetime": "ISO8601 string (YYYY-MM-DDTHH:MM:SS)",
+  "start_date": "string (YYYY-MM-DD)",
+  "start_time": "string (HH:MM:SS)",
   "end_datetime": "ISO8601 string or null",
   "location": "string",
   "description": "string",
-  "category": "string or null",
   "extracted_at": "ISO8601 string"
 }
