@@ -4,5 +4,15 @@
     "url": "https://www.urnerwochenblatt.ch/veranstaltungen/",
     "type": "urnerwochenblatt",
     "weeks": 4
+  },
+  {
+    "name": "Kantonsbibliothek Uri",
+    "url": "https://www.kbu.ch/treffpunkt/veranstaltungen/",
+    "type": "kbu"
+  },
+  {
+    "name": "Musikschule Uri",
+    "url": "https://www.musikschule-uri.ch/events-news/",
+    "type": "musikschule"
   }
 ]

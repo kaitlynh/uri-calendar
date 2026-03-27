@@ -111,6 +111,50 @@ def scrape_js(source: dict, extracted_at: str) -> list[Event]:
         ))
     return events
 
+def scrape_kbu(source: dict, extracted_at: str) -> list[Event]:
+    import os, sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from scrape_kbu import fetch_events, _to_template as kbu_to_template
+
+    raw = fetch_events()
+    events = []
+    for e in raw:
+        t = kbu_to_template(e, extracted_at)
+        events.append(Event(
+            source_name  = t["source_name"],
+            source_url   = t["source_url"],
+            event_title  = t["event_title"],
+            start_date   = t["start_date"],
+            start_time   = t["start_time"],
+            end_datetime = t["end_datetime"],
+            location     = t["location"],
+            description  = t["description"],
+            extracted_at = t["extracted_at"],
+        ))
+    return events
+
+def scrape_musikschule(source: dict, extracted_at: str) -> list[Event]:
+    import os, sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from scrape_musikschule import fetch_events, _to_template as ms_to_template
+
+    raw = fetch_events()
+    events = []
+    for e in raw:
+        t = ms_to_template(e, extracted_at)
+        events.append(Event(
+            source_name  = t["source_name"],
+            source_url   = t["source_url"],
+            event_title  = t["event_title"],
+            start_date   = t["start_date"],
+            start_time   = t["start_time"],
+            end_datetime = t["end_datetime"],
+            location     = t["location"],
+            description  = t["description"],
+            extracted_at = t["extracted_at"],
+        ))
+    return events
+
 def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
     import os, sys
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -138,6 +182,8 @@ SCRAPERS = {
     "rss":               scrape_rss,
     "js":                scrape_js,
     "urnerwochenblatt":  scrape_urnerwochenblatt,
+    "kbu":               scrape_kbu,
+    "musikschule":       scrape_musikschule,
 }
 
 def collect_all_events(sources_path: str = "scraping/sources.json", output_path: str = "events/events.json"):
@@ -164,7 +210,7 @@ def collect_all_events(sources_path: str = "scraping/sources.json", output_path:
     seen = set()
     unique: list[Event] = []
     for ev in all_events:
-        key = (ev.event_title.lower().strip(), (ev.start_date or "")[:10])
+        key = (ev.event_title.lower().strip(), (ev.start_date or "")[:10], ev.start_time or "")
         if key not in seen:
             seen.add(key)
             unique.append(ev)

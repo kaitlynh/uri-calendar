@@ -13,9 +13,18 @@ STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"
 
 MONTHS_DE = {
-    "Januar": 1, "Februar": 2, "März": 3, "April": 4,
-    "Mai": 5, "Juni": 6, "Juli": 7, "August": 8,
-    "September": 9, "Oktober": 10, "November": 11, "Dezember": 12,
+    "Januar": 1, "Jan.": 1, "Jan": 1,
+    "Februar": 2, "Feb.": 2, "Feb": 2,
+    "März": 3, "Mär.": 3, "Mär": 3,
+    "April": 4, "Apr.": 4, "Apr": 4,
+    "Mai": 5,
+    "Juni": 6, "Jun.": 6, "Jun": 6,
+    "Juli": 7, "Jul.": 7, "Jul": 7,
+    "August": 8, "Aug.": 8, "Aug": 8,
+    "September": 9, "Sep.": 9, "Sep": 9, "Sept.": 9,
+    "Oktober": 10, "Okt.": 10, "Okt": 10,
+    "November": 11, "Nov.": 11, "Nov": 11,
+    "Dezember": 12, "Dez.": 12, "Dez": 12,
 }
 
 
@@ -26,7 +35,7 @@ def _parse_date(datum_text: str) -> Optional[str]:
     if m:
         return f"{m.group(3)}-{m.group(2)}-{m.group(1).zfill(2)}"
     # Try 'DD. MonthName' without year
-    m = re.search(r'(\d{1,2})\.\s*([A-Za-zä]+)', datum_text)
+    m = re.search(r'(\d{1,2})\.\s*([A-Za-zä]+\.?)', datum_text)
     if m:
         day = int(m.group(1))
         month = MONTHS_DE.get(m.group(2))
