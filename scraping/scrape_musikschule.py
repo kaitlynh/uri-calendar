@@ -136,6 +136,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
     return {
         "event_id": f"musikschule-{event['id']}",
         "source_name": "musikschule-uri.ch",
+        "base_url": BASE_URL,
         "source_url": BASE_URL,
         "event_title": event["title"],
         "start_date": event["start_date"],

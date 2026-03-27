@@ -54,34 +54,33 @@ def ingest_events(json_file: str):
 
     for event in events:
         try:
-            source_url = event.get("source_url")
+            # Mapping from JSON - Adjust these keys if your JSON uses different names
+            base_url = event.get("base_url") 
+            source_url = event.get("source_url") # The specific URL for this event
             source_name = event.get("source_name")
 
-            # 1. Upsert source
+            # 1. Upsert source (using base_url as the unique identifier)
             cur.execute(
                 """
-                INSERT INTO sources (source_name, source_url)
+                INSERT INTO sources (source_name, base_url)
                 VALUES (%s, %s)
-                ON CONFLICT (source_url) DO UPDATE SET source_name = EXCLUDED.source_name
+                ON CONFLICT (base_url) DO UPDATE SET source_name = EXCLUDED.source_name
                 RETURNING source_id
                 """,
-                (source_name, source_url)
+                (source_name, base_url)
             )
             source_id = cur.fetchone()[0]
 
-            # 2. Extract Date/Time directly from JSON (since they are already split)
+            # 2. Extract Date/Time
             start_date = event.get("start_date")
             start_time = event.get("start_time")
-            
-            # If you still want to use the parser for a combined string, 
-            # ensure the key matches your JSON:
-            # start_date, start_time = parse_start_datetime(event.get("start_datetime"))
 
-            # 3. Insert event
+            # 3. Insert event (now including source_url)
             cur.execute(
                 """
                 INSERT INTO events (
                     source_id,
+                    source_url,
                     event_title,
                     start_date,
                     start_time,
@@ -90,10 +89,11 @@ def ingest_events(json_file: str):
                     description,
                     extracted_at
                 )
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """,
                 (
                     source_id,
+                    source_url, # Added this
                     event.get("event_title"),
                     start_date,
                     start_time,
@@ -107,7 +107,7 @@ def ingest_events(json_file: str):
 
         except psycopg2.Error as e:
             print(f"Skipping event '{event.get('event_title')}' due to error: {e}")
-            conn.rollback()
+            conn.rollback() # Important to rollback the transaction on error
             skipped += 1
             continue
 
@@ -116,7 +116,6 @@ def ingest_events(json_file: str):
     conn.close()
 
     print(f"Done. Inserted: {inserted}, Skipped: {skipped}")
-
 
 if __name__ == "__main__":
     ingest_events("data.json")

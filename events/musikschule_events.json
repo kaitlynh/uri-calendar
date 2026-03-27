@@ -2,6 +2,7 @@
   {
     "event_id": "musikschule-11172",
     "source_name": "musikschule-uri.ch",
+    "base_url": "https://www.musikschule-uri.ch/events-news/",
     "source_url": "https://www.musikschule-uri.ch/events-news/",
     "event_title": "Jazz Rock Pop Session",
     "start_date": "2026-04-16",
@@ -9,11 +10,12 @@
     "end_datetime": null,
     "location": "Vogelsang, Altdorf",
     "description": "Unsere Bands Rockit, The swinging light Band und der JazzWorkshop stellen sich vor. Es werden viele Gesangstalente auftreten, welche von einer Band live begleitet werden.\nFreuen Sie sich auf einen gemütlichen Konzertabend mit jazzig, rockig und poppigen Klängen.",
-    "extracted_at": "2026-03-27T14:13:11"
+    "extracted_at": "2026-03-27T15:14:39"
   },
   {
     "event_id": "musikschule-15333",
     "source_name": "musikschule-uri.ch",
+    "base_url": "https://www.musikschule-uri.ch/events-news/",
     "source_url": "https://www.musikschule-uri.ch/events-news/",
     "event_title": "Instrumentenparcours",
     "start_date": "2026-04-18",
@@ -21,6 +23,6 @@
     "end_datetime": null,
     "location": "Oberstufenschulhaus Bernarda, Altdorf",
     "description": "Die Musikschule Uri freut sich auf deinen Besuch beim Instrumentenparcours. Komm vorbei und probiere die verschiedenen Instrumente gleich selber aus.\nEs finden verschiedene Konzerte des Kinder- und Jugendchor und der Grundschule statt. Die 2. Oberstufe Altdorf betreibt ein Café mit Getränken und Kuchen.",
-    "extracted_at": "2026-03-27T14:13:11"
+    "extracted_at": "2026-03-27T15:14:39"
   }
 ]
