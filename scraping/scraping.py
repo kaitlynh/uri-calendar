@@ -1,25 +1,35 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from datetime import datetime, timezone
+import re
+from datetime import datetime, timezone, timedelta
 from dataclasses import dataclass, asdict
 from typing import Optional
 import feedparser
 
+########################
+# Data Classes
+########################
+
 @dataclass
 class Event:
+    source_name: Optional[str]
     source_url: Optional[str]
     event_title: str
-    start_datetime: Optional[str]
+    start_date: Optional[str]
+    start_time: Optional[str]
     end_datetime: Optional[str]
     location: Optional[str]
     description: Optional[str]
-    category: Optional[str]
     extracted_at: str
 
 def load_sources(path: str = "scraping/sources.json") -> list[dict]:
     with open(path, encoding="utf-8") as f:
         return json.load(f)
+
+########################
+# Scrapers
+########################
 
 def scrape_static(source: dict, extracted_at: str) -> list[Event]:
     sel = source.get("selectors", {})
@@ -36,13 +46,14 @@ def scrape_static(source: dict, extracted_at: str) -> list[Event]:
         link_el  = item.select_one(sel.get("link", "a"))
 
         events.append(Event(
+            source_name    = source.get("name"),
             source_url     = link_el["href"] if link_el else source["url"],
             event_title    = title_el.text.strip() if title_el else "",
-            start_datetime = date_el.get("datetime", date_el.text.strip()) if date_el else None,
+            start_date     = date_el.get("datetime", date_el.text.strip()) if date_el else None,
+            start_time     = None,
             end_datetime   = None,
             location       = loc_el.text.strip() if loc_el else None,
             description    = desc_el.text.strip() if desc_el else None,
-            category       = None,
             extracted_at   = extracted_at,
         ))
     return events
@@ -57,13 +68,14 @@ def scrape_rss(source: dict, extracted_at: str) -> list[Event]:
             date_str = datetime(*entry.published_parsed[:6]).isoformat()
 
         events.append(Event(
+            source_name    = source.get("name"),
             source_url     = entry.get("link", source["url"]),
             event_title    = entry.get("title", ""),
-            start_datetime = date_str,
+            start_date     = date_str.split("T")[0] if date_str else None,
+            start_time     = date_str.split("T")[1].split(".")[0] if date_str else None,
             end_datetime   = None,
             location       = entry.get("location", None),
             description    = entry.get("summary", None),
-            category       = None,
             extracted_at   = extracted_at,
         ))
     return events
@@ -87,13 +99,14 @@ def scrape_js(source: dict, extracted_at: str) -> list[Event]:
         link_el  = item.select_one(sel.get("link", "a"))
 
         events.append(Event(
+            source_name    = source.get("name"),
             source_url     = link_el["href"] if link_el else source["url"],
             event_title    = title_el.text.strip() if title_el else "",
-            start_datetime = date_el.get("datetime", date_el.text.strip()) if date_el else None,
+            start_date     = date_el.get("datetime", date_el.text.strip()) if date_el else None,
+            start_time     = None,
             end_datetime   = None,
             location       = loc_el.text.strip() if loc_el else None,
             description    = None,
-            category       = None,
             extracted_at   = extracted_at,
         ))
     return events
@@ -101,21 +114,22 @@ def scrape_js(source: dict, extracted_at: str) -> list[Event]:
 def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
     import os, sys
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from scrape_urnerwochenblatt import fetch_events, _to_template
+    from scrape_urnerwochenblatt import fetch_events, _to_template as uw_to_template
 
-    raw = fetch_events(weeks=source.get("weeks", 4))
+    raw = fetch_events(base_url=source["url"], weeks=source.get("weeks", 4))
     events = []
     for e in raw:
-        t = _to_template(e, extracted_at)
+        t = uw_to_template(e, extracted_at)
         events.append(Event(
-            source_url     = t["source_url"],
-            event_title    = t["event_title"],
-            start_datetime = t["start_datetime"],
-            end_datetime   = t["end_datetime"],
-            location       = t["location"],
-            description    = t["description"],
-            category       = t["category"],
-            extracted_at   = t["extracted_at"],
+            source_name  = "Urner Wochenblatt",
+            source_url   = t["source_url"],
+            event_title  = t["event_title"],
+            start_date   = t["start_date"],
+            start_time   = t["start_time"],
+            end_datetime = t["end_datetime"],
+            location     = t["location"],
+            description  = t["description"],
+            extracted_at = t["extracted_at"],
         ))
     return events
 
@@ -150,12 +164,12 @@ def collect_all_events(sources_path: str = "scraping/sources.json", output_path:
     seen = set()
     unique: list[Event] = []
     for ev in all_events:
-        key = (ev.event_title.lower().strip(), (ev.start_datetime or "")[:10])
+        key = (ev.event_title.lower().strip(), (ev.start_date or "")[:10])
         if key not in seen:
             seen.add(key)
             unique.append(ev)
 
-    unique.sort(key=lambda e: e.start_datetime or "")
+    unique.sort(key=lambda e: e.start_date or "")
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(

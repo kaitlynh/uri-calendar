@@ -12,44 +12,77 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW
 STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"
 
+MONTHS_DE = {
+    "Januar": 1, "Februar": 2, "März": 3, "April": 4,
+    "Mai": 5, "Juni": 6, "Juli": 7, "August": 8,
+    "September": 9, "Oktober": 10, "November": 11, "Dezember": 12,
+}
 
-def _parse_iso_datetime(date_str: str, time_part: str) -> Optional[str]:
-    """Parse 'DD.MM.YYYY' and 'HH.MM Uhr' (or 'HH.MM–HH.MM Uhr') into ISO8601."""
-    try:
-        dt = datetime.strptime(date_str.strip(), "%d.%m.%Y")
-        if time_part:
-            # Take only the start time before any '–'
-            start = time_part.split("–")[0].replace("Uhr", "").strip()
-            h, m = start.split(".")
-            dt = dt.replace(hour=int(h), minute=int(m))
-        return dt.strftime(ISO_FMT)
-    except Exception:
+
+def _parse_date(datum_text: str) -> Optional[str]:
+    """Parse 'Freitag, 27. März' or 'DD.MM.YYYY' into 'YYYY-MM-DD', inferring year if needed."""
+    # Try DD.MM.YYYY first
+    m = re.search(r'(\d{1,2})\.(\d{2})\.(\d{4})', datum_text)
+    if m:
+        return f"{m.group(3)}-{m.group(2)}-{m.group(1).zfill(2)}"
+    # Try 'DD. MonthName' without year
+    m = re.search(r'(\d{1,2})\.\s*([A-Za-zä]+)', datum_text)
+    if m:
+        day = int(m.group(1))
+        month = MONTHS_DE.get(m.group(2))
+        if not month:
+            return None
+        today = datetime.today()
+        year = today.year
+        if month < today.month or (month == today.month and day < today.day):
+            year += 1
+        try:
+            return datetime(year, month, day).strftime("%Y-%m-%d")
+        except ValueError:
+            return None
+    return None
+
+
+def _parse_time(time_str: str) -> Optional[str]:
+    """Parse 'HH.MM' or 'HH:MM' into 'HH:MM:SS'."""
+    m = re.match(r'(\d{1,2})[.:](\d{2})', time_str.strip())
+    if m:
+        return f"{int(m.group(1)):02d}:{m.group(2)}:00"
+    return None
+
+
+def _parse_start_time(time_part: str) -> Optional[str]:
+    """Extract start time from 'HH.MM–HH.MM Uhr' or 'HH.MM Uhr'."""
+    if not time_part:
         return None
+    start = time_part.split("–")[0].replace("Uhr", "").strip()
+    return _parse_time(start)
 
 
-def _parse_end_datetime(date_str: str, time_str: str) -> Optional[str]:
-    """Parse end time from 'HH.MM–HH.MM Uhr' range."""
-    if "–" not in time_str:
+def _parse_end_datetime(start_date: Optional[str], time_str: str) -> Optional[str]:
+    """Build end ISO datetime from end time in 'HH.MM–HH.MM Uhr' range."""
+    if not start_date or "–" not in time_str:
         return None
     try:
         end_part = time_str.split("–")[1].replace("Uhr", "").strip()
-        dt = datetime.strptime(date_str.strip(), "%d.%m.%Y")
-        h, m = end_part.split(".")
-        dt = dt.replace(hour=int(h), minute=int(m))
-        return dt.strftime(ISO_FMT)
+        end_time = _parse_time(end_part)
+        if end_time:
+            return f"{start_date}T{end_time}"
     except Exception:
-        return None
+        pass
+    return None
 
 
 def _to_template(event: dict, extracted_at: str) -> dict:
+    start_date = _parse_date(event["date"])
     return {
         "source_url": event["website"] or BASE_URL,
         "event_title": event["title"],
-        "start_datetime": _parse_iso_datetime(event["date"], event["time"]),
-        "end_datetime": _parse_end_datetime(event["date"], event["time"]),
+        "start_date": start_date,
+        "start_time": _parse_start_time(event["time"]),
+        "end_datetime": _parse_end_datetime(start_date, event["time"]),
         "location": event["location"],
         "description": event["description"],
-        "category": None,
         "extracted_at": extracted_at,
     }
 
@@ -118,21 +151,18 @@ def parse_events_from_html(html: str) -> list[dict]:
     return events
 
 
-def fetch_events(start_date: str = None, weeks: int = 4) -> list[dict]:
+def fetch_events(base_url: str = BASE_URL, weeks: int = 4) -> list[dict]:
     """
-    Fetch events from urnerwochenblatt.ch.
-    start_date: DD.MM.YYYY format, defaults to today
+    Fetch events from urnerwochenblatt.ch, iterating week by week.
     weeks: how many weeks ahead to fetch
     """
-    if start_date is None:
-        start_date = datetime.today().strftime("%d.%m.%Y")
-
+    start_date = datetime.today().strftime("%d.%m.%Y")
     all_events = {}  # keyed by id to deduplicate
 
     current = datetime.strptime(start_date, "%d.%m.%Y")
     for _ in range(weeks):
         date_str = current.strftime("%d.%m.%Y")
-        url = f"{BASE_URL}?d={date_str}&s="
+        url = f"{base_url}?d={date_str}&s="
         print(f"Fetching: {url}")
         try:
             resp = requests.get(url, headers=HEADERS, timeout=15, verify=False)
