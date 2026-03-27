@@ -36,7 +36,7 @@ const TEST_DATA: Event[] = [
     start_date: "Tuesday",
     start_time: "Tuesday",
     end_datetime: "also Tuesday",
-    location: "Bahnhofstrasse",
+    location: "Wie immer",
     description: "Iitrummele, aber dasmal alli im Takt bliibe",
     extracted_at: "",
   },

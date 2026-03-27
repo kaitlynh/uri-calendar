@@ -5,7 +5,7 @@ export type Event = {
   source_url: string,
   event_title: string,
   start_date: string,
-  start_time: string,
+  start_time?: string,
   end_datetime?: string,
   location: string,
   description: string,
