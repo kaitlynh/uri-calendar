@@ -1,4 +1,5 @@
 import requests
+from urllib.parse import urlsplit
 from bs4 import BeautifulSoup
 import json
 import re
@@ -68,7 +69,7 @@ def scrape_rss(source: dict, extracted_at: str) -> list[Event]:
             date_str = datetime(*entry.published_parsed[:6]).isoformat()
 
         events.append(Event(
-            source_name    = source.get("name"),
+            source_name    = urlsplit(source["url"]).netloc,
             source_url     = entry.get("link", source["url"]),
             event_title    = entry.get("title", ""),
             start_date     = date_str.split("T")[0] if date_str else None,
@@ -165,7 +166,7 @@ def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
     for e in raw:
         t = uw_to_template(e, extracted_at)
         events.append(Event(
-            source_name  = "Urner Wochenblatt",
+            source_name  = "urnerwochenblatt.ch",
             source_url   = t["source_url"],
             event_title  = t["event_title"],
             start_date   = t["start_date"],
