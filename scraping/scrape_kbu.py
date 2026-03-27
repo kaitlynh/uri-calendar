@@ -20,17 +20,24 @@ CATEGORY_MAP = {
 }
 
 
-def _parse_iso_datetime(date_str: str, time_str: str) -> Optional[str]:
-    """Parse 'Do, 02.04.2026' + '16:00 Uhr' into ISO8601."""
+def _parse_date(date_str: str) -> Optional[str]:
+    """Parse 'Do, 02.04.2026' into 'YYYY-MM-DD'."""
     try:
-        # Strip day abbreviation like 'Sa, '
         date_clean = re.sub(r'^[A-Za-z]+,\s*', '', date_str.strip())
         dt = datetime.strptime(date_clean, "%d.%m.%Y")
-        if time_str:
-            time_clean = time_str.replace("Uhr", "").strip()
-            parts = time_clean.split(":")
-            dt = dt.replace(hour=int(parts[0]), minute=int(parts[1]))
-        return dt.strftime(ISO_FMT)
+        return dt.strftime("%Y-%m-%d")
+    except Exception:
+        return None
+
+
+def _parse_time(time_str: str) -> Optional[str]:
+    """Parse '16:00 Uhr' into 'HH:MM:SS'."""
+    try:
+        if not time_str:
+            return None
+        time_clean = time_str.replace("Uhr", "").strip()
+        parts = time_clean.split(":")
+        return f"{int(parts[0]):02d}:{int(parts[1]):02d}:00"
     except Exception:
         return None
 
@@ -117,11 +124,11 @@ def _to_template(event: dict, extracted_at: str) -> dict:
         "source_name": "kbu.ch",
         "source_url": event["detail_url"],
         "event_title": event["title"],
-        "start_datetime": _parse_iso_datetime(event["date"], event["time"]),
+        "start_date": _parse_date(event["date"]),
+        "start_time": _parse_time(event["time"]),
         "end_datetime": None,
         "location": "Kantonsbibliothek Uri, Bahnhofstrasse 13, 6460 Altdorf",
         "description": event["description"],
-        "category": None,
         "extracted_at": extracted_at,
     }
 
@@ -154,7 +161,7 @@ if __name__ == "__main__":
     extracted_at = datetime.utcnow().strftime(ISO_FMT)
     formatted = [_to_template(e, extracted_at) for e in events]
     print(f"\nTotal events: {len(formatted)}")
-    output_path = "kbu_events.json"
+    output_path = "../events/kbu_events.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(formatted, f, ensure_ascii=False, indent=2)
     print(f"Events saved to {output_path}")
