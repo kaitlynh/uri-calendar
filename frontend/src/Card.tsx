@@ -43,8 +43,8 @@ const Card: Component<EventProps> = (props) => {
             class="w-8 h-8 rounded-lg object-cover bg-[var(--border-color)] shrink-0"
           />
         ) : (
-          <div class="w-8 h-8 rounded-lg bg-[var(--border-color)] flex items-center justify-center text-xs font-semibold text-[var(--text-muted)] shrink-0">
-            {props.event.source_name?.slice(0, 2).toUpperCase()}
+          <div class="w-8 h-8 rounded-lg bg-[var(--border-color)] flex items-center justify-center text-[0.5rem] font-semibold text-[var(--text-muted)] shrink-0 text-center leading-tight">
+            {props.event.base_url?.replace(/^https?:\/\//, '').replace(/\/$/, '') || props.event.source_name}
           </div>
         )}
         <h4 class="text-[1rem] font-semibold truncate">{props.event.event_title}</h4>
@@ -62,8 +62,8 @@ const Card: Component<EventProps> = (props) => {
               class="w-full h-full object-cover bg-[var(--border-color)]"
             />
           ) : (
-            <div class="w-full h-full bg-[var(--border-color)] flex items-center justify-center text-sm font-semibold text-[var(--text-muted)]">
-              {props.event.source_name?.slice(0, 3).toUpperCase()}
+            <div class="w-full h-full bg-[var(--border-color)] flex items-center justify-center text-xs font-semibold text-[var(--text-muted)] text-center leading-tight p-2">
+              {props.event.base_url?.replace(/^https?:\/\//, '').replace(/\/$/, '') || props.event.source_name}
             </div>
           )}
         </div>

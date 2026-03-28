@@ -231,7 +231,24 @@ const App: Component = () => {
 
         <hr class="border-t border-[var(--border-color)] my-6" />
 
-        <h2 class="text-base font-semibold mb-3">🏢 Quellen</h2>
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-base font-semibold">🏢 Quellen</h2>
+          <div class="flex gap-2 text-xs">
+            <button
+              onClick={() => setEnabledSources(new Set(knownSources().map(s => s.name)))}
+              class="text-[var(--alpine-blue)] hover:underline cursor-pointer bg-transparent border-none font-medium"
+            >
+              Alle
+            </button>
+            <span class="text-[var(--text-muted)]">|</span>
+            <button
+              onClick={() => setEnabledSources(new Set())}
+              class="text-[var(--alpine-blue)] hover:underline cursor-pointer bg-transparent border-none font-medium"
+            >
+              Keine
+            </button>
+          </div>
+        </div>
         <ul class="list-none space-y-2">
           <For each={knownSources()}>
             {(source) => (
