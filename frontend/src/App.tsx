@@ -274,7 +274,7 @@ const App: Component = () => {
 
       {/* Desktop page title */}
       <div class="max-w-[1200px] mx-auto px-8 pt-8 pb-2 max-md:hidden">
-        <h1 class="text-2xl font-bold">Events in Uri</h1>
+        <h1 class="text-2xl font-bold">Veranstaltungen im Kanton Uri</h1>
       </div>
 
       <div class="max-w-[1200px] mx-auto flex gap-8 p-8 pt-4 max-md:flex-col max-md:p-4 max-md:pt-0 max-md:gap-0">
