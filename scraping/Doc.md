@@ -4,25 +4,42 @@
 
 ```mermaid
 flowchart TD
-    A[Script Start] --> B[Load sources.json]
-    B --> C[collect_all_events]
-    C --> D{For each source}
+    sources["sources.json"]
+    collect["collect_all_events()\nscraping.py"]
+    pool["ThreadPoolExecutor\n_run_scraper() × N"]
 
-    D -->|type: urnerwochenblatt| E[scrape_urnerwochenblatt\nurnerwochenblatt.ch]
-    D -->|type: kbu| F[scrape_kbu\nkbu.ch]
-    D -->|type: musikschule| G[scrape_musikschule\nmusikschule-uri.ch]
-    D -->|type: rss| H[scrape_rss\nSchule Altdorf RSS]
-    D -->|type: altdorf| I[scrape_altdorf\naltdorf.ch]
-    D -->|type: andermatt| J[scrape_andermatt\ngemeinde-andermatt.ch]
-    D -->|type: eventfrog| K[scrape_eventfrog\neventfrog.ch]
-    D -->|type: static| L[scrape_static\nGeneric HTML]
-    D -->|type: js| M[scrape_js\nPlaywright headless]
+    sources --> collect
+    collect --> pool
 
-    E & F & G & H & I & J & K & L & M --> N[List of Event objects]
+    pool --> s_uw["scrape_urnerwochenblatt\nurnerwochenblatt.ch"]
+    pool --> s_kbu["scrape_kbu\nkbu.ch"]
+    pool --> s_ms["scrape_musikschule\nmusikschule-uri.ch"]
+    pool --> s_rss["scrape_rss\nschule-altdorf.ch/feed"]
+    pool --> s_alt["scrape_altdorf\naltdorf.ch"]
+    pool --> s_and["scrape_andermatt\nandermatt.ch"]
+    pool --> s_ef["scrape_eventfrog\neventfrog.ch"]
 
-    N --> O[Deduplicate\nby title + date + time]
-    O --> P[Sort by start_date]
-    P --> Q[Write events/events.json]
+    s_alt --> detail["ThreadPoolExecutor\n_fetch_detail_description() × N\n(parallel detail pages)"]
+    detail --> altEvents["[]Event"]
+
+    s_uw --> uwEvents["[]Event"]
+    s_kbu --> kbuEvents["[]Event"]
+    s_ms --> msEvents["[]Event"]
+    s_rss --> rssEvents["[]Event"]
+    s_and --> andEvents["[]Event"]
+    s_ef --> efEvents["[]Event"]
+
+    uwEvents --> merge["merge all events"]
+    kbuEvents --> merge
+    msEvents --> merge
+    rssEvents --> merge
+    altEvents --> merge
+    andEvents --> merge
+    efEvents --> merge
+
+    merge --> dedup["deduplicate\ntitle + date + time"]
+    dedup --> sort["sort by start_date"]
+    sort --> output["events/events.json"]
 ```
 
 
