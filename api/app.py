@@ -15,11 +15,12 @@ Setup:
 """
 
 import os
-from datetime import date, time, datetime
-from flask import Flask, request, jsonify
+from datetime import date
+
 import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
+from flask import Flask, jsonify, request
 
 load_dotenv()
 
@@ -40,6 +41,7 @@ def serialize_event(row):
     return {
         "event_id": str(row["event_id"]),
         "source_name": row["source_name"],
+        "source_url": row["source_url"],
         "base_url": row["base_url"],
         "event_title": row["event_title"],
         "start_date": row["start_date"].isoformat() if row["start_date"] else None,
@@ -80,6 +82,7 @@ def get_events():
                 """
                 SELECT e.event_id, e.event_title, e.start_date, e.start_time,
                        e.end_datetime, e.location, e.description, e.extracted_at,
+                       e.source_url,
                        s.source_name, s.base_url
                 FROM events e
                 JOIN sources s ON e.source_id = s.source_id
