@@ -1,4 +1,4 @@
-import { createSignal, createResource, For, Show, type Component } from 'solid-js';
+import { createResource, For, Show, type Component } from 'solid-js';
 
 const API_BASE = 'http://178.104.80.19/api';
 
@@ -51,33 +51,18 @@ const Admin: Component = () => {
     fetch(`${API_BASE}/admin/scraping-status`).then(r => r.json())
   );
 
-  const [lastRefresh, setLastRefresh] = createSignal(new Date());
-
-  function refresh() {
-    status.refetch();
-    setLastRefresh(new Date());
-  }
-
   return (
     <div class="min-h-screen bg-[var(--bg-color)]">
       {/* Header */}
       <div class="border-b border-[var(--border-color)] bg-[var(--card-bg)]">
-        <div class="max-w-[1200px] mx-auto px-8 py-4 flex items-center justify-between max-md:px-4">
-          <div class="flex items-center gap-4">
-            <a
-              href="#/"
-              class="text-[var(--text-muted)] hover:text-[var(--text-main)] text-sm transition-colors"
-            >
-              ← Zurück
-            </a>
-            <h1 class="text-xl font-semibold">Admin — Scraping Status</h1>
-          </div>
-          <button
-            onClick={refresh}
-            class="px-4 py-2 rounded-lg bg-[var(--alpine-blue)] text-white text-sm font-medium hover:bg-[var(--alpine-blue-hover)] transition-colors"
+        <div class="max-w-[1200px] mx-auto px-8 py-4 flex items-center gap-4 max-md:px-4">
+          <a
+            href="/"
+            class="text-[var(--text-muted)] hover:text-[var(--text-main)] text-sm transition-colors"
           >
-            Aktualisieren
-          </button>
+            ← Zurück
+          </a>
+          <h1 class="text-xl font-semibold">Admin — Scraping Status</h1>
         </div>
       </div>
 
@@ -181,8 +166,10 @@ const Admin: Component = () => {
           </Show>
         </div>
 
-        <p class="text-[var(--text-muted)] text-xs mt-4 text-right">
-          Zuletzt aktualisiert: {lastRefresh().toLocaleTimeString('de-CH')}
+        <p class="text-[var(--text-muted)] text-xs mt-4">
+          <span class="inline-flex items-center gap-1.5 mr-4"><span class="w-2 h-2 rounded-full bg-green-500 inline-block" /> Aktuell: letzter Scrape vor weniger als 6 Stunden</span>
+          <span class="inline-flex items-center gap-1.5 mr-4"><span class="w-2 h-2 rounded-full bg-yellow-500 inline-block" /> Veraltet: letzter Scrape vor 6–48 Stunden</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500 inline-block" /> Fehlt: noch nie gescrapt oder vor mehr als 48 Stunden</span>
         </p>
       </div>
     </div>
