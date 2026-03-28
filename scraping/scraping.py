@@ -34,7 +34,7 @@ class Event:
     description: Optional[str]
     extracted_at: str
     priority: int
-    ai_updated: Optional[bool] = None
+    ai_updated: Optional[bool] = False
     ai_updated_at: Optional[str] = None
 
 
@@ -461,29 +461,11 @@ def collect_all_events(
             if not err:
                 all_events.extend(events)
 
-    # Deduplizieren nach Titel + Datum
-    log.info("deduplicating %d raw events …", len(all_events))
-    seen = set()
-    unique: list[Event] = []
-    duplicates = 0
-    for ev in all_events:
-        key = (
-            ev.event_title.lower().strip(),
-            (ev.start_date or "")[:10],
-            ev.start_time or "",
-        )
-        if key not in seen:
-            seen.add(key)
-            unique.append(ev)
-        else:
-            duplicates += 1
-
-    log.info("sorting %d unique events …", len(unique))
-    unique.sort(key=lambda e: e.start_date or "")
+    all_events.sort(key=lambda e: e.start_date or "")
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(
-            [asdict(e) for e in unique],
+            [asdict(e) for e in all_events],
             f,
             ensure_ascii=False,
             indent=2,
@@ -491,11 +473,9 @@ def collect_all_events(
 
     elapsed = time.monotonic() - t_start
     log.info(
-        "done in %.1fs — %d raw, %d dupes removed, %d written → %s",
+        "done in %.1fs — %d events written → %s",
         elapsed,
         len(all_events),
-        duplicates,
-        len(unique),
         output_path,
     )
 

@@ -47,7 +47,14 @@ const Card: Component<EventProps> = (props) => {
             {props.event.base_url?.replace(/^https?:\/\//, '').replace(/\/$/, '') || props.event.source_name}
           </div>
         )}
-        <h4 class="text-[1rem] font-semibold truncate">{props.event.event_title}</h4>
+        <div class="flex items-center gap-2 min-w-0">
+          <h4 class="text-[1rem] font-semibold truncate">{props.event.event_title}</h4>
+          {props.event.ai_updated && (
+            <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium px-1.5 py-0.5 rounded-md bg-[var(--border-color)] text-[var(--text-muted)] shrink-0">
+              ✨ AI
+            </span>
+          )}
+        </div>
       </div>
 
       {/* ── Main row: square icon + content ── */}
@@ -71,7 +78,14 @@ const Card: Component<EventProps> = (props) => {
         {/* Content */}
         <div class="grow min-w-0 p-6 max-md:p-4">
           {/* Desktop: title */}
-          <h4 class="text-[1.15rem] font-semibold mb-1 max-md:hidden">{props.event.event_title}</h4>
+          <div class="flex items-center gap-2 mb-1 max-md:hidden">
+            <h4 class="text-[1.15rem] font-semibold">{props.event.event_title}</h4>
+            {props.event.ai_updated && (
+              <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium px-1.5 py-0.5 rounded-md bg-[var(--border-color)] text-[var(--text-muted)] shrink-0">
+                ✨ AI
+              </span>
+            )}
+          </div>
 
           {/* Time + location row */}
           <div class="flex items-center gap-3 text-[0.85rem] text-[var(--text-muted)]">
