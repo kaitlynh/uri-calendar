@@ -96,32 +96,32 @@ After scraping, `open-ai.py` runs a GPT-5 web search to find additional events i
 
 ```mermaid
 flowchart TD
-    A([Start]) --> B[load_sources\nsources.json]
-    B --> C[collect_all_events\nThreadPoolExecutor]
+    A([Start]) --> B[load_sources<br/>sources.json]
+    B --> C[collect_all_events<br/>ThreadPoolExecutor]
 
-    C --> |parallel| D1[_run_scraper\nsource 1]
-    C --> |parallel| D2[_run_scraper\nsource 2]
-    C --> |parallel| Dn[_run_scraper\nsource N...]
+    C --> |parallel| D1[_run_scraper<br/>source 1]
+    C --> |parallel| D2[_run_scraper<br/>source 2]
+    C --> |parallel| Dn[_run_scraper<br/>source N...]
 
     D1 & D2 & Dn --> E{scraper type?}
 
-    E --> |static| F1[scrape_static\nrequests + BeautifulSoup]
-    E --> |rss| F2[scrape_rss\nfeedparser]
-    E --> |js| F3[scrape_js\nPlaywright + BeautifulSoup]
-    E --> |urnerwochenblatt| F4[scrape_urnerwochenblatt\ncustom module]
-    E --> |kbu| F5[scrape_kbu\ncustom module]
-    E --> |musikschule| F6[scrape_musikschule\ncustom module]
-    E --> |altdorf| F7[scrape_altdorf\ncustom module]
-    E --> |andermatt| F8[scrape_andermatt\ncustom module]
-    E --> |eventfrog| F9[scrape_eventfrog\ncustom module]
-    E --> |floorballuri| F10[scrape_floorballuri\ncustom module]
-    E --> |myswitzerland| F11[scrape_myswitzerland\ncustom module]
-    E --> |unknown| ERR[log warning\nskip source]
+    E --> |static| F1[scrape_static<br/>requests + BeautifulSoup]
+    E --> |rss| F2[scrape_rss<br/>feedparser]
+    E --> |js| F3[scrape_js<br/>Playwright + BeautifulSoup]
+    E --> |urnerwochenblatt| F4[scrape_urnerwochenblatt<br/>custom module]
+    E --> |kbu| F5[scrape_kbu<br/>custom module]
+    E --> |musikschule| F6[scrape_musikschule<br/>custom module]
+    E --> |altdorf| F7[scrape_altdorf<br/>custom module]
+    E --> |andermatt| F8[scrape_andermatt<br/>custom module]
+    E --> |eventfrog| F9[scrape_eventfrog<br/>custom module]
+    E --> |floorballuri| F10[scrape_floorballuri<br/>custom module]
+    E --> |myswitzerland| F11[scrape_myswitzerland<br/>custom module]
+    E --> |unknown| ERR[log warning<br/>skip source]
 
     F1 & F2 & F3 & F4 & F5 & F6 & F7 & F8 & F9 & F10 & F11 --> G[list of Event dataclasses]
 
     G --> H{error?}
-    H --> |yes| I[log error\ndiscard events]
+    H --> |yes| I[log error<br/>discard events]
     H --> |no| J[extend all_events]
 
     J --> K[sort by start_date]
@@ -130,14 +130,14 @@ flowchart TD
     L --> AI1
 
     subgraph AI ["Step 2 — AI Enrichment (open-ai.py)"]
-        AI1[load template_data_ai.json\n+ existing events.json]
-        AI1 --> AI2[build prompt\nnext 14 days, Canton Uri]
-        AI2 --> AI3[GPT-5 API call\nweb_search tool enabled]
-        AI3 --> AI4[extract & parse JSON\nfrom response]
+        AI1[load template_data_ai.json<br/>+ existing events.json]
+        AI1 --> AI2[build prompt<br/>next 14 days, Canton Uri]
+        AI2 --> AI3[GPT-5 API call<br/>web_search tool enabled]
+        AI3 --> AI4[extract & parse JSON<br/>from response]
         AI4 --> AI5{parse OK?}
-        AI5 --> |no| AI6[log error\nskip merge]
-        AI5 --> |yes| AI7[deduplicate\ntitle + date + time]
-        AI7 --> AI8[mark ai_updated=true\nai_updated_at=now]
+        AI5 --> |no| AI6[log error<br/>skip merge]
+        AI5 --> |yes| AI7[deduplicate<br/>title + date + time]
+        AI7 --> AI8[mark ai_updated=true<br/>ai_updated_at=now]
         AI8 --> AI9[merge + sort by start_date]
         AI9 --> AI10[overwrite events/events.json]
     end
