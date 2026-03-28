@@ -38,8 +38,12 @@ def extract_json(text: str):
 
 # --- Prompt ---
 prompt = f"""
-Verify the events from the 
+Find events taking place on {today} and the next 14 days in the canton of Uri, Switzerland.
+Only include real, verifiable events from official sources (e.g., tourism boards, municipality websites, official event platforms).
+
+Return the result strictly as a JSON array. Each object must follow this exact schema:
 {json.dumps(template_data, indent=2)}
+
 
 CRITICAL OUTPUT RULES:
 - Output ONLY valid JSON
