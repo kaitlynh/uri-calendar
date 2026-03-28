@@ -273,6 +273,16 @@ const App: Component = () => {
             )}
           </For>
         </ul>
+
+        <hr class="border-t border-[var(--border-color)] my-6" />
+
+        <h2 class="text-base font-semibold mb-3">📊 Quelldaten</h2>
+        <a
+          href="/admin"
+          class="text-sm font-medium text-[var(--alpine-blue)] hover:underline"
+        >
+          Scraping-Status anzeigen →
+        </a>
       </>
     );
   }
@@ -290,14 +300,8 @@ const App: Component = () => {
       </Show>
 
       {/* Desktop page title */}
-      <div class="max-w-[1200px] mx-auto px-8 pt-8 pb-2 max-md:hidden flex items-center justify-between">
+      <div class="max-w-[1200px] mx-auto px-8 pt-8 pb-2 max-md:hidden">
         <h1 class="text-2xl font-bold">Veranstaltungen im Kanton Uri</h1>
-        <a
-          href="/admin"
-          class="text-sm font-medium px-3 py-1.5 border border-[var(--border-color)] rounded-md text-[var(--text-muted)] hover:text-[var(--text-main)] hover:border-[var(--text-muted)] transition-colors"
-        >
-          Admin
-        </a>
       </div>
 
       <div class="max-w-[1200px] mx-auto flex gap-8 p-8 pt-4 max-md:flex-col max-md:p-4 max-md:pt-0 max-md:gap-0">
