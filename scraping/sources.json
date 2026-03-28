@@ -29,5 +29,10 @@
     "name": "Gemeinde Andermatt",
     "url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131",
     "type": "andermatt"
+  },
+  {
+    "name": "Eventfrog",
+    "url": "https://api.eventfrog.ch",
+    "type": "eventfrog"
   }
 ]

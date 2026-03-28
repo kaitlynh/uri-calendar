@@ -208,6 +208,30 @@ def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
         ))
     return events
 
+def scrape_eventfrog(_source: dict, extracted_at: str) -> list[Event]:
+    import os, sys
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from scrape_eventfrog import fetch_events, _to_template as ef_to_template
+
+    raw = fetch_events()
+    events = []
+    for e in raw:
+        t = ef_to_template(e, extracted_at)
+        events.append(Event(
+            source_name  = t["source_name"],
+            base_url     = "eventfrog.ch",
+            source_url   = t["source_url"],
+            event_title  = t["event_title"],
+            start_date   = t["start_date"],
+            start_time   = t["start_time"],
+            end_datetime = t["end_datetime"],
+            location     = t["location"],
+            description  = t["description"],
+            extracted_at = t["extracted_at"],
+        ))
+    return events
+
+
 def scrape_andermatt(source: dict, extracted_at: str) -> list[Event]:
     import os, sys
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -241,6 +265,7 @@ SCRAPERS = {
     "musikschule":       scrape_musikschule,
     "altdorf":           scrape_altdorf,
     "andermatt":         scrape_andermatt,
+    "eventfrog":         scrape_eventfrog,
 }
 
 def collect_all_events(sources_path: str = "scraping/sources.json", output_path: str = "events/events.json"):
