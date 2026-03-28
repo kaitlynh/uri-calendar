@@ -96,49 +96,35 @@ After scraping, `open-ai.py` runs a GPT-5 web search to find additional events i
 
 ```mermaid
 flowchart TD
-    sources["sources.json"]
-    collect["collect_all_events()\nscraping.py"]
-    pool["ThreadPoolExecutor\n_run_scraper() × N"]
+    A([Start]) --> B[load_sources\nsources.json]
+    B --> C[collect_all_events\nThreadPoolExecutor]
 
-    sources --> collect
-    collect --> pool
+    C --> |parallel| D1[_run_scraper\nsource 1]
+    C --> |parallel| D2[_run_scraper\nsource 2]
+    C --> |parallel| Dn[_run_scraper\nsource N...]
 
-    pool --> s_uw["scrape_urnerwochenblatt\nurnerwochenblatt.ch"]
-    pool --> s_kbu["scrape_kbu\nkbu.ch"]
-    pool --> s_ms["scrape_musikschule\nmusikschule-uri.ch"]
-    pool --> s_rss["scrape_rss\nschule-altdorf.ch/feed"]
-    pool --> s_alt["scrape_altdorf\naltdorf.ch"]
-    pool --> s_and["scrape_andermatt\nandermatt.ch"]
-    pool --> s_ef["scrape_eventfrog\neventfrog.ch"]
+    D1 & D2 & Dn --> E{scraper type?}
 
-    s_alt --> detail["ThreadPoolExecutor\n_fetch_detail_description() × N\n(parallel detail pages)"]
-    detail --> altEvents["[]Event"]
+    E --> |static| F1[scrape_static\nrequests + BeautifulSoup]
+    E --> |rss| F2[scrape_rss\nfeedparser]
+    E --> |js| F3[scrape_js\nPlaywright + BeautifulSoup]
+    E --> |urnerwochenblatt| F4[scrape_urnerwochenblatt\ncustom module]
+    E --> |kbu| F5[scrape_kbu\ncustom module]
+    E --> |musikschule| F6[scrape_musikschule\ncustom module]
+    E --> |altdorf| F7[scrape_altdorf\ncustom module]
+    E --> |andermatt| F8[scrape_andermatt\ncustom module]
+    E --> |eventfrog| F9[scrape_eventfrog\ncustom module]
+    E --> |floorballuri| F10[scrape_floorballuri\ncustom module]
+    E --> |myswitzerland| F11[scrape_myswitzerland\ncustom module]
+    E --> |unknown| ERR[log warning\nskip source]
 
-    s_uw --> uwEvents["[]Event"]
-    s_kbu --> kbuEvents["[]Event"]
-    s_ms --> msEvents["[]Event"]
-    s_rss --> rssEvents["[]Event"]
-    s_and --> andEvents["[]Event"]
-    s_ef --> efEvents["[]Event"]
+    F1 & F2 & F3 & F4 & F5 & F6 & F7 & F8 & F9 & F10 & F11 --> G[list of Event dataclasses]
 
-    uwEvents --> merge["merge all events"]
-    kbuEvents --> merge
-    msEvents --> merge
-    rssEvents --> merge
-    altEvents --> merge
-    andEvents --> merge
-    efEvents --> merge
+    G --> H{error?}
+    H --> |yes| I[log error\ndiscard events]
+    H --> |no| J[extend all_events]
 
-    merge --> dedup["deduplicate\ntitle + date + time"]
-    dedup --> sort["sort by start_date"]
-    sort --> eventsJson["events/events.json"]
-
-    eventsJson --> openai["open-ai.py"]
-    template["template_data_ai.json\n(schema/examples)"] --> openai
-    env[".env\nOPENAI_API_KEY"] --> openai
-
-    openai --> gpt["GPT-5 API\n+ web_search tool\nnext 14 days"]
-    gpt --> parse["parse JSON response\nextract_json()"]
-    parse --> dedup2["deduplicate vs\nexisting events.json"]
-    dedup2 --> eventsJson
+    J --> K[sort by start_date]
+    K --> L[write events/events.json]
+    L --> Z([Done])
 ```
