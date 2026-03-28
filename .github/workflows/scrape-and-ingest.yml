@@ -1,0 +1,64 @@
+name: Scrape and Ingest Events
+
+on:
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    name: Scrape event data
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4 feedparser openai python-dotenv
+
+      - name: Run scraper
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EVENTFROG_API_KEY: ${{ secrets.EVENTFROG_API_KEY }}
+          run: |
+          python scraping/scraping.py
+          python scraping/open-ai.py
+
+      - name: Upload events artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: events
+          path: events/events.json
+          retention-days: 1
+
+  ingest:
+    name: Ingest into database
+    runs-on: ubuntu-latest
+    needs: scrape
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install psycopg2-binary python-dotenv
+
+      - name: Download events artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: events
+          path: events/
+
+      - name: Ingest into database
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+        run: python db/parse_json.py

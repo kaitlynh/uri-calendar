@@ -34,6 +34,8 @@ class Event:
     description: Optional[str]
     extracted_at: str
     priority: int
+    ai_updated: Optional[bool] = None
+    ai_updated_at: Optional[str] = None
 
 
 def load_sources(path: str = "scraping/sources.json") -> list[dict]:
@@ -296,6 +298,66 @@ def scrape_eventfrog(source: dict, extracted_at: str) -> list[Event]:
     return events
 
 
+def scrape_floorballuri(source: dict, extracted_at: str) -> list[Event]:
+    import os
+    import sys
+
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from scrape_floorballuri import _to_template as fu_to_template
+    from scrape_floorballuri import fetch_events
+
+    raw = fetch_events(url=source["url"])
+    events = []
+    for e in raw:
+        t = fu_to_template(e, extracted_at)
+        events.append(
+            Event(
+                source_name=t["source_name"],
+                base_url=t["base_url"],
+                source_url=t["source_url"],
+                event_title=t["event_title"],
+                start_date=t["start_date"],
+                start_time=t["start_time"],
+                end_datetime=t["end_datetime"],
+                location=t["location"],
+                description=t["description"],
+                extracted_at=t["extracted_at"],
+                priority=source["priority"],
+            )
+        )
+    return events
+
+
+def scrape_myswitzerland(source: dict, extracted_at: str) -> list[Event]:
+    import os
+    import sys
+
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from scrape_myswitzerland import _to_template as ms_to_template
+    from scrape_myswitzerland import fetch_events
+
+    raw = fetch_events()
+    events = []
+    for e in raw:
+        t = ms_to_template(e, extracted_at)
+        events.append(
+            Event(
+                source_name=t["source_name"],
+                base_url=t["base_url"],
+                source_url=t["source_url"],
+                event_title=t["event_title"],
+                start_date=t["start_date"],
+                start_time=t["start_time"],
+                end_datetime=t["end_datetime"],
+                location=t["location"],
+                description=t["description"],
+                extracted_at=t["extracted_at"],
+                priority=source["priority"],
+            )
+        )
+    return events
+
+
 def scrape_andermatt(source: dict, extracted_at: str) -> list[Event]:
     import os
     import sys
@@ -336,6 +398,8 @@ SCRAPERS = {
     "altdorf": scrape_altdorf,
     "andermatt": scrape_andermatt,
     "eventfrog": scrape_eventfrog,
+    "floorballuri": scrape_floorballuri,
+    "myswitzerland": scrape_myswitzerland,
 }
 
 

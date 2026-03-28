@@ -15,4 +15,4 @@ cd "$(dirname "$0")/.."
 
 # scraping.py must finish before ai.py (ai.py merges into events.json)
 "$VENV_DIR/bin/python" scraping/scraping.py
-"$VENV_DIR/bin/python" scraping/open-ai.py
+#"$VENV_DIR/bin/python" scraping/open-ai.py

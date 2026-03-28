@@ -41,5 +41,11 @@
     "url": "https://api.eventfrog.ch",
     "type": "eventfrog",
     "priority": 2
+  },
+  {
+    "name": "Floorball Uri",
+    "url": "http://www.floorballuri.ch/meisterschaft-2025-26",
+    "type": "floorballuri",
+    "priority": 1
   }
 ]
