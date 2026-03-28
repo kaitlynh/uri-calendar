@@ -1,21 +1,7 @@
 import { createSignal, type Component } from 'solid-js';
 import type { Event } from './event';
 import { downloadICS, googleCalendarUrl } from './ics';
-
-/** Map source_name from the API to local icon filenames */
-const SOURCE_ICON_MAP: Record<string, string> = {
-  'altdorf.ch': '/source-icons/altdorf-geminde.png',
-  'gemeinde-andermatt.ch': '/source-icons/gemeinde-andermatt.png',
-  'kbu.ch': '/source-icons/kbu.png',
-  'urnerwochenblatt.ch': '/source-icons/urnerwochenblatt.png',
-  'musikschule-uri.ch': '/source-icons/musikschule-uri.png',
-  'schule-altdorf.ch': '/source-icons/schule-altdorf.png',
-};
-
-/** Get the icon URL for a source: use local icon if available, fall back to image_url from API */
-function getSourceIcon(event: Event): string | undefined {
-  return SOURCE_ICON_MAP[event.source_name] || event.image_url || undefined;
-}
+import { getSourceIcon } from './sources';
 
 type EventProps = {
   event: Event;
@@ -36,9 +22,9 @@ const Card: Component<EventProps> = (props) => {
 
       {/* ── Mobile: icon + title top row ── */}
       <div class="hidden max-md:flex items-center gap-3 px-4 pt-4 pb-3 border-b border-[var(--border-color)]">
-        {getSourceIcon(props.event) ? (
+        {getSourceIcon(props.event.source_name, props.event.image_url) ? (
           <img
-            src={getSourceIcon(props.event)}
+            src={getSourceIcon(props.event.source_name, props.event.image_url)}
             alt={props.event.source_name}
             class="w-8 h-8 rounded-lg object-cover bg-[var(--border-color)] shrink-0"
           />
@@ -62,9 +48,9 @@ const Card: Component<EventProps> = (props) => {
 
         {/* Desktop: fixed square icon */}
         <div class="w-[156px] h-[156px] shrink-0 max-md:hidden">
-          {getSourceIcon(props.event) ? (
+          {getSourceIcon(props.event.source_name, props.event.image_url) ? (
             <img
-              src={getSourceIcon(props.event)}
+              src={getSourceIcon(props.event.source_name, props.event.image_url)}
               alt={props.event.source_name}
               class="w-full h-full object-cover bg-[var(--border-color)]"
             />

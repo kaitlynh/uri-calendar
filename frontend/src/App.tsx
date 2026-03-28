@@ -2,6 +2,7 @@ import { createSignal, createMemo, For, Show, onMount, onCleanup, type Component
 import Header from './Header';
 import Card from './Card';
 import type { Event } from './event';
+import { getSourceDisplayName, getSourceIcon } from './sources';
 
 const API_BASE = 'http://178.104.80.19/api';
 const DAYS_PER_BATCH = 14;
@@ -250,7 +251,7 @@ const App: Component = () => {
           </div>
         </div>
         <ul class="list-none space-y-2">
-          <For each={knownSources()}>
+          <For each={knownSources().slice().sort((a, b) => getSourceDisplayName(a.name).localeCompare(getSourceDisplayName(b.name)))}>
             {(source) => (
               <li>
                 <label class="flex items-center gap-2 cursor-pointer text-[0.95rem]">
@@ -260,14 +261,14 @@ const App: Component = () => {
                     onChange={() => toggleSource(source.name)}
                     class="accent-[var(--alpine-blue)]"
                   />
-                  <Show when={source.image_url}>
+                  <Show when={getSourceIcon(source.name, source.image_url)}>
                     <img
-                      src={source.image_url}
+                      src={getSourceIcon(source.name, source.image_url)}
                       alt=""
                       class="w-5 h-5 rounded object-cover"
                     />
                   </Show>
-                  {source.name}
+                  {getSourceDisplayName(source.name)}
                 </label>
               </li>
             )}
