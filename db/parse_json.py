@@ -38,7 +38,7 @@ def parse_start_datetime(value):
 
 
 def ingest_events(json_file: str):
-    json_path = Path(__file__).parent / json_file
+    json_path = Path(__file__).parent.parent / "events" / "events.json"
 
     with open(json_path, "r") as f:
         events = json.load(f)
