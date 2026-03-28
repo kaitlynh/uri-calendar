@@ -1,10 +1,9 @@
-                              Table "public.events"
-    Column    |           Type           | Collation | Nullable |      Default      
+   Column    |           Type           | Collation | Nullable |      Default      
 --------------+--------------------------+-----------+----------+-------------------
  event_id     | uuid                     |           | not null | gen_random_uuid()
  source_id    | uuid                     |           | not null | 
  event_title  | text                     |           |          | 
- start_date   | date                     |           |          | 
+ start_date   | date                     |           | not null | 
  start_time   | time without time zone   |           |          | 
  end_datetime | timestamp with time zone |           |          | 
  location     | text                     |           |          | 
@@ -12,7 +11,14 @@
  extracted_at | timestamp with time zone |           |          | CURRENT_TIMESTAMP
  created_at   | timestamp with time zone |           |          | CURRENT_TIMESTAMP
  source_url   | text                     |           | not null | 
+ ai_flag      | boolean                  |           |          | false
+Indexes:
+    "events_pkey" PRIMARY KEY, btree (event_id)
+    "unique_title_date_time" UNIQUE CONSTRAINT, btree (event_title, start_date)
+Foreign-key constraints:
+    "fk_source" FOREIGN KEY (source_id) REFERENCES sources(source_id) ON DELETE CASCADE
 
+uri_calendar=> \d sources
                               Table "public.sources"
    Column    |           Type           | Collation | Nullable |      Default      
 -------------+--------------------------+-----------+----------+-------------------
@@ -20,3 +26,4 @@
  source_name | text                     |           |          | 
  base_url    | text                     |           | not null | 
  created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP
+ priority    | integer                  |           | not null | 67

@@ -53,21 +53,24 @@ def ingest_events(json_file: str):
     skipped = 0
 
     for event in events:
+        inserted += 1
+
         try:
             # Mapping from JSON - Adjust these keys if your JSON uses different names
             base_url = event.get("base_url") 
             source_url = event.get("source_url") # The specific URL for this event
             source_name = event.get("source_name")
+            priority = event.get("priority") or 67
 
             # 1. Upsert source (using base_url as the unique identifier)
             cur.execute(
                 """
-                INSERT INTO sources (source_name, base_url)
-                VALUES (%s, %s)
+                INSERT INTO sources (source_name, base_url, priority)
+                VALUES (%s, %s, %s)
                 ON CONFLICT (base_url) DO UPDATE SET source_name = EXCLUDED.source_name
                 RETURNING source_id
                 """,
-                (source_name, base_url)
+                (source_name, base_url, priority)
             )
             source_id = cur.fetchone()[0]
 
@@ -87,9 +90,45 @@ def ingest_events(json_file: str):
                     end_datetime,
                     location,
                     description,
-                    extracted_at
+                    extracted_at,
+                    ai_flag
                 )
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT ON CONSTRAINT unique_title_date_time
+                DO UPDATE SET
+                    source_id = EXCLUDED.source_id,
+                    event_title = EXCLUDED.event_title,
+                    start_date = EXCLUDED.start_date,
+                    start_time = EXCLUDED.start_time,
+                    end_datetime = EXCLUDED.end_datetime,
+                    location = EXCLUDED.location,
+                    description = EXCLUDED.description,
+                    extracted_at = EXCLUDED.extracted_at,
+                    source_url = EXCLUDED.source_url,
+                    ai_flag = EXCLUDED.ai_flag
+                WHERE (
+                    -- 1. Lower priority (Note: We join the priority from the sources table)
+                    (SELECT s.priority FROM sources s WHERE s.source_id = EXCLUDED.source_id) < 
+                    (SELECT s.priority FROM sources s WHERE s.source_id = events.source_id)
+                ) OR (
+                    -- 2. More recent extracted_at
+                    EXCLUDED.extracted_at > events.extracted_at
+                ) OR (
+                    -- 3. The new data has fewer NULLs than the old data
+                    (
+                        (EXCLUDED.event_title IS NOT NULL)::int + 
+                        (EXCLUDED.start_time IS NOT NULL)::int + 
+                        (EXCLUDED.end_datetime IS NOT NULL)::int + 
+                        (EXCLUDED.location IS NOT NULL)::int + 
+                        (EXCLUDED.description IS NOT NULL)::int
+                    ) > (
+                        (events.event_title IS NOT NULL)::int + 
+                        (events.start_time IS NOT NULL)::int + 
+                        (events.end_datetime IS NOT NULL)::int + 
+                        (events.location IS NOT NULL)::int + 
+                        (events.description IS NOT NULL)::int
+                    )
+                );
                 """,
                 (
                     source_id,
@@ -101,9 +140,11 @@ def ingest_events(json_file: str):
                     event.get("location"),
                     event.get("description"),
                     event.get("extracted_at"),
+                    event.get("ai_updated"),
                 )
             )
-            inserted += 1
+            conn.commit()
+
 
         except psycopg2.Error as e:
             print(f"Skipping event '{event.get('event_title')}' due to error: {e}")
