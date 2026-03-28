@@ -39,7 +39,16 @@ flowchart TD
 
     merge --> dedup["deduplicate\ntitle + date + time"]
     dedup --> sort["sort by start_date"]
-    sort --> output["events/events.json"]
+    sort --> eventsJson["events/events.json"]
+
+    eventsJson --> openai["open-ai.py"]
+    template["template_data_ai.json\n(schema/examples)"] --> openai
+    env[".env\nOPENAI_API_KEY"] --> openai
+
+    openai --> gpt["GPT-5 API\n+ web_search tool\ntoday's events only"]
+    gpt --> parse["parse JSON response\nextract_json()"]
+    parse --> dedup2["deduplicate vs\nexisting events.json"]
+    dedup2 --> eventsJson
 ```
 
 
