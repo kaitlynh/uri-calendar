@@ -98,6 +98,42 @@ def get_events():
     return jsonify([serialize_event(r) for r in rows])
 
 
+@app.route("/api/admin/scraping-status", methods=["GET"])
+def get_scraping_status():
+    """Per-source scraping stats for the admin dashboard."""
+    conn = get_db()
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            cur.execute(
+                """
+                SELECT s.source_name, s.base_url,
+                       COUNT(e.event_id)        AS event_count,
+                       MAX(e.extracted_at)      AS last_extracted_at,
+                       MIN(e.start_date)::text  AS earliest_event_date,
+                       MAX(e.start_date)::text  AS latest_event_date
+                FROM sources s
+                LEFT JOIN events e ON e.source_id = s.source_id
+                GROUP BY s.source_id, s.source_name, s.base_url
+                ORDER BY s.source_name ASC
+                """
+            )
+            rows = cur.fetchall()
+    finally:
+        conn.close()
+
+    return jsonify([
+        {
+            "source_name": r["source_name"],
+            "base_url": r["base_url"],
+            "event_count": r["event_count"],
+            "last_extracted_at": r["last_extracted_at"].isoformat() if r["last_extracted_at"] else None,
+            "earliest_event_date": r["earliest_event_date"],
+            "latest_event_date": r["latest_event_date"],
+        }
+        for r in rows
+    ])
+
+
 @app.route("/api/sources")
 def get_sources():
     """List all event sources (websites we scrape from)."""
