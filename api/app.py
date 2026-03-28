@@ -50,6 +50,7 @@ def serialize_event(row):
         "location": row["location"],
         "description": row["description"],
         "extracted_at": row["extracted_at"].isoformat() if row["extracted_at"] else None,
+        "ai_flag": row["ai_flag"],
     }
 
 
@@ -82,7 +83,7 @@ def get_events():
                 """
                 SELECT e.event_id, e.event_title, e.start_date, e.start_time,
                        e.end_datetime, e.location, e.description, e.extracted_at,
-                       e.source_url,
+                       e.source_url, e.ai_flag,
                        s.source_name, s.base_url
                 FROM events e
                 JOIN sources s ON e.source_id = s.source_id
