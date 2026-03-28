@@ -126,5 +126,21 @@ flowchart TD
 
     J --> K[sort by start_date]
     K --> L[write events/events.json]
-    L --> Z([Done])
+
+    L --> AI1
+
+    subgraph AI ["Step 2 — AI Enrichment (open-ai.py)"]
+        AI1[load template_data_ai.json\n+ existing events.json]
+        AI1 --> AI2[build prompt\nnext 14 days, Canton Uri]
+        AI2 --> AI3[GPT-5 API call\nweb_search tool enabled]
+        AI3 --> AI4[extract & parse JSON\nfrom response]
+        AI4 --> AI5{parse OK?}
+        AI5 --> |no| AI6[log error\nskip merge]
+        AI5 --> |yes| AI7[deduplicate\ntitle + date + time]
+        AI7 --> AI8[mark ai_updated=true\nai_updated_at=now]
+        AI8 --> AI9[merge + sort by start_date]
+        AI9 --> AI10[overwrite events/events.json]
+    end
+
+    AI10 --> Z([Done])
 ```
