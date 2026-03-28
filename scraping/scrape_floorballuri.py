@@ -7,7 +7,7 @@ from typing import Optional
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "http://www.floorballuri.ch"
+BASE_URL = "https://www.floorballuri.ch"
 SOURCE_NAME = "floorballuri.ch"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 
@@ -15,8 +15,6 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW
 DATE_RE = re.compile(r'^(\d{2})\.(\d{2})\.(\d{4})')
 # HH:MM Uhr
 TIME_RE = re.compile(r'(\d{1,2}):(\d{2})\s*Uhr')
-# Score like 9:5 or 3:2 (past game — skip)
-SCORE_RE = re.compile(r'\b\d+:\d+\b')
 
 
 def _parse_date(text: str) -> Optional[str]:
@@ -49,18 +47,13 @@ def _parse_games(page_html: str, page_url: str) -> list[dict]:
     today = date.today()
     events = []
 
-    for p in soup.find_all("p"):
-        strong = p.find("strong")
-        if not strong:
+    for game in soup.select("div.game"):
+        date_el = game.select_one("span.date")
+        if not date_el:
             continue
 
-        start_date = _parse_date(strong.get_text())
+        start_date = _parse_date(date_el.get_text())
         if not start_date:
-            continue
-
-        # Skip past games (they contain a score like "9:5")
-        p_text = p.get_text(" ", strip=True)
-        if SCORE_RE.search(p_text):
             continue
 
         # Skip dates in the past
@@ -70,39 +63,17 @@ def _parse_games(page_html: str, page_url: str) -> list[dict]:
         except ValueError:
             continue
 
-        # Title: everything after the date+competition label in <strong>
-        strong_text = strong.get_text(" ", strip=True)
-        # The <strong> contains "DD.MM.YYYY Competition label" — strip the date portion
-        title_label = DATE_RE.sub("", strong_text).strip(" –-/")
+        # Teams: "Heim – Gast"
+        teams_el = game.select_one("div.teams")
+        title = teams_el.get_text(" ", strip=True).replace("\xa0", " ") if teams_el else "Floorball Uri"
 
-        # Team matchup is the next text node / line after <strong>
-        lines = [ln.strip() for ln in p_text.splitlines() if ln.strip()]
-        matchup = None
-        for line in lines:
-            if DATE_RE.match(line) or line == strong_text:
-                continue
-            if TIME_RE.search(line):
-                break
-            matchup = line
-            break
+        # Time
+        zeit_el = game.select_one("span.zeit")
+        start_time = _parse_time(zeit_el.get_text()) if zeit_el else None
 
-        title = matchup or title_label or "Floorball Uri"
-
-        start_time = _parse_time(p_text)
-
-        # Location: text after "|" on the time line
-        location = None
-        time_line_m = re.search(r'\d{1,2}:\d{2}\s*Uhr\s*\|?\s*(.+)', p_text)
-        if time_line_m:
-            location = time_line_m.group(1).strip().rstrip(".")
-
-        # Detail link
-        link_el = p.find("a", href=True)
-        if link_el:
-            href = link_el["href"]
-            detail_url = href if href.startswith("http") else f"{BASE_URL}{href}"
-        else:
-            detail_url = page_url
+        # Location
+        ort_el = game.select_one("span.ort")
+        location = ort_el.get_text(strip=True) if ort_el else None
 
         events.append({
             "title": title,
@@ -110,7 +81,7 @@ def _parse_games(page_html: str, page_url: str) -> list[dict]:
             "start_time": start_time,
             "end_datetime": None,
             "location": location,
-            "detail_url": detail_url,
+            "detail_url": page_url,
         })
 
     return events
