@@ -4,42 +4,42 @@
     "url": "https://www.urnerwochenblatt.ch/veranstaltungen/",
     "type": "urnerwochenblatt",
     "weeks": 4,
-	"priority": 2
+    "priority": 2
   },
   {
     "name": "Kantonsbibliothek Uri",
     "url": "https://www.kbu.ch/treffpunkt/veranstaltungen/",
     "type": "kbu",
-	"priority": 1
+    "priority": 1
   },
   {
     "name": "Musikschule Uri",
     "url": "https://www.musikschule-uri.ch/events-news/",
     "type": "musikschule",
-	"priority": 1
+    "priority": 1
   },
   {
     "name": "Schulen Altdorf",
     "url": "https://schule-altdorf.ch/events/feed/",
     "type": "rss",
-	"priority": 1
+    "priority": 1
   },
     {
     "name": "Gemeinde Altdorf",
     "url": "https://www.altdorf.ch/anlaesseaktuelles",
     "type": "altdorf",
-	"priority": 2
+    "priority": 2
   },
   {
     "name": "Gemeinde Andermatt",
     "url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131",
     "type": "andermatt",
-	"priority": 2
+    "priority": 2
   },
   {
     "name": "Eventfrog",
     "url": "https://api.eventfrog.ch",
     "type": "eventfrog",
-	"priority": 2
+    "priority": 2
   }
 ]
