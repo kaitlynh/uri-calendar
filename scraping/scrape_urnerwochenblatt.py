@@ -1,3 +1,4 @@
+import logging
 import requests
 import re
 import json
@@ -6,6 +7,8 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 urllib3.disable_warnings()
+
+log = logging.getLogger(__name__)
 
 BASE_URL = "https://www.urnerwochenblatt.ch/veranstaltungen/"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
@@ -172,30 +175,31 @@ def fetch_events(base_url: str = BASE_URL, weeks: int = 4) -> list[dict]:
     for _ in range(weeks):
         date_str = current.strftime("%d.%m.%Y")
         url = f"{base_url}?d={date_str}&s="
-        print(f"Fetching: {url}")
+        log.info("fetching %s", url)
         try:
             resp = requests.get(url, headers=HEADERS, timeout=15, verify=False)
             if resp.status_code == 200:
                 events = parse_events_from_html(resp.text)
                 for event in events:
                     all_events[event["id"]] = event
-                print(f"  Found {len(events)} events")
+                log.info("found %d events", len(events))
             else:
-                print(f"  HTTP {resp.status_code}")
+                log.warning("HTTP %s", resp.status_code)
         except Exception as e:
-            print(f"  Error: {e}")
+            log.error("error: %s", e)
         current += timedelta(weeks=1)
 
     return list(all_events.values())
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events(weeks=4)
     extracted_at = datetime.utcnow().strftime(ISO_FMT)
     formatted = [_to_template(e, extracted_at) for e in events]
-    print(f"\nTotal unique events: {len(formatted)}")
+    log.info("total unique events: %d", len(formatted))
     output_path = "urnerwochenblatt_events.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(formatted, f, ensure_ascii=False, indent=2)
-    print(f"Events saved to {output_path}")
+    log.info("events saved to %s", output_path)
     

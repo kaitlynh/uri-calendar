@@ -1,3 +1,4 @@
+import logging
 import requests
 import re
 import json
@@ -6,6 +7,8 @@ from datetime import datetime
 from typing import Optional
 
 urllib3.disable_warnings()
+
+log = logging.getLogger(__name__)
 
 BASE_URL = "https://www.kbu.ch/treffpunkt/veranstaltungen/"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
@@ -69,7 +72,7 @@ def _fetch_detail_description(detail_url: str) -> str:
         text = re.sub(r'\n{3,}', '\n\n', text)
         return text.strip()
     except Exception as e:
-        print(f"  Error fetching detail: {e}")
+        log.warning("error fetching detail %s: %s", detail_url, e)
         return ""
 
 
@@ -136,33 +139,34 @@ def _to_template(event: dict, extracted_at: str) -> dict:
 
 def fetch_events() -> list[dict]:
     """Fetch all events from kbu.ch."""
-    print(f"Fetching: {BASE_URL}")
+    log.info("fetching %s", BASE_URL)
     try:
         resp = requests.get(BASE_URL, headers=HEADERS, timeout=15, verify=False)
         if resp.status_code != 200:
-            print(f"  HTTP {resp.status_code}")
+            log.warning("HTTP %s", resp.status_code)
             return []
     except Exception as e:
-        print(f"  Error: {e}")
+        log.error("error: %s", e)
         return []
 
     events = parse_events_from_html(resp.text)
-    print(f"  Found {len(events)} events")
+    log.info("found %d events", len(events))
 
     # Fetch descriptions from detail pages
     for event in events:
-        print(f"  Fetching detail: {event['title']}")
+        log.debug("fetching detail: %s", event["title"])
         event["description"] = _fetch_detail_description(event["detail_url"])
 
     return events
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
     extracted_at = datetime.utcnow().strftime(ISO_FMT)
     formatted = [_to_template(e, extracted_at) for e in events]
-    print(f"\nTotal events: {len(formatted)}")
+    log.info("total events: %d", len(formatted))
     output_path = "../events/kbu_events.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(formatted, f, ensure_ascii=False, indent=2)
-    print(f"Events saved to {output_path}")
+    log.info("events saved to %s", output_path)

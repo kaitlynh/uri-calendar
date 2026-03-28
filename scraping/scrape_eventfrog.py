@@ -1,9 +1,12 @@
+import logging
 import os
 import re
 import requests
 from datetime import datetime
 from typing import Optional
 from dotenv import load_dotenv
+
+log = logging.getLogger(__name__)
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
@@ -81,15 +84,15 @@ def fetch_events() -> list[dict]:
 
     while True:
         params = base_params + [("page", str(page))]
-        print(f"  Fetching eventfrog page {page}: {len(URI_ZIPS)} zip codes, CH")
+        log.info("fetching page %d (%d zip codes, CH)", page, len(URI_ZIPS))
         try:
             resp = requests.get(BASE_URL, headers=headers, params=params, timeout=30)
             resp.raise_for_status()
         except requests.HTTPError as e:
-            print(f"  HTTP error: {e}")
+            log.error("HTTP error: %s", e)
             break
         except Exception as e:
-            print(f"  Error: {e}")
+            log.error("error: %s", e)
             break
 
         data = resp.json()
@@ -97,7 +100,7 @@ def fetch_events() -> list[dict]:
         total = data.get("totalNumberOfResources", 0)
 
         all_events.extend(events)
-        print(f"  Page {page}: got {len(events)} events (total: {total})")
+        log.info("page %d: got %d events (total: %d)", page, len(events), total)
 
         if len(all_events) >= total or len(events) == 0:
             break
@@ -134,12 +137,12 @@ def _to_template(event: dict, extracted_at: str) -> dict:
 
 if __name__ == "__main__":
     import json
-
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     extracted_at = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
     raw = fetch_events()
     formatted = [_to_template(e, extracted_at) for e in raw]
-    print(f"\nTotal events: {len(formatted)}")
+    log.info("total events: %d", len(formatted))
     output_path = "../events/eventfrog_events.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(formatted, f, ensure_ascii=False, indent=2)
-    print(f"Events saved to {output_path}")
+    log.info("events saved to %s", output_path)

@@ -1,35 +1,35 @@
 [
-  {
-    "name": "Schulen Altdorf",
-    "url": "https://schule-altdorf.ch/events/feed/",
-    "type": "rss"
-  },
-  {
+ {
     "name": "Urner Wochenblatt",
     "url": "https://www.urnerwochenblatt.ch/veranstaltungen/",
     "type": "urnerwochenblatt",
     "weeks": 4
   },
   {
-    "name": "Events Uri",
-    "url": "https://www.uri.ch/de",
-    "type": "html"
-  },
-  {
     "name": "Kantonsbibliothek Uri",
     "url": "https://www.kbu.ch/treffpunkt/veranstaltungen/",
-    "type": "html"
+    "type": "kbu"
   },
   {
+    "name": "Musikschule Uri",
+    "url": "https://www.musikschule-uri.ch/events-news/",
+    "type": "musikschule"
+  },
+  {
+    "name": "Schulen Altdorf",
+    "url": "https://schule-altdorf.ch/events/feed/",
+    "type": "rss"
+  },
+    {
     "name": "Gemeinde Altdorf",
     "url": "https://www.altdorf.ch/anlaesseaktuelles",
-    "type": "html"
+    "type": "altdorf"
   },
   {
     "name": "Gemeinde Andermatt",
     "url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131",
-    "type": "html"
-  }, 
+    "type": "andermatt"
+  },
   {
     "name": "Eventfrog",
     "url": "https://api.eventfrog.ch",

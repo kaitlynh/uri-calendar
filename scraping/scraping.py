@@ -1,3 +1,4 @@
+import logging
 import requests
 from urllib.parse import urlsplit
 from bs4 import BeautifulSoup
@@ -7,6 +8,13 @@ from datetime import datetime, timezone, timedelta
 from dataclasses import dataclass, asdict
 from typing import Optional
 import feedparser
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)-7s  %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+log = logging.getLogger(__name__)
 
 ########################
 # Data Classes
@@ -268,35 +276,64 @@ SCRAPERS = {
     "eventfrog":         scrape_eventfrog,
 }
 
+def _run_scraper(source: dict, extracted_at: str) -> tuple[str, list[Event], str | None]:
+    import time
+    scraper_type = source.get("type", "static")
+    scraper_fn = SCRAPERS.get(scraper_type)
+    if not scraper_fn:
+        log.warning("%-30s  unknown type '%s' — skipped", source["name"], scraper_type)
+        return source["name"], [], f"unknown type '{scraper_type}' — skipped"
+    log.info("%-30s  starting", source["name"])
+    t0 = time.monotonic()
+    try:
+        events = scraper_fn(source, extracted_at)
+        elapsed = time.monotonic() - t0
+        log.info("%-30s  %3d events  (%.1fs)", source["name"], len(events), elapsed)
+        return source["name"], events, None
+    except Exception as e:
+        elapsed = time.monotonic() - t0
+        log.error("%-30s  failed (%.1fs): %s", source["name"], elapsed, e)
+        return source["name"], [], f"ERROR: {e}"
+
 def collect_all_events(sources_path: str = "scraping/sources.json", output_path: str = "events/events.json"):
+    import time
+    from concurrent.futures import ThreadPoolExecutor, as_completed
     sources = load_sources(sources_path)
     extracted_at = datetime.now(timezone.utc).isoformat()
     all_events: list[Event] = []
 
-    for source in sources:
-        scraper_type = source.get("type", "static")
-        scraper_fn = SCRAPERS.get(scraper_type)
+    log.info("starting %d sources in parallel", len(sources))
+    t_start = time.monotonic()
 
-        if not scraper_fn:
-            print(f"  Unbekannter Typ '{scraper_type}' für {source['name']} — übersprungen")
-            continue
-
-        try:
-            events = scraper_fn(source, extracted_at)
-            all_events.extend(events)
-            print(f"  {len(events):3d} Events  ←  {source['name']}")
-        except Exception as e:
-            print(f"  FEHLER bei {source['name']}: {e}")
+    with ThreadPoolExecutor() as executor:
+        future_to_name = {executor.submit(_run_scraper, s, extracted_at): s["name"] for s in sources}
+        total = len(future_to_name)
+        done = 0
+        for future in as_completed(future_to_name):
+            _, events, err = future.result()
+            done += 1
+            still_running = [n for f, n in future_to_name.items() if not f.done()]
+            if still_running:
+                log.info("progress: %d/%d done — still running: %s", done, total, ", ".join(still_running))
+            else:
+                log.info("progress: %d/%d done", done, total)
+            if not err:
+                all_events.extend(events)
 
     # Deduplizieren nach Titel + Datum
+    log.info("deduplicating %d raw events …", len(all_events))
     seen = set()
     unique: list[Event] = []
+    duplicates = 0
     for ev in all_events:
         key = (ev.event_title.lower().strip(), (ev.start_date or "")[:10], ev.start_time or "")
         if key not in seen:
             seen.add(key)
             unique.append(ev)
+        else:
+            duplicates += 1
 
+    log.info("sorting %d unique events …", len(unique))
     unique.sort(key=lambda e: e.start_date or "")
 
     with open(output_path, "w", encoding="utf-8") as f:
@@ -307,7 +344,8 @@ def collect_all_events(sources_path: str = "scraping/sources.json", output_path:
             indent=2,
         )
 
-    print(f"\n  {len(unique)} Events total → {output_path}")
+    elapsed = time.monotonic() - t_start
+    log.info("done in %.1fs — %d raw, %d dupes removed, %d written → %s", elapsed, len(all_events), duplicates, len(unique), output_path)
 
 if __name__ == "__main__":
     collect_all_events()

@@ -1,9 +1,12 @@
+import logging
 import requests
 import re
 import html
 from bs4 import BeautifulSoup
 from datetime import datetime
 from typing import Optional
+
+log = logging.getLogger(__name__)
 
 BASE_URL = "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131"
 DETAIL_BASE = "https://www.gemeinde-andermatt.ch"
@@ -79,29 +82,29 @@ def _get_total_pages(page_html: str) -> int:
 
 
 def fetch_events() -> list[dict]:
-    print(f"Fetching: {BASE_URL}")
+    log.info("fetching %s", BASE_URL)
     try:
         resp = requests.get(_page_url(1), headers=HEADERS, timeout=15)
         resp.raise_for_status()
     except Exception as e:
-        print(f"  Error: {e}")
+        log.error("error: %s", e)
         return []
 
     total_pages = _get_total_pages(resp.text)
-    print(f"  Total pages: {total_pages}")
+    log.info("total pages: %d", total_pages)
     all_events = _parse_page(resp.text)
 
     for page in range(2, total_pages + 1):
         url = _page_url(page)
-        print(f"  Fetching page {page}: {url}")
+        log.info("fetching page %d: %s", page, url)
         try:
             r = requests.get(url, headers=HEADERS, timeout=15)
             r.raise_for_status()
             all_events.extend(_parse_page(r.text))
         except Exception as e:
-            print(f"  Error on page {page}: {e}")
+            log.error("error on page %d: %s", page, e)
 
-    print(f"  Found {len(all_events)} events total")
+    log.info("found %d events total", len(all_events))
     return all_events
 
 
@@ -126,12 +129,13 @@ def _to_template(event: dict, extracted_at: str) -> dict:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
     extracted_at = datetime.utcnow().strftime(ISO_FMT)
     import json
     formatted = [_to_template(e, extracted_at) for e in events]
-    print(f"\nTotal events: {len(formatted)}")
+    log.info("total events: %d", len(formatted))
     output_path = "../events/andermatt_events.json"
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(formatted, f, ensure_ascii=False, indent=2)
-    print(f"Events saved to {output_path}")
+    log.info("events saved to %s", output_path)
