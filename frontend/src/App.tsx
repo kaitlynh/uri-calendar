@@ -73,9 +73,13 @@ const App: Component = () => {
   // The date the feed starts from (for date picker resets)
   const [feedStartDate, setFeedStartDate] = createSignal(toDateString(new Date()));
 
+  // Track all source names we've ever seen (so we don't re-enable user-disabled ones)
+  const seenSourceNames = new Set<string>();
+
   /** Extract unique sources from a batch and merge into known sources */
   function updateKnownSources(groups: DayGroup[]) {
     const existing = new Map(knownSources().map(s => [s.name, s]));
+    const newNames: string[] = [];
     for (const group of groups) {
       for (const event of group.events) {
         if (!existing.has(event.source_name)) {
@@ -84,21 +88,24 @@ const App: Component = () => {
             image_url: event.image_url || '',
           });
         }
+        if (!seenSourceNames.has(event.source_name)) {
+          seenSourceNames.add(event.source_name);
+          newNames.push(event.source_name);
+        }
       }
     }
     const sorted = [...existing.values()].sort((a, b) => a.name.localeCompare(b.name));
     setKnownSources(sorted);
-    // Enable any new sources by default
-    setEnabledSources(prev => {
-      const next = new Set(prev);
-      for (const s of sorted) {
-        if (!prev.has(s.name) && prev.size > 0) {
-          // Only auto-add if we already had some (first load adds all)
+    // Only auto-enable sources we're seeing for the very first time
+    if (newNames.length > 0) {
+      setEnabledSources(prev => {
+        const next = new Set(prev);
+        for (const name of newNames) {
+          next.add(name);
         }
-        next.add(s.name);
-      }
-      return next;
-    });
+        return next;
+      });
+    }
   }
 
   function toggleSource(name: string) {
