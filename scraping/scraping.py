@@ -33,6 +33,7 @@ class Event:
     location: Optional[str]
     description: Optional[str]
     extracted_at: str
+    priority: int
 
 
 def load_sources(path: str = "scraping/sources.json") -> list[dict]:
@@ -73,6 +74,7 @@ def scrape_static(source: dict, extracted_at: str) -> list[Event]:
                 location=loc_el.text.strip() if loc_el else None,
                 description=desc_el.text.strip() if desc_el else None,
                 extracted_at=extracted_at,
+                priority=source["priority"],
             )
         )
     return events
@@ -99,6 +101,7 @@ def scrape_rss(source: dict, extracted_at: str) -> list[Event]:
                 location=entry.get("location", None),
                 description=entry.get("summary", None),
                 extracted_at=extracted_at,
+                priority=source["priority"],
             )
         )
     return events
@@ -137,6 +140,7 @@ def scrape_js(source: dict, extracted_at: str) -> list[Event]:
                 location=loc_el.text.strip() if loc_el else None,
                 description=None,
                 extracted_at=extracted_at,
+                priority=source["priority"],
             )
         )
     return events
@@ -166,6 +170,7 @@ def scrape_kbu(source: dict, extracted_at: str) -> list[Event]:
                 location=t["location"],
                 description=t["description"],
                 extracted_at=t["extracted_at"],
+                priority=source["priority"],
             )
         )
     return events
@@ -195,6 +200,7 @@ def scrape_musikschule(source: dict, extracted_at: str) -> list[Event]:
                 location=t["location"],
                 description=t["description"],
                 extracted_at=t["extracted_at"],
+                priority=source["priority"],
             )
         )
     return events
@@ -224,6 +230,7 @@ def scrape_altdorf(source: dict, extracted_at: str) -> list[Event]:
                 location=t["location"],
                 description=t["description"],
                 extracted_at=t["extracted_at"],
+                priority=source["priority"],
             )
         )
     return events
@@ -253,12 +260,13 @@ def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
                 location=t["location"],
                 description=t["description"],
                 extracted_at=t["extracted_at"],
+                priority=source["priority"],
             )
         )
     return events
 
 
-def scrape_eventfrog(_source: dict, extracted_at: str) -> list[Event]:
+def scrape_eventfrog(source: dict, extracted_at: str) -> list[Event]:
     import os
     import sys
 
@@ -282,6 +290,7 @@ def scrape_eventfrog(_source: dict, extracted_at: str) -> list[Event]:
                 location=t["location"],
                 description=t["description"],
                 extracted_at=t["extracted_at"],
+                priority=source["priority"],
             )
         )
     return events
@@ -311,6 +320,7 @@ def scrape_andermatt(source: dict, extracted_at: str) -> list[Event]:
                 location=t["location"],
                 description=t["description"],
                 extracted_at=t["extracted_at"],
+                priority=source["priority"],
             )
         )
     return events
