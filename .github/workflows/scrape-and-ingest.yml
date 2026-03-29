@@ -22,7 +22,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           EVENTFROG_API_KEY: ${{ secrets.EVENTFROG_API_KEY }}
-          run: |
+        run: |
           python scraping/scraping.py
           python scraping/open-ai.py
 
@@ -56,9 +56,47 @@ jobs:
 
       - name: Ingest into database
         env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASS: ${{ secrets.DB_PASS }}
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
         run: python db/parse_json.py
+
+  validate:
+    name: Validate pipeline results
+    runs-on: ubuntu-latest
+    needs: ingest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install psycopg2-binary python-dotenv
+
+      - name: Download events artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: events
+          path: events/
+
+      - name: Run validation
+        id: validate
+        env:
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+        run: python tests/validate_pipeline.py 2>&1 | tee validation_output.txt
+
+      - name: Create issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const output = fs.readFileSync('validation_output.txt', 'utf8');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Pipeline validation failed — ${new Date().toISOString().split('T')[0]}`,
+              body: `The scrape-and-ingest pipeline validation failed.\n\n\`\`\`\n${output}\n\`\`\`\n\nTriggered by workflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              labels: ['bug']
+            });

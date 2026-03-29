@@ -18,5 +18,8 @@ venv/
 .DS_Store
 Thumbs.db
 
+# Test result logs (kept locally, not committed)
+tests/test-results/*.log
+
 # Node (if used for frontend)
 node_modules/
