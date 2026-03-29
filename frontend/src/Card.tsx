@@ -35,9 +35,9 @@ const Card: Component<EventProps> = (props) => {
         )}
         <div class="flex items-center gap-2 min-w-0">
           <h4 class="text-[1rem] font-semibold truncate">{props.event.event_title}</h4>
-          {props.event.ai_updated && (
+          {props.event.ai_flag && (
             <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium px-1.5 py-0.5 rounded-md bg-[var(--border-color)] text-[var(--text-muted)] shrink-0">
-              ✨ AI
+              ✨ KI-ergänzt
             </span>
           )}
         </div>
@@ -62,16 +62,29 @@ const Card: Component<EventProps> = (props) => {
         </div>
 
         {/* Content */}
-        <div class="grow min-w-0 p-6 max-md:p-4">
+        <div class="grow min-w-0 px-6 pt-3 pb-3 max-md:px-4 max-md:pt-3 max-md:pb-4">
           {/* Desktop: title */}
           <div class="flex items-center gap-2 mb-1 max-md:hidden">
             <h4 class="text-[1.15rem] font-semibold">{props.event.event_title}</h4>
-            {props.event.ai_updated && (
+            {props.event.ai_flag && (
               <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium px-1.5 py-0.5 rounded-md bg-[var(--border-color)] text-[var(--text-muted)] shrink-0">
-                ✨ AI
+                ✨ KI-ergänzt
               </span>
             )}
           </div>
+
+          {/* Source line */}
+          <a
+            href={props.event.base_url?.startsWith('http') ? props.event.base_url : `https://${props.event.base_url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[0.85rem] text-[var(--text-muted)] mb-1 hover:text-[var(--alpine-blue)] transition-colors block"
+          >
+            <span class="font-semibold">{props.event.display_name || props.event.source_name}</span>
+            {props.event.base_url && (
+              <span> | {props.event.base_url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+            )}
+          </a>
 
           {/* Time + location row */}
           <div class="flex items-center gap-3 text-[0.85rem] text-[var(--text-muted)]">

@@ -58,29 +58,44 @@ def serialize_event(row):
 
 @app.route("/api/events")
 def get_events():
-    """Fetch all events for a given date.
+    """Fetch events for a single date or a date range.
 
-    Query params:
+    Query params (option A — single date):
         date (required): YYYY-MM-DD
+
+    Query params (option B — date range):
+        start_date (required): YYYY-MM-DD
+        end_date   (required): YYYY-MM-DD
 
     Returns:
         200: JSON array of events (may be empty)
-        400: missing or invalid date
+        400: missing or invalid parameters
     """
     date_str = request.args.get("date")
-    if not date_str:
-        return jsonify({"error": "Missing required parameter: date (YYYY-MM-DD)"}), 400
+    start_str = request.args.get("start_date")
+    end_str = request.args.get("end_date")
 
-    try:
-        query_date = date.fromisoformat(date_str)
-    except ValueError:
-        return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
+    if date_str:
+        # Single date mode (backwards compatible)
+        try:
+            query_date = date.fromisoformat(date_str)
+        except ValueError:
+            return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
+        start_date_val = query_date
+        end_date_val = query_date
+    elif start_str and end_str:
+        # Date range mode
+        try:
+            start_date_val = date.fromisoformat(start_str)
+            end_date_val = date.fromisoformat(end_str)
+        except ValueError:
+            return jsonify({"error": "Invalid date format. Use YYYY-MM-DD."}), 400
+    else:
+        return jsonify({"error": "Provide either 'date' or both 'start_date' and 'end_date'"}), 400
 
     conn = get_db()
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-            # Join with sources to include source_name/base_url in the response.
-            # NULLS FIRST so all-day events appear before timed events.
             cur.execute(
                 """
                 SELECT e.event_id, e.event_title, e.start_date, e.start_time,
@@ -89,10 +104,10 @@ def get_events():
                        s.source_name, s.base_url, s.display_name, s.icon_filename, s.category
                 FROM events e
                 JOIN sources s ON e.source_id = s.source_id
-                WHERE e.start_date = %s
-                ORDER BY e.start_time ASC NULLS FIRST
+                WHERE e.start_date BETWEEN %s AND %s
+                ORDER BY e.start_date ASC, e.start_time ASC NULLS FIRST
                 """,
-                (query_date,),
+                (start_date_val, end_date_val),
             )
             rows = cur.fetchall()
     finally:

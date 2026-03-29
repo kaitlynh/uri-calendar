@@ -1,4 +1,4 @@
-import { createSignal, createMemo, For, Show, onMount, onCleanup, type Component } from 'solid-js';
+import { createSignal, createMemo, createEffect, For, Show, onMount, onCleanup, type Component } from 'solid-js';
 import Header from './Header';
 import Card from './Card';
 import type { Event } from './event';
@@ -18,17 +18,6 @@ function formatDateHeading(dateStr: string): string {
   });
 }
 
-/** Get array of "YYYY-MM-DD" strings starting from a given date */
-function getDateRange(startDate: Date, days: number): string[] {
-  const dates: string[] = [];
-  for (let i = 0; i < days; i++) {
-    const d = new Date(startDate);
-    d.setDate(startDate.getDate() + i);
-    dates.push(d.toISOString().slice(0, 10));
-  }
-  return dates;
-}
-
 /** Format a Date to "YYYY-MM-DD" for the date input */
 function toDateString(d: Date): string {
   return d.toISOString().slice(0, 10);
@@ -46,17 +35,28 @@ type SourceInfo = {
   category: string | null;
 };
 
-/** Fetch events for a range of dates in parallel, return non-empty groups */
+/** Fetch events for a date range in a single API call, return non-empty day groups */
 async function fetchDateRange(startDate: Date, days: number): Promise<DayGroup[]> {
-  const dates = getDateRange(startDate, days);
-  const responses = await Promise.all(
-    dates.map(date =>
-      fetch(`${API_BASE}/events?date=${date}`)
-        .then(r => r.json())
-        .then((events: Event[]) => ({ date, events }))
-    )
-  );
-  return responses.filter(group => group.events.length > 0);
+  const endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate() + days - 1);
+  const start = toDateString(startDate);
+  const end = toDateString(endDate);
+
+  const resp = await fetch(`${API_BASE}/events?start_date=${start}&end_date=${end}`);
+  const events: Event[] = await resp.json();
+
+  // Group events by start_date
+  const grouped = new Map<string, Event[]>();
+  for (const event of events) {
+    const d = event.start_date;
+    if (!grouped.has(d)) grouped.set(d, []);
+    grouped.get(d)!.push(event);
+  }
+
+  // Return sorted day groups (API already sorts by date, but ensure order)
+  return [...grouped.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, events]) => ({ date, events }));
 }
 
 const App: Component = () => {
@@ -65,6 +65,8 @@ const App: Component = () => {
   const [loadingMore, setLoadingMore] = createSignal(false);
   const [showFab, setShowFab] = createSignal(false);
   const [showFilters, setShowFilters] = createSignal(false);
+  const [reachedEnd, setReachedEnd] = createSignal(false);
+  const [loadingExtended, setLoadingExtended] = createSignal(false);
 
   // Source filter state: set of enabled source names
   const [enabledSources, setEnabledSources] = createSignal<Set<string>>(new Set());
@@ -117,20 +119,51 @@ const App: Component = () => {
       .filter(group => group.events.length > 0);
   });
 
-  async function loadNextBatch() {
-    if (loadingMore()) return;
+  async function loadNextBatch(): Promise<boolean> {
+    if (loadingMore()) return false;
     setLoadingMore(true);
     try {
       const newGroups = await fetchDateRange(nextStartDate, DAYS_PER_BATCH);
       setDayGroups(prev => [...prev, ...newGroups]);
 
-      // Advance the start date for next batch
+      // Always advance the start date
       nextStartDate = new Date(nextStartDate);
       nextStartDate.setDate(nextStartDate.getDate() + DAYS_PER_BATCH);
+
+      if (newGroups.length === 0) {
+        setReachedEnd(true);
+        return false;
+      }
+      return true;
     } finally {
       setLoadingMore(false);
     }
   }
+
+  const EXTENDED_DAYS = 60;
+
+  /** Load ~2 months in one call, used when normal 14-day batches run dry */
+  async function loadExtended() {
+    if (loadingExtended()) return;
+    setLoadingExtended(true);
+    setReachedEnd(false);
+    try {
+      const newGroups = await fetchDateRange(nextStartDate, EXTENDED_DAYS);
+      setDayGroups(prev => [...prev, ...newGroups]);
+      nextStartDate = new Date(nextStartDate);
+      nextStartDate.setDate(nextStartDate.getDate() + EXTENDED_DAYS);
+      setReachedEnd(true);
+    } finally {
+      setLoadingExtended(false);
+    }
+  }
+
+  /** Format the nextStartDate for display */
+  const loadedUntilDate = () => {
+    const d = new Date(nextStartDate);
+    d.setDate(d.getDate() - 1);
+    return d.toLocaleDateString('de-CH', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
 
   /** Jump to a specific date: load up to that date if needed, then scroll to it */
   async function jumpToDate(dateStr: string) {
@@ -181,6 +214,22 @@ const App: Component = () => {
     setLoading(false);
   });
 
+  // Auto-load more when filtered results don't fill the viewport
+  createEffect(() => {
+    const groups = filteredDayGroups();
+    // Access these signals to track them
+    const ended = reachedEnd();
+    const isLoading = loading() || loadingMore() || loadingExtended();
+    if (isLoading || ended) return;
+
+    // Wait for DOM to render, then check if content fills viewport
+    requestAnimationFrame(() => {
+      if (document.body.offsetHeight <= window.innerHeight + 200) {
+        loadNextBatch();
+      }
+    });
+  });
+
   // Infinite scroll: load more when near bottom
   function handleScroll() {
     const scrolledDown = window.scrollY > 400;
@@ -188,7 +237,7 @@ const App: Component = () => {
 
     const nearBottom =
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 800;
-    if (nearBottom && !loadingMore() && !loading()) {
+    if (nearBottom && !loadingMore() && !loading() && !reachedEnd()) {
       loadNextBatch();
     }
   }
@@ -313,6 +362,13 @@ const App: Component = () => {
 
         <hr class="border-t border-[var(--border-color)] my-6" />
 
+        <h2 class="text-base font-semibold mb-2">ℹ️ Über</h2>
+        <p class="text-sm text-[var(--text-muted)] leading-relaxed">
+          Diese Seite sammelt automatisch Veranstaltungen aus den oben aufgeführten Quellen im Kanton Uri. Einträge mit dem Hinweis <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium px-1.5 py-0.5 rounded-md bg-[var(--border-color)] text-[var(--text-muted)]">✨ KI-ergänzt</span> wurden mithilfe von künstlicher Intelligenz ergänzt.
+        </p>
+
+        <hr class="border-t border-[var(--border-color)] my-6" />
+
         <h2 class="text-base font-semibold mb-3">📊 Quelldaten</h2>
         <a
           href="/admin"
@@ -371,16 +427,32 @@ const App: Component = () => {
               )}
             </For>
 
-            {/* Empty state when all sources filtered out */}
-            <Show when={filteredDayGroups().length === 0 && dayGroups().length > 0}>
+            {/* Empty state when no filtered events */}
+            <Show when={filteredDayGroups().length === 0 && !loading() && !loadingMore()}>
               <div class="text-center py-16">
-                <p class="text-[var(--text-muted)] text-lg">Keine Events für diese Filter.</p>
+                <img src="/uri-lake-drawing.png" alt="Uri Berge" class="w-full mb-6 opacity-60" />
+                <p class="text-[var(--text-muted)] text-lg">Keine Veranstaltungen gefunden. Wie wärs mit einem Ausflug in die Berge?</p>
               </div>
             </Show>
 
             {/* Loading more indicator */}
-            <Show when={loadingMore()}>
+            <Show when={loadingMore() || loadingExtended()}>
               <p class="text-[var(--text-muted)] text-center py-8">Mehr laden...</p>
+            </Show>
+
+            {/* Reached end — show load-more button */}
+            <Show when={reachedEnd() && !loadingExtended()}>
+              <div class="text-center py-8 border-t border-[var(--border-color)] mt-4">
+                <p class="text-[var(--text-muted)] text-sm mb-3">
+                  Geladen bis {loadedUntilDate()}
+                </p>
+                <button
+                  onClick={loadExtended}
+                  class="px-6 py-2 rounded-lg bg-[var(--alpine-blue)] text-white font-medium text-sm hover:bg-[var(--alpine-blue-hover)] transition-colors cursor-pointer"
+                >
+                  Weitere Veranstaltungen laden
+                </button>
+              </div>
             </Show>
           </Show>
         </main>
