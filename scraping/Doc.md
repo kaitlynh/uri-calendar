@@ -51,6 +51,15 @@ Entry point: `collect_all_events()`
 | Gemeinde Andermatt | `andermatt` | `scrape_andermatt.py` | HTML scrape |
 | Eventfrog | `eventfrog` | `scrape_eventfrog.py` | REST API, paginated, filtered by all Uri ZIP codes |
 
+> **Adding a new source:** When a new scraper is added, the source row is automatically
+> created in the `sources` database table during the first ingest (`db/parse_json.py`).
+> However, three fields must be set **manually** in the database afterward:
+> - `display_name` — the human-friendly name shown in the frontend filter (e.g. "Gemeinde Altdorf")
+> - `icon_filename` — the filename of the 1:1 source icon in `frontend/public/source-icons/` (e.g. "altdorf-geminde.png")
+> - `category` — the filter group: `Gemeinden`, `Schulen`, `Organisationen`, or `NULL` for ungrouped
+>
+> Until these are set, the frontend will fall back to the raw `source_name` with no icon and no category grouping.
+
 ### Scraper types
 
 - **`static`** — plain HTTP + BeautifulSoup CSS selectors (configured in `sources.json`)

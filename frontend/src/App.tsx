@@ -43,6 +43,7 @@ type SourceInfo = {
   name: string;
   display_name: string | null;
   icon_filename: string | null;
+  category: string | null;
 };
 
 /** Fetch events for a range of dates in parallel, return non-empty groups */
@@ -79,11 +80,12 @@ const App: Component = () => {
   async function fetchSources() {
     try {
       const resp = await fetch(`${API_BASE}/sources`);
-      const data: { source_name: string; base_url: string; display_name: string | null; icon_filename: string | null }[] = await resp.json();
+      const data: { source_name: string; base_url: string; display_name: string | null; icon_filename: string | null; category: string | null }[] = await resp.json();
       const sources: SourceInfo[] = data.map(s => ({
         name: s.source_name,
         display_name: s.display_name,
         icon_filename: s.icon_filename,
+        category: s.category,
       }));
       setKnownSources(sources);
       setEnabledSources(new Set(sources.map(s => s.name)));
@@ -234,8 +236,9 @@ const App: Component = () => {
             </button>
           </div>
         </div>
-        <ul class="list-none space-y-2">
-          <For each={knownSources().slice().sort((a, b) => (a.display_name || a.name).localeCompare(b.display_name || b.name))}>
+        <ul class="list-none space-y-1">
+          {/* Uncategorized sources first */}
+          <For each={knownSources().filter(s => !s.category).sort((a, b) => (a.display_name || a.name).localeCompare(b.display_name || b.name))}>
             {(source) => (
               <li>
                 <label class="flex items-center gap-2 cursor-pointer text-[0.95rem]">
@@ -246,16 +249,65 @@ const App: Component = () => {
                     class="accent-[var(--alpine-blue)]"
                   />
                   <Show when={getSourceIcon(source.icon_filename)}>
-                    <img
-                      src={getSourceIcon(source.icon_filename)}
-                      alt=""
-                      class="w-5 h-5 rounded object-cover"
-                    />
+                    <img src={getSourceIcon(source.icon_filename)} alt="" class="w-5 h-5 rounded object-cover" />
                   </Show>
                   {source.display_name || source.name}
                 </label>
               </li>
             )}
+          </For>
+          {/* Categorized sources, grouped */}
+          <For each={[...new Set(knownSources().filter(s => s.category).map(s => s.category!))].sort()}>
+            {(category) => {
+              const members = () => knownSources().filter(s => s.category === category).sort((a, b) => (a.display_name || a.name).localeCompare(b.display_name || b.name));
+              const allChecked = () => members().every(s => enabledSources().has(s.name));
+              const someChecked = () => members().some(s => enabledSources().has(s.name));
+              const toggleCategory = () => {
+                setEnabledSources(prev => {
+                  const next = new Set(prev);
+                  if (allChecked()) {
+                    members().forEach(s => next.delete(s.name));
+                  } else {
+                    members().forEach(s => next.add(s.name));
+                  }
+                  return next;
+                });
+              };
+              return (
+                <li class="mt-3">
+                  <label class="flex items-center gap-2 cursor-pointer text-[0.95rem] font-medium text-[var(--text-muted)]">
+                    <input
+                      type="checkbox"
+                      checked={allChecked()}
+                      ref={(el) => { setTimeout(() => el.indeterminate = someChecked() && !allChecked(), 0); }}
+                      onChange={toggleCategory}
+                      class="accent-[var(--alpine-blue)]"
+                    />
+                    {category}
+                  </label>
+                  <ul class="list-none ml-6 mt-1 space-y-1">
+                    <For each={members()}>
+                      {(source) => (
+                        <li>
+                          <label class="flex items-center gap-2 cursor-pointer text-[0.95rem]">
+                            <input
+                              type="checkbox"
+                              checked={enabledSources().has(source.name)}
+                              onChange={() => toggleSource(source.name)}
+                              class="accent-[var(--alpine-blue)]"
+                            />
+                            <Show when={getSourceIcon(source.icon_filename)}>
+                              <img src={getSourceIcon(source.icon_filename)} alt="" class="w-5 h-5 rounded object-cover" />
+                            </Show>
+                            {source.display_name || source.name}
+                          </label>
+                        </li>
+                      )}
+                    </For>
+                  </ul>
+                </li>
+              );
+            }}
           </For>
         </ul>
 

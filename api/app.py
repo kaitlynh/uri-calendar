@@ -86,7 +86,7 @@ def get_events():
                 SELECT e.event_id, e.event_title, e.start_date, e.start_time,
                        e.end_datetime, e.location, e.description, e.extracted_at,
                        e.source_url, e.ai_flag,
-                       s.source_name, s.base_url, s.display_name, s.icon_filename
+                       s.source_name, s.base_url, s.display_name, s.icon_filename, s.category
                 FROM events e
                 JOIN sources s ON e.source_id = s.source_id
                 WHERE e.start_date = %s
@@ -145,7 +145,7 @@ def get_sources():
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute(
                 """
-                SELECT source_id, source_name, base_url, created_at, display_name, icon_filename
+                SELECT source_id, source_name, base_url, created_at, display_name, icon_filename, category
                 FROM sources
                 ORDER BY source_name ASC
                 """
@@ -162,6 +162,7 @@ def get_sources():
             "created_at": r["created_at"].isoformat() if r["created_at"] else None,
             "display_name": r["display_name"],
             "icon_filename": r["icon_filename"],
+            "category": r["category"],
         }
         for r in rows
     ])

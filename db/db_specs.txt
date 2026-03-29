@@ -29,3 +29,4 @@ uri_calendar=> \d sources
  priority    | integer                  |           | not null | 67
  display_name| text                     |           |          |
  icon_filename| text                    |           |          |
+ category     | text                    |           |          |
