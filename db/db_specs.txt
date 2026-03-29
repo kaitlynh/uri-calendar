@@ -20,13 +20,13 @@ Foreign-key constraints:
 
 uri_calendar=> \d sources
                               Table "public.sources"
-   Column    |           Type           | Collation | Nullable |      Default      
+   Column    |           Type           | Collation | Nullable |      Default
 -------------+--------------------------+-----------+----------+-------------------
  source_id   | uuid                     |           | not null | gen_random_uuid()
- source_name | text                     |           |          | 
- base_url    | text                     |           | not null | 
+ source_name | text                     |           |          |  -- bare domain identifier, e.g. "kbu.ch" (no www., no https://, no path)
+ base_url    | text                     |           | not null |  -- full URL to events listing page, e.g. "https://www.kbu.ch/..." (unique key)
  created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP
  priority    | integer                  |           | not null | 67
- display_name| text                     |           |          |
- icon_filename| text                    |           |          |
- category     | text                    |           |          |
+ display_name| text                     |           |          |  -- human-friendly name shown in frontend (set manually)
+ icon_filename| text                    |           |          |  -- filename in frontend/public/source-icons/ (set manually)
+ category     | text                    |           |          |  -- filter group: Gemeinden, Schulen, Organisationen, or NULL (set manually)

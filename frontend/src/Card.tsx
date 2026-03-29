@@ -81,8 +81,8 @@ const Card: Component<EventProps> = (props) => {
             class="text-[0.85rem] text-[var(--text-muted)] mb-1 hover:text-[var(--alpine-blue)] transition-colors block"
           >
             <span class="font-semibold">{props.event.display_name || props.event.source_name}</span>
-            {props.event.base_url && (
-              <span> | {props.event.base_url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+            {props.event.source_name && (
+              <span> | {props.event.source_name}</span>
             )}
           </a>
 

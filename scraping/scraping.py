@@ -163,7 +163,7 @@ def scrape_kbu(source: dict, extracted_at: str) -> list[Event]:
         events.append(
             Event(
                 source_name=t["source_name"],
-                base_url="kbu.ch",
+                base_url="https://www.kbu.ch/treffpunkt/veranstaltungen/",
                 source_url=t["source_url"],
                 event_title=t["event_title"],
                 start_date=t["start_date"],
@@ -193,7 +193,7 @@ def scrape_musikschule(source: dict, extracted_at: str) -> list[Event]:
         events.append(
             Event(
                 source_name=t["source_name"],
-                base_url="www.musikschule-uri.ch",
+                base_url="https://www.musikschule-uri.ch/events-news/",
                 source_url=t["source_url"],
                 event_title=t["event_title"],
                 start_date=t["start_date"],
@@ -223,7 +223,7 @@ def scrape_altdorf(source: dict, extracted_at: str) -> list[Event]:
         events.append(
             Event(
                 source_name=t["source_name"],
-                base_url="www.altdorf.ch",
+                base_url="https://www.altdorf.ch/anlaesseaktuelles",
                 source_url=t["source_url"],
                 event_title=t["event_title"],
                 start_date=t["start_date"],
@@ -253,7 +253,7 @@ def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
         events.append(
             Event(
                 source_name="urnerwochenblatt.ch",
-                base_url="urnerwochenblatt.ch",
+                base_url="https://www.urnerwochenblatt.ch/veranstaltungen/",
                 source_url=t["source_url"],
                 event_title=t["event_title"],
                 start_date=t["start_date"],
@@ -283,7 +283,7 @@ def scrape_eventfrog(source: dict, extracted_at: str) -> list[Event]:
         events.append(
             Event(
                 source_name=t["source_name"],
-                base_url="eventfrog.ch",
+                base_url="https://eventfrog.ch/de/events.html?searchTerm=uri",
                 source_url=t["source_url"],
                 event_title=t["event_title"],
                 start_date=t["start_date"],
@@ -373,7 +373,7 @@ def scrape_andermatt(source: dict, extracted_at: str) -> list[Event]:
         events.append(
             Event(
                 source_name=t["source_name"],
-                base_url="www.gemeinde-andermatt.ch",
+                base_url="https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131",
                 source_url=t["source_url"],
                 event_title=t["event_title"],
                 start_date=t["start_date"],

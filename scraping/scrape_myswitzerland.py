@@ -15,8 +15,9 @@ except ImportError:
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://opendata.myswitzerland.io/v1/attractions"
-SOURCE_NAME = "myswitzerland.com"
+API_URL = "https://opendata.myswitzerland.io/v1/attractions"  # API endpoint for fetching event data
+BASE_URL = "https://uri.swiss"  # Events listing page — used as base_url in output and as fallback link
+SOURCE_NAME = "uri.swiss"  # Bare domain identifier
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 
 # Tight bounding box for Canton Uri — errs on the side of exclusion.
@@ -55,7 +56,7 @@ def _fetch_page(page: int, req_headers: dict) -> tuple[int, list[dict]]:
             _last_request_at = time.monotonic()
 
         try:
-            resp = requests.get(BASE_URL, params={"lang": "de", "page": page}, headers=req_headers, timeout=15)
+            resp = requests.get(API_URL, params={"lang": "de", "page": page}, headers=req_headers, timeout=15)
         except Exception as e:
             log.error("error fetching page %d: %s", page, e)
             return page, []
@@ -83,11 +84,11 @@ def fetch_events() -> list[dict]:
         log.warning("no MYSWITZERLAND_API_KEY found — request will likely be rejected")
 
     # Fetch page 1 to discover total pages
-    resp = requests.get(BASE_URL, params={"lang": "de", "page": 1}, headers=req_headers, timeout=15)
+    resp = requests.get(API_URL, params={"lang": "de", "page": 1}, headers=req_headers, timeout=15)
     data1 = resp.json()
     first_items = data1.get("data") or []
     total_pages = data1.get("meta", {}).get("page", {}).get("totalPages", 1)
-    log.info("fetching %s (%d pages, %d workers)", BASE_URL, total_pages, _WORKERS)
+    log.info("fetching %s (%d pages, %d workers)", API_URL, total_pages, _WORKERS)
 
     results: dict[int, list[dict]] = {1: first_items}
     uri_total = sum(1 for i in first_items if _in_uri(i))

@@ -11,7 +11,7 @@ urllib3.disable_warnings()
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.altdorf.ch/anlaesseaktuelles"
+BASE_URL = "https://www.altdorf.ch/anlaesseaktuelles"  # Events listing page — used for fetching and as base_url in output
 DETAIL_BASE = "https://www.altdorf.ch"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 STRIP_TAGS = re.compile(r'<[^>]+>')

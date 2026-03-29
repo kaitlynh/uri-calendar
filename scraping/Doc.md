@@ -77,8 +77,8 @@ All scrapers normalize events to this structure:
 
 | Field | Type | Description |
 |---|---|---|
-| `source_name` | string | Human-readable source label |
-| `base_url` | string | Root URL of the source |
+| `source_name` | string | Bare domain identifier (e.g. `kbu.ch`, `altdorf.ch`) — no `www.`, no `https://`, no path |
+| `base_url` | string | Full URL (with `https://`) to the source's events listing page — used as fallback link and unique key in DB |
 | `source_url` | string | Direct link to the event |
 | `event_title` | string | Title of the event |
 | `start_date` | string \| null | ISO 8601 date (`YYYY-MM-DD`) |

@@ -10,8 +10,9 @@ log = logging.getLogger(__name__)
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
-BASE_URL = "https://api.eventfrog.net/public/v1/events"
-SOURCE_NAME = "eventfrog.ch"
+API_URL = "https://api.eventfrog.net/public/v1/events"  # API endpoint for fetching event data
+BASE_URL = "https://eventfrog.ch/de/events.html?searchTerm=uri"  # Events listing page — used as base_url in output and as fallback link
+SOURCE_NAME = "eventfrog.ch"  # Bare domain identifier
 
 # All ZIP codes belonging to Canton Uri (UR)
 URI_ZIPS = [
@@ -86,7 +87,7 @@ def fetch_events() -> list[dict]:
         params = base_params + [("page", str(page))]
         log.info("fetching page %d (%d zip codes, CH)", page, len(URI_ZIPS))
         try:
-            resp = requests.get(BASE_URL, headers=headers, params=params, timeout=30)
+            resp = requests.get(API_URL, headers=headers, params=params, timeout=30)
             resp.raise_for_status()
         except requests.HTTPError as e:
             log.error("HTTP error: %s", e)
@@ -123,7 +124,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
 
     return {
         "source_name": SOURCE_NAME,
-        "base_url": "eventfrog.ch",
+        "base_url": BASE_URL,
         "source_url": url,
         "event_title": title,
         "start_date": start_date,

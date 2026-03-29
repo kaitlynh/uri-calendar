@@ -10,7 +10,7 @@ urllib3.disable_warnings()
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.kbu.ch/treffpunkt/veranstaltungen/"
+BASE_URL = "https://www.kbu.ch/treffpunkt/veranstaltungen/"  # Events listing page — used for fetching and as base_url in output
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"

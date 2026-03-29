@@ -8,7 +8,7 @@ from typing import Optional
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131"
+BASE_URL = "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131"  # Events listing page — used for fetching and as base_url in output
 DETAIL_BASE = "https://www.gemeinde-andermatt.ch"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"
