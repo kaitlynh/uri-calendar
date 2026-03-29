@@ -23,10 +23,15 @@ The two steps run sequentially (scraping must finish before the AI merge):
 
 | Variable | Required | Description |
 |---|---|---|
+| `DB_CONNECTION_STRING` | Yes (parse_json.py) | PostgreSQL connection string (e.g. `postgresql://user:pass@localhost:5432/db`) |
 | `OPENAI_API_KEY` | Yes (open-ai.py) | OpenAI API key for GPT-5 web search |
 | `EVENTFROG_API_KEY` | Yes (eventfrog) | Eventfrog REST API key |
 
 Place these in a `.env` file at the project root.
+
+> **Secrets on the server vs in CI:**
+> - **Scheduled GitHub Actions** (scrape-and-ingest workflow) use **GitHub Secrets** — these are injected as environment variables during the workflow run.
+> - **Manual runs on the server** (`ssh` + `bash scraping/run.sh`) use the **`.env` file** at `/opt/uri-calendar/.env`. This file is gitignored and persists across deploys.
 
 ---
 
