@@ -27,3 +27,5 @@ uri_calendar=> \d sources
  base_url    | text                     |           | not null | 
  created_at  | timestamp with time zone |           |          | CURRENT_TIMESTAMP
  priority    | integer                  |           | not null | 67
+ display_name| text                     |           |          |
+ icon_filename| text                    |           |          |

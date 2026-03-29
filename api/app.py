@@ -51,6 +51,8 @@ def serialize_event(row):
         "description": row["description"],
         "extracted_at": row["extracted_at"].isoformat() if row["extracted_at"] else None,
         "ai_flag": row["ai_flag"],
+        "display_name": row.get("display_name"),
+        "icon_filename": row.get("icon_filename"),
     }
 
 
@@ -84,7 +86,7 @@ def get_events():
                 SELECT e.event_id, e.event_title, e.start_date, e.start_time,
                        e.end_datetime, e.location, e.description, e.extracted_at,
                        e.source_url, e.ai_flag,
-                       s.source_name, s.base_url
+                       s.source_name, s.base_url, s.display_name, s.icon_filename
                 FROM events e
                 JOIN sources s ON e.source_id = s.source_id
                 WHERE e.start_date = %s
@@ -143,7 +145,7 @@ def get_sources():
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute(
                 """
-                SELECT source_id, source_name, base_url, created_at
+                SELECT source_id, source_name, base_url, created_at, display_name, icon_filename
                 FROM sources
                 ORDER BY source_name ASC
                 """
@@ -158,6 +160,8 @@ def get_sources():
             "source_name": r["source_name"],
             "base_url": r["base_url"],
             "created_at": r["created_at"].isoformat() if r["created_at"] else None,
+            "display_name": r["display_name"],
+            "icon_filename": r["icon_filename"],
         }
         for r in rows
     ])

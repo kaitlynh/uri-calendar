@@ -2,7 +2,7 @@ import { createSignal, createMemo, For, Show, onMount, onCleanup, type Component
 import Header from './Header';
 import Card from './Card';
 import type { Event } from './event';
-import { getSourceDisplayName, getSourceIcon } from './sources';
+import { getSourceIcon } from './sources';
 
 const API_BASE = 'http://178.104.80.19/api';
 const DAYS_PER_BATCH = 14;
@@ -41,7 +41,8 @@ type DayGroup = {
 
 type SourceInfo = {
   name: string;
-  image_url: string;
+  display_name: string | null;
+  icon_filename: string | null;
 };
 
 /** Fetch events for a range of dates in parallel, return non-empty groups */
@@ -74,38 +75,20 @@ const App: Component = () => {
   // The date the feed starts from (for date picker resets)
   const [feedStartDate, setFeedStartDate] = createSignal(toDateString(new Date()));
 
-  // Track all source names we've ever seen (so we don't re-enable user-disabled ones)
-  const seenSourceNames = new Set<string>();
-
-  /** Extract unique sources from a batch and merge into known sources */
-  function updateKnownSources(groups: DayGroup[]) {
-    const existing = new Map(knownSources().map(s => [s.name, s]));
-    const newNames: string[] = [];
-    for (const group of groups) {
-      for (const event of group.events) {
-        if (!existing.has(event.source_name)) {
-          existing.set(event.source_name, {
-            name: event.source_name,
-            image_url: event.image_url || '',
-          });
-        }
-        if (!seenSourceNames.has(event.source_name)) {
-          seenSourceNames.add(event.source_name);
-          newNames.push(event.source_name);
-        }
-      }
-    }
-    const sorted = [...existing.values()].sort((a, b) => a.name.localeCompare(b.name));
-    setKnownSources(sorted);
-    // Only auto-enable sources we're seeing for the very first time
-    if (newNames.length > 0) {
-      setEnabledSources(prev => {
-        const next = new Set(prev);
-        for (const name of newNames) {
-          next.add(name);
-        }
-        return next;
-      });
+  /** Fetch all sources from the API and populate filters */
+  async function fetchSources() {
+    try {
+      const resp = await fetch(`${API_BASE}/sources`);
+      const data: { source_name: string; base_url: string; display_name: string | null; icon_filename: string | null }[] = await resp.json();
+      const sources: SourceInfo[] = data.map(s => ({
+        name: s.source_name,
+        display_name: s.display_name,
+        icon_filename: s.icon_filename,
+      }));
+      setKnownSources(sources);
+      setEnabledSources(new Set(sources.map(s => s.name)));
+    } catch (e) {
+      console.error('Failed to fetch sources:', e);
     }
   }
 
@@ -138,7 +121,7 @@ const App: Component = () => {
     try {
       const newGroups = await fetchDateRange(nextStartDate, DAYS_PER_BATCH);
       setDayGroups(prev => [...prev, ...newGroups]);
-      updateKnownSources(newGroups);
+
       // Advance the start date for next batch
       nextStartDate = new Date(nextStartDate);
       nextStartDate.setDate(nextStartDate.getDate() + DAYS_PER_BATCH);
@@ -159,7 +142,7 @@ const App: Component = () => {
         while (nextStartDate <= targetDate) {
           const newGroups = await fetchDateRange(nextStartDate, DAYS_PER_BATCH);
           setDayGroups(prev => [...prev, ...newGroups]);
-          updateKnownSources(newGroups);
+    
           nextStartDate = new Date(nextStartDate);
           nextStartDate.setDate(nextStartDate.getDate() + DAYS_PER_BATCH);
         }
@@ -191,6 +174,7 @@ const App: Component = () => {
 
   // Initial load
   onMount(async () => {
+    await fetchSources();
     await loadNextBatch();
     setLoading(false);
   });
@@ -251,7 +235,7 @@ const App: Component = () => {
           </div>
         </div>
         <ul class="list-none space-y-2">
-          <For each={knownSources().slice().sort((a, b) => getSourceDisplayName(a.name).localeCompare(getSourceDisplayName(b.name)))}>
+          <For each={knownSources().slice().sort((a, b) => (a.display_name || a.name).localeCompare(b.display_name || b.name))}>
             {(source) => (
               <li>
                 <label class="flex items-center gap-2 cursor-pointer text-[0.95rem]">
@@ -261,14 +245,14 @@ const App: Component = () => {
                     onChange={() => toggleSource(source.name)}
                     class="accent-[var(--alpine-blue)]"
                   />
-                  <Show when={getSourceIcon(source.name, source.image_url)}>
+                  <Show when={getSourceIcon(source.icon_filename)}>
                     <img
-                      src={getSourceIcon(source.name, source.image_url)}
+                      src={getSourceIcon(source.icon_filename)}
                       alt=""
                       class="w-5 h-5 rounded object-cover"
                     />
                   </Show>
-                  {getSourceDisplayName(source.name)}
+                  {source.display_name || source.name}
                 </label>
               </li>
             )}

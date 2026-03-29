@@ -22,9 +22,9 @@ const Card: Component<EventProps> = (props) => {
 
       {/* ── Mobile: icon + title top row ── */}
       <div class="hidden max-md:flex items-center gap-3 px-4 pt-4 pb-3 border-b border-[var(--border-color)]">
-        {getSourceIcon(props.event.source_name, props.event.image_url) ? (
+        {getSourceIcon(props.event.icon_filename) ? (
           <img
-            src={getSourceIcon(props.event.source_name, props.event.image_url)}
+            src={getSourceIcon(props.event.icon_filename)}
             alt={props.event.source_name}
             class="w-8 h-8 rounded-lg object-cover bg-[var(--border-color)] shrink-0"
           />
@@ -48,9 +48,9 @@ const Card: Component<EventProps> = (props) => {
 
         {/* Desktop: fixed square icon */}
         <div class="w-[156px] h-[156px] shrink-0 max-md:hidden">
-          {getSourceIcon(props.event.source_name, props.event.image_url) ? (
+          {getSourceIcon(props.event.icon_filename) ? (
             <img
-              src={getSourceIcon(props.event.source_name, props.event.image_url)}
+              src={getSourceIcon(props.event.icon_filename)}
               alt={props.event.source_name}
               class="w-full h-full object-cover bg-[var(--border-color)]"
             />

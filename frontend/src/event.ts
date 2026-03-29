@@ -5,6 +5,8 @@ export type Event = {
   base_url?: string,
   source_url: string,
   image_url?: string,
+  display_name?: string | null,
+  icon_filename?: string | null,
   event_title: string,
   start_date: string,
   start_time?: string | null,
