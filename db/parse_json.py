@@ -5,19 +5,23 @@ from dotenv import load_dotenv
 from pathlib import Path
 from datetime import datetime
 
-# Load .env from same directory as this script
-load_dotenv(dotenv_path=Path(__file__).parent / '.env')
+# Load .env from project root
+load_dotenv(dotenv_path=Path(__file__).parent.parent / '.env')
 
 
 def get_db_connection():
     try:
-        conn = psycopg2.connect(
-            host=os.getenv("DB_HOST", "localhost"),
-            port=os.getenv("DB_PORT", "5432"),
-            database=os.getenv("DB_NAME"),
-            user=os.getenv("DB_USER"),
-            password=os.getenv("DB_PASS"),
-        )
+        dsn = os.getenv("DB_CONNECTION_STRING")
+        if dsn:
+            conn = psycopg2.connect(dsn)
+        else:
+            conn = psycopg2.connect(
+                host=os.getenv("DB_HOST", "localhost"),
+                port=os.getenv("DB_PORT", "5432"),
+                database=os.getenv("DB_NAME"),
+                user=os.getenv("DB_USER"),
+                password=os.getenv("DB_PASS"),
+            )
         print("Connected to DB successfully.")
         return conn
     except psycopg2.OperationalError as e:
