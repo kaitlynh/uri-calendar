@@ -97,5 +97,14 @@
     "type": "custom",
     "scraper": "scrape_schattdorf",
     "priority": 1
+  },
+  {
+    "name": "Gemeinde Bürglen",
+    "source_name": "buerglen.ch",
+    "url": "https://www.buerglen.ch/anlaesseaktuelles",
+    "base_url": "https://www.buerglen.ch/anlaesseaktuelles",
+    "type": "custom",
+    "scraper": "scrape_buerglen",
+    "priority": 1
   }
 ]
