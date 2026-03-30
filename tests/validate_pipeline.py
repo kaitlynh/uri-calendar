@@ -25,9 +25,7 @@ Checks (DB):
   19. AI enrichment — some events have ai_flag = true
   20. No duplicate events in DB (title + date)
 
-Checks (API):
-  21. /api/events?date=<today> returns 200
-  22. /api/sources returns 200 with source data
+API checks run separately on the server — see tests/validate_api.py.
 
 Exit code 0 = all checks passed, 1 = failures found.
 Results are written to tests/test-results/ with a timestamp.
@@ -39,7 +37,6 @@ import re
 import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import urlparse
 
 # Resolve project root (works whether called from root or tests/)
 SCRIPT_DIR = Path(__file__).parent
@@ -505,8 +502,7 @@ def check_database(result, json_events=None):
         # Check for orphaned DB sources (in DB but never in JSON — stale rows)
         extra_in_db = db_source_names - json_source_names
         if extra_in_db:
-            # Only warn — some sources may be temporarily offline
-            result.warn(f"Sources in DB but not in JSON: {', '.join(sorted(extra_in_db))}")
+            result.fail(f"Orphaned sources in DB (not in JSON): {', '.join(sorted(extra_in_db))}")
         else:
             result.passed("No orphaned sources in DB")
 
@@ -539,61 +535,9 @@ def check_database(result, json_events=None):
     conn.close()
 
 
-# ─── API checks ──────────────────────────────────────────────
-
-
-def check_api(result):
-    """Check that the API is running and serving data."""
-    try:
-        import requests
-    except ImportError:
-        result.warn("requests not installed — skipping API checks")
-        return
-
-    api_base = os.getenv("API_BASE_URL", "http://localhost:5000")
-    today_str = date.today().isoformat()
-
-    # /api/events
-    try:
-        resp = requests.get(f"{api_base}/api/events?date={today_str}", timeout=5)
-        if resp.status_code == 200:
-            data = resp.json()
-            if isinstance(data, list):
-                result.passed(f"API /api/events?date={today_str} returned {len(data)} events")
-            else:
-                result.fail(f"API /api/events returned non-array: {type(data)}")
-        else:
-            result.fail(f"API /api/events returned status {resp.status_code}")
-    except requests.ConnectionError:
-        result.warn(f"API not reachable at {api_base} — skipping API checks")
-        return
-    except Exception as e:
-        result.fail(f"API /api/events error: {e}")
-
-    # /api/sources
-    try:
-        resp = requests.get(f"{api_base}/api/sources", timeout=5)
-        if resp.status_code == 200:
-            data = resp.json()
-            if isinstance(data, list) and len(data) > 0:
-                result.passed(f"API /api/sources returned {len(data)} sources")
-                # Verify each source has expected fields
-                required_fields = {"source_name", "base_url", "display_name"}
-                first = data[0]
-                missing = required_fields - set(first.keys())
-                if missing:
-                    result.warn(f"API source objects missing fields: {', '.join(missing)}")
-                else:
-                    result.passed("API source objects have expected fields")
-            else:
-                result.fail("API /api/sources returned empty or non-array")
-        else:
-            result.fail(f"API /api/sources returned status {resp.status_code}")
-    except Exception as e:
-        result.fail(f"API /api/sources error: {e}")
-
-
 # ─── Main ────────────────────────────────────────────────────
+# Note: API checks run separately on the server (tests/validate_api.py)
+# because the API is only reachable from localhost on the server.
 
 
 def main():
@@ -616,9 +560,6 @@ def main():
 
     # --- Database checks ---
     check_database(result, json_events=events)
-
-    # --- API checks ---
-    check_api(result)
 
     # --- Output ---
     report = result.summary()

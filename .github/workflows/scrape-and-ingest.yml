@@ -1,6 +1,9 @@
 name: Scrape and Ingest Events
 
 on:
+  schedule:
+    # 3:00 AM UTC = ~5:00 AM Zurich (CET) / ~4:00 AM (CEST)
+    - cron: "0 3 * * *"
   workflow_dispatch:
 
 jobs:
@@ -63,6 +66,8 @@ jobs:
     name: Validate pipeline results
     runs-on: ubuntu-latest
     needs: ingest
+    # Always run validation even if ingest fails, so we capture the state
+    if: always() && needs.scrape.result == 'success'
 
     steps:
       - uses: actions/checkout@v4
@@ -72,7 +77,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install psycopg2-binary python-dotenv
+        run: pip install psycopg2-binary python-dotenv requests
 
       - name: Download events artifact
         uses: actions/download-artifact@v4
@@ -80,23 +85,101 @@ jobs:
           name: events
           path: events/
 
-      - name: Run validation
-        id: validate
+      - name: Run pipeline validation
+        id: pipeline_validate
         env:
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
-        run: python tests/validate_pipeline.py 2>&1 | tee validation_output.txt
+        # continue-on-error so the API validation still runs
+        continue-on-error: true
+        run: python tests/validate_pipeline.py 2>&1 | tee pipeline_output.txt
 
-      - name: Create issue on failure
-        if: failure()
+      - name: Upload pipeline output
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-validation
+          path: pipeline_output.txt
+          retention-days: 7
+
+  validate-api:
+    name: Validate API on server
+    runs-on: ubuntu-latest
+    needs: [ingest, validate]
+    # Run even if validate had failures
+    if: always() && needs.ingest.result == 'success'
+
+    steps:
+      - name: Run API validation via SSH
+        id: api_validate
+        uses: appleboy/ssh-action@v1
+        continue-on-error: true
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          command_timeout: 2m
+          script: |
+            cd /opt/uri-calendar
+            git pull origin main --quiet
+            /opt/uri-calendar/scraping/.venv/bin/python tests/validate_api.py 2>&1
+
+  report:
+    name: Report results
+    runs-on: ubuntu-latest
+    needs: [validate, validate-api]
+    if: always()
+
+    steps:
+      - name: Download pipeline output
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: pipeline-validation
+          path: .
+
+      - name: Check for failures and create issue
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const output = fs.readFileSync('validation_output.txt', 'utf8');
+
+            let pipelineOutput = '';
+            try {
+              pipelineOutput = fs.readFileSync('pipeline_output.txt', 'utf8');
+            } catch (e) {
+              pipelineOutput = '(pipeline validation output not available)';
+            }
+
+            // Check if any upstream job failed
+            const validateResult = '${{ needs.validate.result }}';
+            const apiResult = '${{ needs.validate-api.result }}';
+            const pipelineStepResult = '${{ needs.validate.outputs.pipeline_validate_outcome || 'unknown' }}';
+
+            const hasPipelineFailure = pipelineOutput.includes('[FAIL]');
+            const hasApiFailure = apiResult === 'failure';
+            const hasAnyFailure = hasPipelineFailure || hasApiFailure || validateResult === 'failure' || apiResult === 'failure';
+
+            if (!hasAnyFailure) {
+              console.log('All checks passed — no issue needed.');
+              return;
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Pipeline validation failed — ${new Date().toISOString().split('T')[0]}`,
-              body: `The scrape-and-ingest pipeline validation failed.\n\n\`\`\`\n${output}\n\`\`\`\n\nTriggered by workflow run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              labels: ['bug']
+              title: `Pipeline validation failed — ${today}`,
+              body: [
+                '## Pipeline Validation (GitHub Actions)',
+                '```',
+                pipelineOutput,
+                '```',
+                '',
+                `## API Validation (server-side)`,
+                `See the [workflow run log](${runUrl}) → "Validate API on server" step for full output.`,
+                '',
+                `**Triggered by:** [workflow run](${runUrl})`,
+              ].join('\n'),
+              labels: ['pipeline-failure']
             });
