@@ -371,7 +371,11 @@ const App: Component = () => {
 
         <h2 class="text-base font-semibold mb-2">ℹ️ Über</h2>
         <p class="text-sm text-[var(--text-muted)] leading-relaxed">
-          Diese Seite sammelt automatisch Veranstaltungen aus den oben aufgeführten Quellen im Kanton Uri. Einträge mit dem Hinweis <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium px-1.5 py-0.5 rounded-md bg-[var(--border-color)] text-[var(--text-muted)]">✨ KI-ergänzt</span> wurden mithilfe von künstlicher Intelligenz ergänzt.
+          Diese Seite sammelt automatisch Veranstaltungen aus den oben aufgeführten Quellen im Kanton Uri. Für verbindliche Angaben zu Veranstaltungen gelten die Originalwebseiten der jeweiligen Quellen.
+          <br /><br />
+          Einträge mit dem Hinweis <span class="inline-flex items-center gap-1 text-[0.7rem] font-medium px-1.5 py-0.5 rounded-md bg-[var(--border-color)] text-[var(--text-muted)]">✨ KI-ergänzt</span>{' '}wurden mithilfe von künstlicher Intelligenz ergänzt.
+          <br /><br />
+          Wir fügen laufend neue Quellen hinzu und hoffen, dass diese Seite für die Region nützlich wird.
         </p>
 
         <hr class="border-t border-[var(--border-color)] my-6" />
@@ -408,7 +412,7 @@ const App: Component = () => {
 
         {/* ── Left column: Sidebar (desktop only) ── */}
         <aside class="w-[280px] shrink-0 max-md:hidden">
-          <div class="sticky top-8 bg-[var(--card-bg)] p-6 rounded-xl shadow-sm border border-[var(--border-color)]">
+          <div class="sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto bg-[var(--card-bg)] p-6 rounded-xl shadow-sm border border-[var(--border-color)]">
             <SidebarContent />
           </div>
         </aside>
