@@ -61,6 +61,14 @@ jobs:
           name: events
           path: events/
 
+      - name: Open SSH tunnel to database
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -f -N -L 5432:localhost:5432 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}
+
       - name: Ingest into database
         env:
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
@@ -88,6 +96,14 @@ jobs:
         with:
           name: events
           path: events/
+
+      - name: Open SSH tunnel to database
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -f -N -L 5432:localhost:5432 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}
 
       - name: Run pipeline validation
         id: pipeline_validate
