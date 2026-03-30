@@ -142,5 +142,14 @@
     "type": "custom",
     "scraper": "scrape_silenen",
     "priority": 1
+  },
+  {
+    "name": "Gemeinde Attinghausen",
+    "source_name": "attinghausen.ch",
+    "url": "https://www.attinghausen.ch/index.php/portrait/terminkalender",
+    "base_url": "https://www.attinghausen.ch/index.php/portrait/terminkalender",
+    "type": "custom",
+    "scraper": "scrape_attinghausen",
+    "priority": 1
   }
 ]
