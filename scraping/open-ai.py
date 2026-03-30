@@ -28,6 +28,17 @@ with open(os.path.join(os.path.dirname(__file__), "..", "template_data_ai.json")
 today = datetime.datetime.now().strftime("%Y-%m-%d")
 
 events_path = os.path.join(os.path.dirname(__file__), "..", "events", "events.json")
+ai_status_path = os.path.join(os.path.dirname(__file__), "..", "events", "ai_status.json")
+
+def write_status(status, message, events_added=0):
+    """Write AI enrichment status for the validation script to read."""
+    with open(ai_status_path, "w", encoding="utf-8") as f:
+        json.dump({
+            "status": status,
+            "message": message,
+            "events_added": events_added,
+            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        }, f)
 
 # --- Helper: clean markdown ---
 def extract_json(text: str):
@@ -66,12 +77,18 @@ FORMATTING:
 
 # --- API call ---
 log.info("sending request to OpenAI (web_search enabled)")
-response = client.responses.create(
-    model="gpt-5",
-    tools=[{"type": "web_search"}],
-    instructions="You are a strict JSON generator. Any deviation from valid JSON is a failure.",
-    input=prompt,
-)
+try:
+    response = client.responses.create(
+        model="gpt-5",
+        tools=[{"type": "web_search"}],
+        instructions="You are a strict JSON generator. Any deviation from valid JSON is a failure.",
+        input=prompt,
+    )
+except Exception as e:
+    error_msg = f"OpenAI API call failed: {e}"
+    log.error(error_msg)
+    write_status("error", error_msg)
+    raise SystemExit(1)
 
 raw_output = response.output_text
 cleaned = extract_json(raw_output)
@@ -83,6 +100,7 @@ try:
     log.info("parsed %d events from AI response", len(parsed))
 except json.JSONDecodeError:
     log.error("JSON parsing failed\nRAW: %s\nCLEANED: %s", raw_output, cleaned)
+    write_status("error", "AI response was not valid JSON")
     parsed = []
 
 # --- Merge into events.json ---
@@ -116,5 +134,7 @@ if parsed:
         json.dump(merged, f, ensure_ascii=False, indent=2)
 
     log.info("%d new AI events added (%d dupes skipped) → %s", len(new_events), len(parsed) - len(new_events), events_path)
+    write_status("ok", f"{len(new_events)} new events added, {len(parsed) - len(new_events)} dupes skipped", len(new_events))
 else:
     log.info("no AI events found")
+    write_status("ok", "No new AI events found", 0)

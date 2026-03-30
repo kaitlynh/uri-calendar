@@ -21,13 +21,17 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4 feedparser openai python-dotenv
 
-      - name: Run scraper
+      - name: Run scrapers
+        env:
+          EVENTFROG_API_KEY: ${{ secrets.EVENTFROG_API_KEY }}
+        run: python scraping/scraping.py
+
+      - name: Run AI enrichment
+        # Optional — events are usable without AI. Don't block the pipeline.
+        continue-on-error: true
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EVENTFROG_API_KEY: ${{ secrets.EVENTFROG_API_KEY }}
-        run: |
-          python scraping/scraping.py
-          python scraping/open-ai.py
+        run: python scraping/open-ai.py
 
       - name: Upload events artifact
         uses: actions/upload-artifact@v4

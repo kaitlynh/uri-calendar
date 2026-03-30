@@ -508,11 +508,26 @@ def check_database(result, json_events=None):
 
     # --- AI enrichment ---
 
+    # Check ai_status.json for specific error info (written by open-ai.py)
+    ai_status_file = PROJECT_ROOT / "events" / "ai_status.json"
+    if ai_status_file.exists():
+        try:
+            with open(ai_status_file) as f:
+                ai_status = json.load(f)
+            if ai_status.get("status") == "error":
+                result.warn(f"AI enrichment failed: {ai_status.get('message', 'unknown error')}")
+            else:
+                result.passed(f"AI enrichment ran: {ai_status.get('message', 'ok')}")
+        except (json.JSONDecodeError, KeyError):
+            result.warn("AI status file exists but is unreadable")
+    else:
+        result.warn("AI status file not found — AI enrichment may not have run")
+
     cur.execute("SELECT count(*) FROM events WHERE ai_flag = true")
     ai_count = cur.fetchone()[0]
-    if ai_count == 0:
-        result.warn("No events have ai_flag = true — AI enrichment may not have run")
-    else:
+    if ai_count == 0 and not ai_status_file.exists():
+        result.warn("No events have ai_flag = true")
+    elif ai_count > 0:
         ai_pct = (ai_count / db_event_count * 100) if db_event_count > 0 else 0
         result.passed(f"{ai_count} events ({ai_pct:.0f}%) have ai_flag = true")
 
