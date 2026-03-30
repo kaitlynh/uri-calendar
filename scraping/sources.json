@@ -133,5 +133,14 @@
     "type": "custom",
     "scraper": "scrape_erstfeld",
     "priority": 1
+  },
+  {
+    "name": "Einwohnergemeinde Silenen Amsteg Bristen",
+    "source_name": "silenen.ch",
+    "url": "https://silenen.ch/veranstaltungen",
+    "base_url": "https://silenen.ch/veranstaltungen",
+    "type": "custom",
+    "scraper": "scrape_silenen",
+    "priority": 1
   }
 ]
