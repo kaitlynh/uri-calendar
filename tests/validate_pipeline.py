@@ -1,14 +1,33 @@
 """
 Post-pipeline validation for the uri-calendar scraping + ingest pipeline.
 
-Checks:
-  1. events.json exists, is valid JSON, and contains events
-  2. Every source in sources.json produced at least 1 event
-  3. All events have required fields with correct formats
-  4. No duplicate events (title + date + time)
-  5. Database connection works (if DB_CONNECTION_STRING is available)
-  6. Database sources table has consistent source_name / base_url formats
-  7. Every DB source has at least 1 event
+Checks (JSON):
+  1.  events.json exists, is valid JSON, and contains events
+  2.  Every event has required fields (source_name, base_url, event_title, start_date)
+  3.  source_name is a bare domain (no www., https://, or path)
+  4.  base_url starts with https://
+  5.  start_date is valid YYYY-MM-DD
+  6.  source_url is non-empty on every event
+  7.  No duplicate events (title + date + time)
+  8.  Every configured source produced at least 1 event
+  9.  No dates far in the past (>1 year) or absurdly far in the future (>2 years)
+  10. Event titles are non-empty, not too long, and don't contain HTML tags
+  11. Per-source description/location fill rate
+
+Checks (DB):
+  12. Database connection works
+  13. Sources table has rows, formats are correct
+  14. Every DB source has at least 1 event
+  15. Future events exist
+  16. Ingest freshness — events with extracted_at in the last hour
+  17. JSON ↔ DB event count consistency
+  18. DB sources match JSON sources (no orphans, no missing)
+  19. AI enrichment — some events have ai_flag = true
+  20. No duplicate events in DB (title + date)
+
+Checks (API):
+  21. /api/events?date=<today> returns 200
+  22. /api/sources returns 200 with source data
 
 Exit code 0 = all checks passed, 1 = failures found.
 Results are written to tests/test-results/ with a timestamp.
@@ -18,8 +37,9 @@ import json
 import os
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from urllib.parse import urlparse
 
 # Resolve project root (works whether called from root or tests/)
 SCRIPT_DIR = Path(__file__).parent
@@ -34,6 +54,10 @@ try:
     load_dotenv(dotenv_path=PROJECT_ROOT / ".env")
 except ImportError:
     pass
+
+# HTML tag pattern for detecting leaked markup
+HTML_TAG_RE = re.compile(r"<[a-zA-Z/][^>]*>")
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 class ValidationResult:
@@ -83,6 +107,9 @@ class ValidationResult:
         return "\n".join(lines)
 
 
+# ─── JSON checks ─────────────────────────────────────────────
+
+
 def check_events_file(result):
     """Check that events.json exists, is valid, and has events."""
     if not EVENTS_FILE.exists():
@@ -117,7 +144,6 @@ def check_required_fields(events, result):
         for field in required:
             val = event.get(field)
             if val is None or (isinstance(val, str) and val.strip() == ""):
-                key = f"{field} (e.g. event #{i}: {event.get('event_title', '???')!r})"
                 missing_counts[field] = missing_counts.get(field, 0) + 1
 
     if missing_counts:
@@ -157,17 +183,30 @@ def check_base_url_format(events, result):
 
 def check_date_format(events, result):
     """Check that start_date is YYYY-MM-DD."""
-    date_re = re.compile(r"^\d{4}-\d{2}-\d{2}$")
     bad_count = 0
     for event in events:
         d = event.get("start_date")
-        if d and not date_re.match(d):
+        if d and not DATE_RE.match(d):
             bad_count += 1
 
     if bad_count:
         result.fail(f"{bad_count} events have invalid start_date format (expected YYYY-MM-DD)")
     else:
         result.passed("All start_date values are valid YYYY-MM-DD")
+
+
+def check_source_url(events, result):
+    """Check that every event has a non-empty source_url."""
+    missing = 0
+    for event in events:
+        val = event.get("source_url")
+        if not val or (isinstance(val, str) and val.strip() == ""):
+            missing += 1
+
+    if missing:
+        result.fail(f"{missing} events have empty or missing source_url")
+    else:
+        result.passed("All events have a non-empty source_url")
 
 
 def check_duplicates(events, result):
@@ -182,9 +221,119 @@ def check_duplicates(events, result):
             seen[key] = True
 
     if dupes:
-        result.warn(f"{dupes} duplicate events (same title + date + time)")
+        result.warn(f"{dupes} duplicate events in JSON (same title + date + time)")
     else:
-        result.passed("No duplicate events")
+        result.passed("No duplicate events in JSON")
+
+
+def check_date_sanity(events, result):
+    """Check for dates far in the past or absurdly far in the future."""
+    today = date.today()
+    one_year_ago = today - timedelta(days=365)
+    two_years_ahead = today + timedelta(days=730)
+
+    old_count = 0
+    future_count = 0
+    old_examples = []
+    future_examples = []
+
+    for event in events:
+        d = event.get("start_date")
+        if not d or not DATE_RE.match(d):
+            continue
+        try:
+            event_date = date.fromisoformat(d)
+        except ValueError:
+            continue
+
+        if event_date < one_year_ago:
+            old_count += 1
+            if len(old_examples) < 3:
+                old_examples.append(f"{event.get('event_title', '???')!r} ({d})")
+        elif event_date > two_years_ahead:
+            future_count += 1
+            if len(future_examples) < 3:
+                future_examples.append(f"{event.get('event_title', '???')!r} ({d})")
+
+    if old_count:
+        examples = "; ".join(old_examples)
+        result.warn(f"{old_count} events have start_date > 1 year in the past — e.g. {examples}")
+    else:
+        result.passed("No events with start_date > 1 year in the past")
+
+    if future_count:
+        examples = "; ".join(future_examples)
+        result.warn(f"{future_count} events have start_date > 2 years in the future — e.g. {examples}")
+    else:
+        result.passed("No events with start_date > 2 years in the future")
+
+
+def check_title_quality(events, result):
+    """Check event titles for emptiness, excessive length, or HTML tags."""
+    empty_count = 0
+    long_count = 0
+    html_count = 0
+    html_examples = []
+
+    for event in events:
+        title = event.get("event_title", "")
+        if not title or not title.strip():
+            empty_count += 1
+            continue
+        if len(title) > 300:
+            long_count += 1
+        if HTML_TAG_RE.search(title):
+            html_count += 1
+            if len(html_examples) < 3:
+                html_examples.append(title[:80])
+
+    if empty_count:
+        result.fail(f"{empty_count} events have empty titles")
+    else:
+        result.passed("No events with empty titles")
+
+    if long_count:
+        result.warn(f"{long_count} events have titles > 300 characters (possible scraping bug)")
+    else:
+        result.passed("No excessively long event titles")
+
+    if html_count:
+        examples = "; ".join(html_examples)
+        result.fail(f"{html_count} events have HTML tags in title — e.g. {examples}")
+    else:
+        result.passed("No HTML tags leaked into event titles")
+
+
+def check_field_fill_rates(events, result):
+    """Warn if a source has very low description or location fill rates."""
+    # Group events by source
+    by_source = {}
+    for event in events:
+        name = event.get("source_name", "unknown")
+        if name not in by_source:
+            by_source[name] = {"total": 0, "has_desc": 0, "has_loc": 0}
+        by_source[name]["total"] += 1
+        if event.get("description") and str(event["description"]).strip():
+            by_source[name]["has_desc"] += 1
+        if event.get("location") and str(event["location"]).strip():
+            by_source[name]["has_loc"] += 1
+
+    low_fill = []
+    for name, stats in sorted(by_source.items()):
+        total = stats["total"]
+        if total == 0:
+            continue
+        desc_pct = (stats["has_desc"] / total) * 100
+        loc_pct = (stats["has_loc"] / total) * 100
+        if desc_pct < 10:
+            low_fill.append(f"{name}: {desc_pct:.0f}% descriptions")
+        if loc_pct < 10:
+            low_fill.append(f"{name}: {loc_pct:.0f}% locations")
+
+    if low_fill:
+        result.warn(f"Low field fill rate: {'; '.join(low_fill)}")
+    else:
+        result.passed("All sources have reasonable description/location fill rates (>10%)")
 
 
 def check_per_source_events(events, result):
@@ -196,20 +345,11 @@ def check_per_source_events(events, result):
     with open(SOURCES_FILE) as f:
         sources = json.load(f)
 
-    source_names_in_config = {s["name"] for s in sources}
-    source_names_in_events = {e.get("source_name") for e in events}
-
     # Count events per source_name
     counts = {}
     for event in events:
         name = event.get("source_name", "unknown")
         counts[name] = counts.get(name, 0) + 1
-
-    # The source_name in events is a bare domain, but sources.json uses human names.
-    # We check by looking at which scraper types produced events.
-    # Simpler: just report any source_name with 0 events.
-    all_source_names = source_names_in_events
-    zero_sources = []
 
     # Map source type to expected source_name in events output
     type_to_domain = {
@@ -246,7 +386,10 @@ def check_per_source_events(events, result):
         result.passed(f"  {name}: {counts[name]} events")
 
 
-def check_database(result):
+# ─── Database checks ─────────────────────────────────────────
+
+
+def check_database(result, json_events=None):
     """Check database connection and data consistency."""
     dsn = os.getenv("DB_CONNECTION_STRING")
     if not dsn:
@@ -255,6 +398,7 @@ def check_database(result):
 
     try:
         import psycopg2
+        import psycopg2.extras
     except ImportError:
         result.warn("psycopg2 not installed — skipping database checks")
         return
@@ -267,7 +411,8 @@ def check_database(result):
         result.fail(f"Database connection failed: {e}")
         return
 
-    # Check sources table
+    # --- Sources table ---
+
     cur.execute("SELECT source_name, base_url FROM sources ORDER BY source_name")
     sources = cur.fetchall()
 
@@ -276,29 +421,30 @@ def check_database(result):
     else:
         result.passed(f"Sources table has {len(sources)} rows")
 
-    # Check source_name format in DB
+    # source_name format
     bad_names = [name for name, _ in sources if name.startswith("http") or name.startswith("www.") or "/" in name]
     if bad_names:
         result.fail(f"DB source_name not bare domain: {', '.join(bad_names)}")
     else:
         result.passed("DB source_name values are all bare domains")
 
-    # Check base_url format in DB
+    # base_url format
     bad_urls = [url for _, url in sources if not url.startswith("https://")]
     if bad_urls:
         result.fail(f"DB base_url missing https://: {', '.join(bad_urls)}")
     else:
         result.passed("DB base_url values all start with https://")
 
-    # Check total event count
+    # --- Events table ---
+
     cur.execute("SELECT count(*) FROM events")
-    event_count = cur.fetchone()[0]
-    if event_count == 0:
+    db_event_count = cur.fetchone()[0]
+    if db_event_count == 0:
         result.fail("Events table is empty")
     else:
-        result.passed(f"Events table has {event_count} rows")
+        result.passed(f"Events table has {db_event_count} rows")
 
-    # Check per-source event counts in DB
+    # Per-source event counts in DB
     cur.execute("""
         SELECT s.source_name, s.display_name, count(e.event_id) as cnt
         FROM sources s
@@ -306,29 +452,154 @@ def check_database(result):
         GROUP BY s.source_id, s.source_name, s.display_name
         ORDER BY s.source_name
     """)
+    db_source_counts = {}
     for source_name, display_name, cnt in cur.fetchall():
+        db_source_counts[source_name] = cnt
         label = display_name or source_name
         if cnt == 0:
-            result.fail(f"DB: 0 events for source '{label}' ({source_name})")
+            result.fail(f"  DB: 0 events for source '{label}' ({source_name})")
         else:
             result.passed(f"  DB: {source_name}: {cnt} events")
 
-    # Check for events with future dates (sanity check — should have some)
+    # Future events exist
     cur.execute("SELECT count(*) FROM events WHERE start_date >= CURRENT_DATE")
     future_count = cur.fetchone()[0]
     if future_count == 0:
         result.warn("No future events in database — all events are in the past")
     else:
-        result.passed(f"{future_count} events are today or in the future")
+        result.passed(f"{future_count} DB events are today or in the future")
+
+    # Ingest freshness — events with extracted_at in the last hour
+    cur.execute("""
+        SELECT count(*) FROM events
+        WHERE extracted_at >= NOW() - INTERVAL '1 hour'
+    """)
+    recent_count = cur.fetchone()[0]
+    if recent_count == 0:
+        result.fail("DB ingest may have failed — no events with extracted_at in the last hour")
+    else:
+        result.passed(f"DB ingest confirmed — {recent_count} events updated in the last hour")
+
+    # --- JSON ↔ DB consistency ---
+
+    if json_events is not None:
+        json_count = len(json_events)
+        # DB should have at least as many events as the JSON (DB accumulates over time)
+        if db_event_count < json_count:
+            result.fail(
+                f"DB has fewer events ({db_event_count}) than JSON ({json_count}) "
+                f"— ingest may have failed or skipped events"
+            )
+        else:
+            result.passed(f"DB event count ({db_event_count}) >= JSON event count ({json_count})")
+
+        # Check that every source_name in JSON exists in the DB
+        json_source_names = {e.get("source_name") for e in json_events if e.get("source_name")}
+        db_source_names = {name for name, _ in sources}
+        missing_in_db = json_source_names - db_source_names
+        if missing_in_db:
+            result.fail(f"Sources in JSON but not in DB: {', '.join(sorted(missing_in_db))}")
+        else:
+            result.passed("All JSON source_names exist in DB sources table")
+
+        # Check for orphaned DB sources (in DB but never in JSON — stale rows)
+        extra_in_db = db_source_names - json_source_names
+        if extra_in_db:
+            # Only warn — some sources may be temporarily offline
+            result.warn(f"Sources in DB but not in JSON: {', '.join(sorted(extra_in_db))}")
+        else:
+            result.passed("No orphaned sources in DB")
+
+    # --- AI enrichment ---
+
+    cur.execute("SELECT count(*) FROM events WHERE ai_flag = true")
+    ai_count = cur.fetchone()[0]
+    if ai_count == 0:
+        result.warn("No events have ai_flag = true — AI enrichment may not have run")
+    else:
+        ai_pct = (ai_count / db_event_count * 100) if db_event_count > 0 else 0
+        result.passed(f"{ai_count} events ({ai_pct:.0f}%) have ai_flag = true")
+
+    # --- DB duplicates ---
+
+    cur.execute("""
+        SELECT event_title, start_date, count(*) as cnt
+        FROM events
+        GROUP BY event_title, start_date
+        HAVING count(*) > 1
+    """)
+    db_dupes = cur.fetchall()
+    if db_dupes:
+        # This shouldn't happen because of the unique constraint, but check anyway
+        result.fail(f"{len(db_dupes)} duplicate title+date combinations in DB (unique constraint may be broken)")
+    else:
+        result.passed("No duplicate events in DB (title + date)")
 
     cur.close()
     conn.close()
 
 
+# ─── API checks ──────────────────────────────────────────────
+
+
+def check_api(result):
+    """Check that the API is running and serving data."""
+    try:
+        import requests
+    except ImportError:
+        result.warn("requests not installed — skipping API checks")
+        return
+
+    api_base = os.getenv("API_BASE_URL", "http://localhost:5000")
+    today_str = date.today().isoformat()
+
+    # /api/events
+    try:
+        resp = requests.get(f"{api_base}/api/events?date={today_str}", timeout=5)
+        if resp.status_code == 200:
+            data = resp.json()
+            if isinstance(data, list):
+                result.passed(f"API /api/events?date={today_str} returned {len(data)} events")
+            else:
+                result.fail(f"API /api/events returned non-array: {type(data)}")
+        else:
+            result.fail(f"API /api/events returned status {resp.status_code}")
+    except requests.ConnectionError:
+        result.warn(f"API not reachable at {api_base} — skipping API checks")
+        return
+    except Exception as e:
+        result.fail(f"API /api/events error: {e}")
+
+    # /api/sources
+    try:
+        resp = requests.get(f"{api_base}/api/sources", timeout=5)
+        if resp.status_code == 200:
+            data = resp.json()
+            if isinstance(data, list) and len(data) > 0:
+                result.passed(f"API /api/sources returned {len(data)} sources")
+                # Verify each source has expected fields
+                required_fields = {"source_name", "base_url", "display_name"}
+                first = data[0]
+                missing = required_fields - set(first.keys())
+                if missing:
+                    result.warn(f"API source objects missing fields: {', '.join(missing)}")
+                else:
+                    result.passed("API source objects have expected fields")
+            else:
+                result.fail("API /api/sources returned empty or non-array")
+        else:
+            result.fail(f"API /api/sources returned status {resp.status_code}")
+    except Exception as e:
+        result.fail(f"API /api/sources error: {e}")
+
+
+# ─── Main ────────────────────────────────────────────────────
+
+
 def main():
     result = ValidationResult()
 
-    # --- File checks ---
+    # --- JSON file checks ---
     events = check_events_file(result)
 
     if events:
@@ -336,11 +607,18 @@ def main():
         check_source_name_format(events, result)
         check_base_url_format(events, result)
         check_date_format(events, result)
+        check_source_url(events, result)
         check_duplicates(events, result)
+        check_date_sanity(events, result)
+        check_title_quality(events, result)
+        check_field_fill_rates(events, result)
         check_per_source_events(events, result)
 
     # --- Database checks ---
-    check_database(result)
+    check_database(result, json_events=events)
+
+    # --- API checks ---
+    check_api(result)
 
     # --- Output ---
     report = result.summary()
