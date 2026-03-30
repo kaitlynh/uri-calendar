@@ -34,7 +34,16 @@ This step is non-fatal — if the API key is missing or the call fails, the pipe
 
 ### Deduplication and Priority
 
-Events are deduplicated by **title + date + time**. When duplicates exist across sources, the event with the **lower `priority` number wins** (priority 1 beats priority 2). This matters for aggregate sources like Urner Wochenblatt that republish events from other sources — the original source (e.g. Kantonsbibliothek, priority 1) is preferred over the aggregator (priority 2).
+Events are deduplicated by **title + date + time**. When duplicates exist across sources, the event with the **lower `priority` number wins**. Priority levels:
+
+| Priority | Category | Example |
+|----------|----------|---------|
+| 1 | Organisations & Schulen | kbu.ch, musikschule-uri.ch, schule-altdorf.ch |
+| 3 | Gemeinden | altdorf.ch, schattdorf.ch, flueelen.ch |
+| 4 | Zeitungen | urnerwochenblatt.ch |
+| 5 | Aggregatoren | eventfrog.ch, uri.swiss |
+
+This means the original source (e.g. Kantonsbibliothek, priority 1) is preferred over a town calendar (priority 3), which is preferred over a newspaper (priority 4) or aggregator (priority 5).
 
 ### DB Ingest (`db/parse_json.py`)
 

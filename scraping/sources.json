@@ -7,7 +7,7 @@
     "type": "custom",
     "scraper": "scrape_urnerwochenblatt",
     "weeks": 4,
-    "priority": 2
+    "priority": 4
   },
   {
     "name": "Kantonsbibliothek Uri",
@@ -42,7 +42,7 @@
     "base_url": "https://www.altdorf.ch/anlaesseaktuelles",
     "type": "custom",
     "scraper": "scrape_altdorf",
-    "priority": 2
+    "priority": 3
   },
   {
     "name": "Gemeinde Andermatt",
@@ -51,7 +51,7 @@
     "base_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131",
     "type": "custom",
     "scraper": "scrape_andermatt",
-    "priority": 2
+    "priority": 3
   },
   {
     "name": "Eventfrog",
@@ -60,7 +60,7 @@
     "base_url": "https://eventfrog.ch/de/events.html?searchTerm=uri",
     "type": "custom",
     "scraper": "scrape_eventfrog",
-    "priority": 2
+    "priority": 5
   },
   {
     "name": "Uri Tourismus",
@@ -69,7 +69,7 @@
     "base_url": "https://uri.swiss",
     "type": "custom",
     "scraper": "scrape_myswitzerland",
-    "priority": 2
+    "priority": 5
   },
   {
     "name": "Floorball Uri",
@@ -96,7 +96,7 @@
     "base_url": "https://schattdorf.ch/erleben/veranstaltungen",
     "type": "custom",
     "scraper": "scrape_schattdorf",
-    "priority": 1
+    "priority": 3
   },
   {
     "name": "Gemeinde Bürglen",
@@ -105,7 +105,7 @@
     "base_url": "https://www.buerglen.ch/anlaesseaktuelles",
     "type": "custom",
     "scraper": "scrape_buerglen",
-    "priority": 1
+    "priority": 3
   },
   {
     "name": "Gemeinde Flüelen",
@@ -114,7 +114,7 @@
     "base_url": "https://flueelen.ch/index.php/terminkalender-gemeinde",
     "type": "custom",
     "scraper": "scrape_flueelen",
-    "priority": 1
+    "priority": 3
   },
   {
     "name": "Gemeinde Seedorf",
@@ -123,6 +123,6 @@
     "base_url": "https://www.seedorf-uri.ch/portrait/veranstaltungen",
     "type": "custom",
     "scraper": "scrape_seedorf",
-    "priority": 1
+    "priority": 3
   }
 ]
