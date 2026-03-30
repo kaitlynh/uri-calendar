@@ -151,5 +151,14 @@
     "type": "custom",
     "scraper": "scrape_attinghausen",
     "priority": 3
+  },
+  {
+    "name": "OL KTV Altdorf",
+    "source_name": "olg-ktv-altdorf.ch",
+    "url": "https://olg-ktv-altdorf.ch",
+    "base_url": "https://olg-ktv-altdorf.ch",
+    "type": "custom",
+    "scraper": "scrape_olg_ktv",
+    "priority": 1
   }
 ]

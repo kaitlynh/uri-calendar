@@ -99,6 +99,7 @@ Place these in `.env` at the project root. On the server, the scheduled GitHub A
 | Uri Tourismus | uri.swiss | custom | 2 |
 | Floorball Uri | floorballuri.ch | custom | 1 |
 | Volley Uri | volleyuri.ch | custom | 1 |
+| OL KTV Altdorf | olg-ktv-altdorf.ch | custom | 1 |
 
 ---
 
