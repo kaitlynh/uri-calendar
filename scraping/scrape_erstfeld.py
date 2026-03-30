@@ -84,6 +84,13 @@ def fetch_events() -> list:
             continue
 
         title = title_el.get_text(strip=True)
+        # Organizer is the text after <br> in the same <p>
+        p_el = card.select_one(".event-titel p")
+        if p_el:
+            # Get all text nodes after the <b> tag
+            organizer = p_el.get_text(strip=True).replace(title, '', 1).strip()
+            if organizer:
+                title = f"{title} | {organizer}"
         day_str = day_el.get_text(strip=True)
         month_str = month_el.get_text(strip=True)
         time_str = time_el.get_text(strip=True) if time_el else ""
