@@ -115,5 +115,14 @@
     "type": "custom",
     "scraper": "scrape_flueelen",
     "priority": 1
+  },
+  {
+    "name": "Gemeinde Seedorf",
+    "source_name": "seedorf-uri.ch",
+    "url": "https://www.seedorf-uri.ch/index.php?option=com_dpcalendar&view=events&format=raw&limit=0&Itemid=175",
+    "base_url": "https://www.seedorf-uri.ch/portrait/veranstaltungen",
+    "type": "custom",
+    "scraper": "scrape_seedorf",
+    "priority": 1
   }
 ]
