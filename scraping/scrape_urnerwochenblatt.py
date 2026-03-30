@@ -163,7 +163,7 @@ def parse_events_from_html(html: str) -> list[dict]:
     return events
 
 
-def fetch_events(base_url: str = BASE_URL, weeks: int = 4) -> list[dict]:
+def fetch_events(url: str = BASE_URL, weeks: int = 4) -> list[dict]:
     """
     Fetch events from urnerwochenblatt.ch, iterating week by week.
     weeks: how many weeks ahead to fetch
@@ -174,10 +174,10 @@ def fetch_events(base_url: str = BASE_URL, weeks: int = 4) -> list[dict]:
     current = datetime.strptime(start_date, "%d.%m.%Y")
     for _ in range(weeks):
         date_str = current.strftime("%d.%m.%Y")
-        url = f"{base_url}?d={date_str}&s="
-        log.info("fetching %s", url)
+        fetch_url = f"{url}?d={date_str}&s="
+        log.info("fetching %s", fetch_url)
         try:
-            resp = requests.get(url, headers=HEADERS, timeout=15, verify=False)
+            resp = requests.get(fetch_url, headers=HEADERS, timeout=15, verify=False)
             if resp.status_code == 200:
                 events = parse_events_from_html(resp.text)
                 for event in events:

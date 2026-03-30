@@ -7,7 +7,7 @@ VENV_DIR="$(dirname "$0")/.venv"
 if [ ! -d "$VENV_DIR" ]; then
     echo "Creating virtual environment..."
     python3 -m venv "$VENV_DIR"
-    "$VENV_DIR/bin/pip" install --quiet requests beautifulsoup4 feedparser openai python-dotenv
+    "$VENV_DIR/bin/pip" install --quiet requests beautifulsoup4 feedparser openai python-dotenv psycopg2-binary
 fi
 
 # Run from the project root so sources.json path resolves correctly

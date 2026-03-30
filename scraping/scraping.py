@@ -1,5 +1,9 @@
+import importlib
+import inspect
 import json
 import logging
+import os
+import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from typing import Optional
@@ -15,6 +19,9 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 log = logging.getLogger(__name__)
+
+# Ensure scraping/ is on the import path so custom scraper modules resolve
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 ########################
 # Data Classes
@@ -44,7 +51,7 @@ def load_sources(path: str = "scraping/sources.json") -> list[dict]:
 
 
 ########################
-# Scrapers
+# Built-in Scrapers
 ########################
 
 
@@ -55,6 +62,9 @@ def scrape_static(source: dict, extracted_at: str) -> list[Event]:
     soup = BeautifulSoup(res.text, "html.parser")
     events = []
 
+    source_name = source.get("source_name") or source.get("name")
+    base_url = source.get("base_url") or source["url"]
+
     for item in soup.select(sel.get("container", ".event")):
         title_el = item.select_one(sel.get("title", "h3"))
         date_el = item.select_one(sel.get("date", "time"))
@@ -64,9 +74,9 @@ def scrape_static(source: dict, extracted_at: str) -> list[Event]:
 
         events.append(
             Event(
-                source_name=source.get("name"),
+                source_name=source_name,
                 source_url=link_el["href"] if link_el else source["url"],
-                base_url=source["url"],
+                base_url=base_url,
                 event_title=title_el.text.strip() if title_el else "",
                 start_date=date_el.get("datetime", date_el.text.strip())
                 if date_el
@@ -86,6 +96,9 @@ def scrape_rss(source: dict, extracted_at: str) -> list[Event]:
     feed = feedparser.parse(source["url"])
     events = []
 
+    source_name = source.get("source_name") or urlsplit(source["url"]).netloc
+    base_url = source.get("base_url") or source["url"]
+
     for entry in feed.entries:
         date_str = None
         if hasattr(entry, "published_parsed") and entry.published_parsed:
@@ -93,8 +106,8 @@ def scrape_rss(source: dict, extracted_at: str) -> list[Event]:
 
         events.append(
             Event(
-                source_name=urlsplit(source["url"]).netloc,
-                base_url=source["url"],
+                source_name=source_name,
+                base_url=base_url,
                 source_url=entry.get("link", source["url"]),
                 event_title=entry.get("title", ""),
                 start_date=date_str.split("T")[0] if date_str else None,
@@ -115,6 +128,9 @@ def scrape_js(source: dict, extracted_at: str) -> list[Event]:
     sel = source.get("selectors", {})
     events = []
 
+    source_name = source.get("source_name") or source.get("name")
+    base_url = source.get("base_url") or source["url"]
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -130,9 +146,9 @@ def scrape_js(source: dict, extracted_at: str) -> list[Event]:
 
         events.append(
             Event(
-                source_name=source.get("name"),
+                source_name=source_name,
                 source_url=link_el["href"] if link_el else source["url"],
-                base_url=source["url"],
+                base_url=base_url,
                 event_title=title_el.text.strip() if title_el else "",
                 start_date=date_el.get("datetime", date_el.text.strip())
                 if date_el
@@ -148,240 +164,58 @@ def scrape_js(source: dict, extracted_at: str) -> list[Event]:
     return events
 
 
-def scrape_kbu(source: dict, extracted_at: str) -> list[Event]:
-    import os
-    import sys
+########################
+# Custom Scraper Loader
+########################
 
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from scrape_kbu import _to_template as kbu_to_template
-    from scrape_kbu import fetch_events
 
-    raw = fetch_events()
+def scrape_custom(source: dict, extracted_at: str) -> list[Event]:
+    """
+    Generic loader for custom scraper modules.
+
+    Imports the module named in source["scraper"], calls its fetch_events()
+    and _to_template() functions, and builds Event objects.
+
+    source_name and base_url come from sources.json (the single source of
+    truth), overriding whatever the scraper module may return.
+
+    Any extra fields in the source config (e.g. "weeks") are passed as
+    kwargs to fetch_events() if the function signature accepts them.
+    """
+    module_name = source.get("scraper")
+    if not module_name:
+        raise ValueError(f"Custom source missing 'scraper' field: {source['name']}")
+
+    mod = importlib.import_module(module_name)
+
+    # Build kwargs: pass source config values that match fetch_events() params
+    sig = inspect.signature(mod.fetch_events)
+    kwargs = {}
+    for param_name in sig.parameters:
+        if param_name in source:
+            kwargs[param_name] = source[param_name]
+
+    raw = mod.fetch_events(**kwargs)
+
+    # source_name and base_url from config — single source of truth
+    source_name = source["source_name"]
+    base_url = source["base_url"]
+
     events = []
     for e in raw:
-        t = kbu_to_template(e, extracted_at)
+        t = mod._to_template(e, extracted_at)
         events.append(
             Event(
-                source_name=t["source_name"],
-                base_url="https://www.kbu.ch/treffpunkt/veranstaltungen/",
-                source_url=t["source_url"],
-                event_title=t["event_title"],
-                start_date=t["start_date"],
-                start_time=t["start_time"],
-                end_datetime=t["end_datetime"],
-                location=t["location"],
-                description=t["description"],
-                extracted_at=t["extracted_at"],
-                priority=source["priority"],
-            )
-        )
-    return events
-
-
-def scrape_musikschule(source: dict, extracted_at: str) -> list[Event]:
-    import os
-    import sys
-
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from scrape_musikschule import _to_template as ms_to_template
-    from scrape_musikschule import fetch_events
-
-    raw = fetch_events()
-    events = []
-    for e in raw:
-        t = ms_to_template(e, extracted_at)
-        events.append(
-            Event(
-                source_name=t["source_name"],
-                base_url="https://www.musikschule-uri.ch/events-news/",
-                source_url=t["source_url"],
-                event_title=t["event_title"],
-                start_date=t["start_date"],
-                start_time=t["start_time"],
-                end_datetime=t["end_datetime"],
-                location=t["location"],
-                description=t["description"],
-                extracted_at=t["extracted_at"],
-                priority=source["priority"],
-            )
-        )
-    return events
-
-
-def scrape_altdorf(source: dict, extracted_at: str) -> list[Event]:
-    import os
-    import sys
-
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from scrape_altdorf import _to_template as altdorf_to_template
-    from scrape_altdorf import fetch_events
-
-    raw = fetch_events()
-    events = []
-    for e in raw:
-        t = altdorf_to_template(e, extracted_at)
-        events.append(
-            Event(
-                source_name=t["source_name"],
-                base_url="https://www.altdorf.ch/anlaesseaktuelles",
-                source_url=t["source_url"],
-                event_title=t["event_title"],
-                start_date=t["start_date"],
-                start_time=t["start_time"],
-                end_datetime=t["end_datetime"],
-                location=t["location"],
-                description=t["description"],
-                extracted_at=t["extracted_at"],
-                priority=source["priority"],
-            )
-        )
-    return events
-
-
-def scrape_urnerwochenblatt(source: dict, extracted_at: str) -> list[Event]:
-    import os
-    import sys
-
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from scrape_urnerwochenblatt import _to_template as uw_to_template
-    from scrape_urnerwochenblatt import fetch_events
-
-    raw = fetch_events(base_url=source["url"], weeks=source.get("weeks", 4))
-    events = []
-    for e in raw:
-        t = uw_to_template(e, extracted_at)
-        events.append(
-            Event(
-                source_name="urnerwochenblatt.ch",
-                base_url="https://www.urnerwochenblatt.ch/veranstaltungen/",
-                source_url=t["source_url"],
-                event_title=t["event_title"],
-                start_date=t["start_date"],
-                start_time=t["start_time"],
-                end_datetime=t["end_datetime"],
-                location=t["location"],
-                description=t["description"],
-                extracted_at=t["extracted_at"],
-                priority=source["priority"],
-            )
-        )
-    return events
-
-
-def scrape_eventfrog(source: dict, extracted_at: str) -> list[Event]:
-    import os
-    import sys
-
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from scrape_eventfrog import _to_template as ef_to_template
-    from scrape_eventfrog import fetch_events
-
-    raw = fetch_events()
-    events = []
-    for e in raw:
-        t = ef_to_template(e, extracted_at)
-        events.append(
-            Event(
-                source_name=t["source_name"],
-                base_url="https://eventfrog.ch/de/events.html?searchTerm=uri",
-                source_url=t["source_url"],
-                event_title=t["event_title"],
-                start_date=t["start_date"],
-                start_time=t["start_time"],
-                end_datetime=t["end_datetime"],
-                location=t["location"],
-                description=t["description"],
-                extracted_at=t["extracted_at"],
-                priority=source["priority"],
-            )
-        )
-    return events
-
-
-def scrape_floorballuri(source: dict, extracted_at: str) -> list[Event]:
-    import os
-    import sys
-
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from scrape_floorballuri import _to_template as fu_to_template
-    from scrape_floorballuri import fetch_events
-
-    raw = fetch_events(url=source["url"])
-    events = []
-    for e in raw:
-        t = fu_to_template(e, extracted_at)
-        events.append(
-            Event(
-                source_name=t["source_name"],
-                base_url=t["base_url"],
-                source_url=t["source_url"],
-                event_title=t["event_title"],
-                start_date=t["start_date"],
-                start_time=t["start_time"],
-                end_datetime=t["end_datetime"],
-                location=t["location"],
-                description=t["description"],
-                extracted_at=t["extracted_at"],
-                priority=source["priority"],
-            )
-        )
-    return events
-
-
-def scrape_myswitzerland(source: dict, extracted_at: str) -> list[Event]:
-    import os
-    import sys
-
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from scrape_myswitzerland import _to_template as ms_to_template
-    from scrape_myswitzerland import fetch_events
-
-    raw = fetch_events()
-    events = []
-    for e in raw:
-        t = ms_to_template(e, extracted_at)
-        events.append(
-            Event(
-                source_name=t["source_name"],
-                base_url=t["base_url"],
-                source_url=t["source_url"],
-                event_title=t["event_title"],
-                start_date=t["start_date"],
-                start_time=t["start_time"],
-                end_datetime=t["end_datetime"],
-                location=t["location"],
-                description=t["description"],
-                extracted_at=t["extracted_at"],
-                priority=source["priority"],
-            )
-        )
-    return events
-
-
-def scrape_andermatt(source: dict, extracted_at: str) -> list[Event]:
-    import os
-    import sys
-
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from scrape_andermatt import _to_template as andermatt_to_template
-    from scrape_andermatt import fetch_events
-
-    raw = fetch_events()
-    events = []
-    for e in raw:
-        t = andermatt_to_template(e, extracted_at)
-        events.append(
-            Event(
-                source_name=t["source_name"],
-                base_url="https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131",
-                source_url=t["source_url"],
-                event_title=t["event_title"],
-                start_date=t["start_date"],
-                start_time=t["start_time"],
-                end_datetime=t["end_datetime"],
-                location=t["location"],
-                description=t["description"],
-                extracted_at=t["extracted_at"],
+                source_name=source_name,
+                base_url=base_url,
+                source_url=t.get("source_url", base_url),
+                event_title=t.get("event_title", ""),
+                start_date=t.get("start_date"),
+                start_time=t.get("start_time"),
+                end_datetime=t.get("end_datetime"),
+                location=t.get("location"),
+                description=t.get("description"),
+                extracted_at=t.get("extracted_at", extracted_at),
                 priority=source["priority"],
             )
         )
@@ -392,20 +226,13 @@ SCRAPERS = {
     "static": scrape_static,
     "rss": scrape_rss,
     "js": scrape_js,
-    "urnerwochenblatt": scrape_urnerwochenblatt,
-    "kbu": scrape_kbu,
-    "musikschule": scrape_musikschule,
-    "altdorf": scrape_altdorf,
-    "andermatt": scrape_andermatt,
-    "eventfrog": scrape_eventfrog,
-    "floorballuri": scrape_floorballuri,
-    "myswitzerland": scrape_myswitzerland,
+    "custom": scrape_custom,
 }
 
 
 def _run_scraper(
     source: dict, extracted_at: str
-) -> tuple[str, list[Event], str | None]:
+) -> tuple[str, list[Event], Optional[str]]:
     import time
 
     scraper_type = source.get("type", "static")
@@ -482,4 +309,3 @@ def collect_all_events(
 
 if __name__ == "__main__":
     collect_all_events()
-

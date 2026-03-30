@@ -348,28 +348,18 @@ def check_per_source_events(events, result):
         name = event.get("source_name", "unknown")
         counts[name] = counts.get(name, 0) + 1
 
-    # Map source type to expected source_name in events output
-    type_to_domain = {
-        "urnerwochenblatt": "urnerwochenblatt.ch",
-        "kbu": "kbu.ch",
-        "musikschule": "musikschule-uri.ch",
-        "rss": "schule-altdorf.ch",
-        "altdorf": "altdorf.ch",
-        "andermatt": "gemeinde-andermatt.ch",
-        "eventfrog": "eventfrog.ch",
-        "floorballuri": "floorballuri.ch",
-        "myswitzerland": "uri.swiss",
-    }
-
     # Sources that legitimately may have 0 events (seasonal, API key issues, etc.)
     warn_only = {"floorballuri.ch", "uri.swiss"}
 
     has_zero = False
     for source in sources:
-        expected_domain = type_to_domain.get(source["type"])
-        if expected_domain and expected_domain not in counts:
-            label = f"{source['name']} ({expected_domain})"
-            if expected_domain in warn_only:
+        source_name = source.get("source_name")
+        if not source_name:
+            result.warn(f"Source '{source['name']}' missing source_name in sources.json")
+            continue
+        if source_name not in counts:
+            label = f"{source['name']} ({source_name})"
+            if source_name in warn_only:
                 result.warn(f"0 events from source: {label}")
             else:
                 result.fail(f"0 events from source: {label}")

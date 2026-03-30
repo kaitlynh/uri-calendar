@@ -1,51 +1,74 @@
 [
- {
+  {
     "name": "Urner Wochenblatt",
+    "source_name": "urnerwochenblatt.ch",
     "url": "https://www.urnerwochenblatt.ch/veranstaltungen/",
-    "type": "urnerwochenblatt",
+    "base_url": "https://www.urnerwochenblatt.ch/veranstaltungen/",
+    "type": "custom",
+    "scraper": "scrape_urnerwochenblatt",
     "weeks": 4,
     "priority": 2
   },
   {
     "name": "Kantonsbibliothek Uri",
+    "source_name": "kbu.ch",
     "url": "https://www.kbu.ch/treffpunkt/veranstaltungen/",
-    "type": "kbu",
+    "base_url": "https://www.kbu.ch/treffpunkt/veranstaltungen/",
+    "type": "custom",
+    "scraper": "scrape_kbu",
     "priority": 1
   },
   {
     "name": "Musikschule Uri",
+    "source_name": "musikschule-uri.ch",
     "url": "https://www.musikschule-uri.ch/events-news/",
-    "type": "musikschule",
+    "base_url": "https://www.musikschule-uri.ch/events-news/",
+    "type": "custom",
+    "scraper": "scrape_musikschule",
     "priority": 1
   },
   {
     "name": "Schulen Altdorf",
+    "source_name": "schule-altdorf.ch",
     "url": "https://schule-altdorf.ch/events/feed/",
+    "base_url": "https://schule-altdorf.ch/events/feed/",
     "type": "rss",
     "priority": 1
   },
-    {
+  {
     "name": "Gemeinde Altdorf",
+    "source_name": "altdorf.ch",
     "url": "https://www.altdorf.ch/anlaesseaktuelles",
-    "type": "altdorf",
+    "base_url": "https://www.altdorf.ch/anlaesseaktuelles",
+    "type": "custom",
+    "scraper": "scrape_altdorf",
     "priority": 2
   },
   {
     "name": "Gemeinde Andermatt",
+    "source_name": "gemeinde-andermatt.ch",
     "url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131",
-    "type": "andermatt",
+    "base_url": "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131",
+    "type": "custom",
+    "scraper": "scrape_andermatt",
     "priority": 2
   },
   {
     "name": "Eventfrog",
+    "source_name": "eventfrog.ch",
     "url": "https://api.eventfrog.ch",
-    "type": "eventfrog",
+    "base_url": "https://eventfrog.ch/de/events.html?searchTerm=uri",
+    "type": "custom",
+    "scraper": "scrape_eventfrog",
     "priority": 2
   },
   {
     "name": "Floorball Uri",
+    "source_name": "floorballuri.ch",
     "url": "https://www.floorballuri.ch/meisterschaft-2025-26",
-    "type": "floorballuri",
+    "base_url": "https://www.floorballuri.ch/meisterschaft-2025-26",
+    "type": "custom",
+    "scraper": "scrape_floorballuri",
     "priority": 1
   }
 ]

@@ -1,108 +1,157 @@
 # Scraping Documentation
 
-## Overview
+## How the Pipeline Works
 
-The scraping pipeline collects events from multiple sources in Canton Uri, deduplicates them, and enriches the result with AI-powered web search. The final output is `events/events.json`, consumed by the frontend.
+`run.sh` runs four steps sequentially:
 
-## Running
+```
+1. scraping.py      → scrape all sources in parallel → events/events.json
+2. open-ai.py       → GPT web search for extra events in the next 14 days → merge into events.json
+3. db/parse_json.py → ingest events.json into PostgreSQL (upserts events, auto-creates source rows)
+4. validate_pipeline.py → checks JSON + DB consistency, fails the pipeline if something is wrong
+```
+
+Step 2 is non-fatal — if the OpenAI key is missing or the call fails, the pipeline continues.
+
+### Scraping (`scraping.py`)
+
+Loads `sources.json`, dispatches all sources in parallel via `ThreadPoolExecutor`. Each source has a `type` that determines how it's scraped:
+
+| Type | How it works |
+|---|---|
+| `custom` | Loads a Python module (named in `"scraper"` field), calls `fetch_events()` + `_to_template()` |
+| `rss` | Parses an RSS/Atom feed via `feedparser` |
+| `static` | HTTP GET + BeautifulSoup with CSS selectors from `sources.json` |
+| `js` | Playwright headless browser + BeautifulSoup (for JS-rendered pages) |
+
+Most sources use `custom`. The `static`, `rss`, and `js` types are generic — they work purely from config in `sources.json` without a dedicated scraper file.
+
+### Deduplication and Priority
+
+Events are deduplicated by **title + date + time**. When duplicates exist across sources, the event with the **lower `priority` number wins** (priority 1 beats priority 2). This matters for aggregate sources like Urner Wochenblatt that republish events from other sources — the original source (e.g. Kantonsbibliothek, priority 1) is preferred over the aggregator (priority 2).
+
+### DB Ingest (`db/parse_json.py`)
+
+Upserts events into the `events` table (matched on title + date). If a `source_name` doesn't exist in the `sources` table yet, it auto-creates a row. However, three fields must be set **manually via SQL** after the first ingest:
+
+- `display_name` — human-friendly name for the frontend filter
+- `icon_filename` — filename of the source icon in `frontend/public/source-icons/` (square PNG)
+- `category` — filter group: `Gemeinden`, `Schulen`, `Organisationen`, or `NULL`
+
+### Validation (`tests/validate_pipeline.py`)
+
+Checks that every `source_name` in `sources.json` produced at least 1 event, validates field formats, checks DB consistency, and more. Exits non-zero on failure — in CI this creates a GitHub issue.
+
+## Event Schema
+
+All scrapers normalize to this structure:
+
+| Field | Type | Description |
+|---|---|---|
+| `source_name` | string | Bare domain (e.g. `kbu.ch`) — no `www.`, no `https://` |
+| `base_url` | string | Full URL to the source's event listing page |
+| `source_url` | string | Direct link to the specific event, if it exists. Falls back to `base_url` |
+| `event_title` | string | Event title |
+| `start_date` | string? | `YYYY-MM-DD` |
+| `start_time` | string? | `HH:MM:SS` |
+| `end_datetime` | string? | ISO 8601 end datetime |
+| `location` | string? | Venue or city |
+| `description` | string? | Event description |
+| `extracted_at` | string | UTC timestamp of extraction |
+| `priority` | int | Source priority (lower = preferred in dedup) |
+
+## Environment Variables
+
+| Variable | Used by | Description |
+|---|---|---|
+| `DB_CONNECTION_STRING` | `db/parse_json.py` | PostgreSQL connection string |
+| `OPENAI_API_KEY` | `open-ai.py` | OpenAI API key for GPT web search |
+| `EVENTFROG_API_KEY` | `scrape_eventfrog.py` | Eventfrog REST API key |
+
+Place these in `.env` at the project root. On the server, the scheduled GitHub Action uses GitHub Secrets instead.
+
+## Current Sources
+
+| Name | source_name | Type | Priority |
+|---|---|---|---|
+| Urner Wochenblatt | urnerwochenblatt.ch | custom | 2 |
+| Kantonsbibliothek Uri | kbu.ch | custom | 1 |
+| Musikschule Uri | musikschule-uri.ch | custom | 1 |
+| Schulen Altdorf | schule-altdorf.ch | rss | 1 |
+| Gemeinde Altdorf | altdorf.ch | custom | 2 |
+| Gemeinde Andermatt | gemeinde-andermatt.ch | custom | 2 |
+| Eventfrog | eventfrog.ch | custom | 2 |
+| Floorball Uri | floorballuri.ch | custom | 1 |
+
+---
+
+## Adding a New Source
+
+### 1. Write the scraper module
+
+Create `scraping/scrape_<name>.py` with two required functions:
+
+```python
+def fetch_events(**kwargs) -> list:
+    """Fetch raw event data. Returns a list of whatever structure you want."""
+    ...
+
+def _to_template(event, extracted_at: str) -> dict:
+    """Convert one raw event into the standard dict with keys:
+    source_url, event_title, start_date, start_time,
+    end_datetime, location, description, extracted_at
+    """
+    ...
+```
+
+`source_name` and `base_url` are **not** set here — they come from `sources.json`.
+
+Any extra config values from `sources.json` (e.g. `"weeks": 4`) are automatically passed as kwargs to `fetch_events()` if the parameter name matches.
+
+### 2. Add entry to `sources.json`
+
+```json
+{
+  "name": "Human-Readable Name",
+  "source_name": "example.ch",
+  "url": "https://www.example.ch/events",
+  "base_url": "https://www.example.ch/events",
+  "type": "custom",
+  "scraper": "scrape_example",
+  "priority": 2
+}
+```
+
+- **`source_name`**: bare domain, no `www.` — this is the unique key everywhere
+- **`url`**: the URL to scrape
+- **`base_url`**: the URL shown to users as the source link (often same as `url`)
+- **`priority`**: 1 = original source, 2 = aggregator or secondary
+
+For `rss` sources, you don't need a scraper file — just set `"type": "rss"`.
+
+### 3. Add the source icon
+
+Place a square PNG in `frontend/public/source-icons/<source_name-without-dots>.png`.
+
+### 4. Run the pipeline and set DB fields
 
 ```bash
 bash scraping/run.sh
 ```
 
-On the first run, `run.sh` creates a Python virtual environment and installs dependencies automatically. Subsequent runs reuse the existing venv.
+The first run auto-creates the `sources` row. Then set the display fields via SQL:
 
-The two steps run sequentially (scraping must finish before the AI merge):
-
+```sql
+UPDATE sources SET
+  display_name = 'Human-Readable Name',
+  icon_filename = 'example.png',
+  category = 'Gemeinden'  -- or 'Schulen', 'Organisationen', or NULL
+WHERE source_name = 'example.ch';
 ```
-1. scraping/scraping.py   → fetch all sources → events/events.json
-2. scraping/open-ai.py    → AI web search for next 14 days → merge into events/events.json
-```
 
-## Environment Variables
+### 5. Verify
 
-| Variable | Required | Description |
-|---|---|---|
-| `DB_CONNECTION_STRING` | Yes (parse_json.py) | PostgreSQL connection string (e.g. `postgresql://user:pass@localhost:5432/db`) |
-| `OPENAI_API_KEY` | Yes (open-ai.py) | OpenAI API key for GPT-5 web search |
-| `EVENTFROG_API_KEY` | Yes (eventfrog) | Eventfrog REST API key |
-
-Place these in a `.env` file at the project root.
-
-> **Secrets on the server vs in CI:**
-> - **Scheduled GitHub Actions** (scrape-and-ingest workflow) use **GitHub Secrets** — these are injected as environment variables during the workflow run.
-> - **Manual runs on the server** (`ssh` + `bash scraping/run.sh`) use the **`.env` file** at `/opt/uri-calendar/.env`. This file is gitignored and persists across deploys.
-
----
-
-## Step 1 — Scraping (`scraping.py`)
-
-Entry point: `collect_all_events()`
-
-1. Loads source definitions from `sources.json`
-2. Dispatches all sources in parallel via `ThreadPoolExecutor`
-3. Each source runs `_run_scraper()`, which calls the matching scraper function
-4. Results are merged, deduplicated (by title + date + time), sorted by `start_date`, and written to `events/events.json`
-
-### Sources
-
-| Name | Type | File | Notes |
-|---|---|---|---|
-| Urner Wochenblatt | `urnerwochenblatt` | `scrape_urnerwochenblatt.py` | Scrapes 4 weeks of listings |
-| Kantonsbibliothek Uri | `kbu` | `scrape_kbu.py` | HTML scrape, category-mapped |
-| Musikschule Uri | `musikschule` | `scrape_musikschule.py` | HTML scrape |
-| Schulen Altdorf | `rss` | *(generic)* | RSS feed via `feedparser` |
-| Gemeinde Altdorf | `altdorf` | `scrape_altdorf.py` | JSON embedded in HTML + parallel detail page fetch |
-| Gemeinde Andermatt | `andermatt` | `scrape_andermatt.py` | HTML scrape |
-| Eventfrog | `eventfrog` | `scrape_eventfrog.py` | REST API, paginated, filtered by all Uri ZIP codes |
-
-> **Adding a new source:** When a new scraper is added, the source row is automatically
-> created in the `sources` database table during the first ingest (`db/parse_json.py`).
-> However, three fields must be set **manually** in the database afterward:
-> - `display_name` — the human-friendly name shown in the frontend filter (e.g. "Gemeinde Altdorf")
-> - `icon_filename` — the filename of the 1:1 source icon in `frontend/public/source-icons/` (e.g. "altdorf-geminde.png")
-> - `category` — the filter group: `Gemeinden`, `Schulen`, `Organisationen`, or `NULL` for ungrouped
->
-> Until these are set, the frontend will fall back to the raw `source_name` with no icon and no category grouping.
-
-### Scraper types
-
-- **`static`** — plain HTTP + BeautifulSoup CSS selectors (configured in `sources.json`)
-- **`rss`** — RSS/Atom feed via `feedparser`
-- **`js`** — JavaScript-rendered pages via Playwright (headless Chromium)
-- **Named scrapers** — custom logic per source (altdorf, kbu, musikschule, etc.)
-
-### Gemeinde Altdorf — detail page parallelism
-
-Altdorf embeds event list JSON in the page HTML but descriptions require individual detail page requests. These are fetched in parallel (up to 8 workers) to avoid serial slowdown.
-
-### Event schema
-
-All scrapers normalize events to this structure:
-
-| Field | Type | Description |
-|---|---|---|
-| `source_name` | string | Bare domain identifier (e.g. `kbu.ch`, `altdorf.ch`) — no `www.`, no `https://`, no path |
-| `base_url` | string | Full URL (with `https://`) to the source's events listing page — used as fallback link and unique key in DB |
-| `source_url` | string | Direct link to the event |
-| `event_title` | string | Title of the event |
-| `start_date` | string \| null | ISO 8601 date (`YYYY-MM-DD`) |
-| `start_time` | string \| null | Time (`HH:MM:SS`) |
-| `end_datetime` | string \| null | ISO 8601 end datetime |
-| `location` | string \| null | Venue / city |
-| `description` | string \| null | Event description |
-| `extracted_at` | string | UTC timestamp of extraction |
-
----
-
-## Step 2 — AI Enrichment (`open-ai.py`)
-
-After scraping, `open-ai.py` runs a GPT-5 web search to find additional events in Canton Uri for the **next 14 days** that may not appear in the scraped sources.
-
-1. Sends a prompt with `template_data_ai.json` (schema + examples) to GPT-5 with `web_search` tool enabled
-2. Instructs the model to return only valid JSON — no markdown, no extra text
-3. Parses the response, deduplicates against the existing `events/events.json`
-4. Appends new events and re-sorts by `start_date`
+Check the pipeline output for the new source's event count, and check `validate_pipeline.py` passes.
 
 ---
 
@@ -110,51 +159,28 @@ After scraping, `open-ai.py` runs a GPT-5 web search to find additional events i
 
 ```mermaid
 flowchart TD
-    A([Start]) --> B[load_sources<br/>sources.json]
-    B --> C[collect_all_events<br/>ThreadPoolExecutor]
+    A([run.sh]) --> B[scraping.py]
 
-    C --> |parallel| D1[_run_scraper<br/>source 1]
-    C --> |parallel| D2[_run_scraper<br/>source 2]
-    C --> |parallel| Dn[_run_scraper<br/>source N...]
+    B --> C[load sources.json]
+    C --> D[ThreadPoolExecutor]
 
-    D1 & D2 & Dn --> E{scraper type?}
+    D --> |parallel| S1[source 1]
+    D --> |parallel| S2[source 2]
+    D --> |parallel| Sn[source N...]
 
-    E --> |static| F1[scrape_static<br/>requests + BeautifulSoup]
-    E --> |rss| F2[scrape_rss<br/>feedparser]
-    E --> |js| F3[scrape_js<br/>Playwright + BeautifulSoup]
-    E --> |urnerwochenblatt| F4[scrape_urnerwochenblatt<br/>custom module]
-    E --> |kbu| F5[scrape_kbu<br/>custom module]
-    E --> |musikschule| F6[scrape_musikschule<br/>custom module]
-    E --> |altdorf| F7[scrape_altdorf<br/>custom module]
-    E --> |andermatt| F8[scrape_andermatt<br/>custom module]
-    E --> |eventfrog| F9[scrape_eventfrog<br/>custom module]
-    E --> |floorballuri| F10[scrape_floorballuri<br/>custom module]
-    E --> |myswitzerland| F11[scrape_myswitzerland<br/>custom module]
-    E --> |unknown| ERR[log warning<br/>skip source]
+    S1 & S2 & Sn --> T{type?}
 
-    F1 & F2 & F3 & F4 & F5 & F6 & F7 & F8 & F9 & F10 & F11 --> G[list of Event dataclasses]
+    T --> |custom| TC[scrape_custom<br/>dynamic import of scraper module<br/>→ fetch_events + _to_template]
+    T --> |rss| TR[scrape_rss<br/>feedparser]
+    T --> |static| TS[scrape_static<br/>requests + BeautifulSoup]
+    T --> |js| TJ[scrape_js<br/>Playwright + BeautifulSoup]
 
-    G --> H{error?}
-    H --> |yes| I[log error<br/>discard events]
-    H --> |no| J[extend all_events]
+    TC & TR & TS & TJ --> E[Event dataclasses]
+    E --> F[deduplicate + sort]
+    F --> G[events/events.json]
 
-    J --> K[sort by start_date]
-    K --> L[write events/events.json]
-
-    L --> AI1
-
-    subgraph AI ["Step 2 — AI Enrichment (open-ai.py)"]
-        AI1[load template_data_ai.json<br/>+ existing events.json]
-        AI1 --> AI2[build prompt<br/>next 14 days, Canton Uri]
-        AI2 --> AI3[GPT-5 API call<br/>web_search tool enabled]
-        AI3 --> AI4[extract & parse JSON<br/>from response]
-        AI4 --> AI5{parse OK?}
-        AI5 --> |no| AI6[log error<br/>skip merge]
-        AI5 --> |yes| AI7[deduplicate<br/>title + date + time]
-        AI7 --> AI8[mark ai_updated=true<br/>ai_updated_at=now]
-        AI8 --> AI9[merge + sort by start_date]
-        AI9 --> AI10[overwrite events/events.json]
-    end
-
-    AI10 --> Z([Done])
+    G --> AI[open-ai.py<br/>GPT web search → merge]
+    AI --> DB[db/parse_json.py<br/>upsert into PostgreSQL]
+    DB --> V[validate_pipeline.py<br/>JSON + DB checks]
+    V --> Z([Done])
 ```
