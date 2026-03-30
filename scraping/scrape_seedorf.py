@@ -21,6 +21,30 @@ def _parse_time_from_title(title: str) -> Optional[str]:
     return None
 
 
+def _parse_location_from_title(title: str) -> Optional[str]:
+    """Extract location from after the last 'Uhr' mention.
+
+    Common patterns:
+      "Event, 19.00 Uhr, Feuerwehrlokal"  → Feuerwehrlokal
+      "Event, 17.30 - 19.30 Uhr, Schützenhaus Seedorf"  → Schützenhaus Seedorf
+      "Event: 09.30 Uhr, Description, Pfarrkirche Seedorf"  → Pfarrkirche Seedorf
+    """
+    # Find the last occurrence of "Uhr" and take everything after it
+    m = re.search(r'\d{1,2}[.:]\d{2}\s*Uhr(?:\s*,\s*|\s+)(.+)$', title)
+    if not m:
+        return None
+    after_uhr = m.group(1).strip().rstrip()
+    if not after_uhr:
+        return None
+    # The location is the last comma-separated segment
+    parts = [p.strip() for p in after_uhr.split(',')]
+    location = parts[-1].strip()
+    # Skip if it looks like a description rather than a location (too long)
+    if not location or len(location) > 60:
+        return None
+    return location or None
+
+
 def _parse_description(desc_html: str) -> Optional[str]:
     """Extract description text from the DPCalendar tooltip HTML."""
     if not desc_html:
@@ -81,6 +105,8 @@ def fetch_events() -> list:
         detail_url = f"{DETAIL_BASE}{url}" if url and url.startswith("/") else url
         description = _parse_description(desc_html)
 
+        location = _parse_location_from_title(title)
+
         events.append({
             "title": title,
             "start_date": start_date,
@@ -88,6 +114,7 @@ def fetch_events() -> list:
             "end_datetime": end_datetime,
             "detail_url": detail_url or None,
             "description": description,
+            "location": location,
         })
 
     return events
@@ -100,7 +127,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
         "start_date": event["start_date"],
         "start_time": event["start_time"],
         "end_datetime": event["end_datetime"],
-        "location": None,
+        "location": event.get("location"),
         "description": event["description"],
         "extracted_at": extracted_at,
     }
