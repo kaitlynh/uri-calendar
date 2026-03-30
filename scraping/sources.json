@@ -106,5 +106,14 @@
     "type": "custom",
     "scraper": "scrape_buerglen",
     "priority": 1
+  },
+  {
+    "name": "Gemeinde Flüelen",
+    "source_name": "flueelen.ch",
+    "url": "https://flueelen.ch/index.php?option=com_dpcalendar&view=events&format=raw&limit=0&Itemid=458",
+    "base_url": "https://flueelen.ch/index.php/terminkalender-gemeinde",
+    "type": "custom",
+    "scraper": "scrape_flueelen",
+    "priority": 1
   }
 ]
