@@ -113,12 +113,16 @@ def _to_template(event: dict, extracted_at: str) -> dict:
     if event.get("end_date") and event["end_date"] != event["start_date"]:
         end_dt = event["end_date"]
 
+    title = event["title"]
+    if event.get("organisator"):
+        title = f"{title} | {event['organisator']}"
+
     return {
         "event_id": f"altdorf-{event['id']}",
         "source_name": "altdorf.ch",
         "base_url": BASE_URL,
         "source_url": event["detail_url"],
-        "event_title": event["title"],
+        "event_title": title,
         "start_date": event["start_date"],
         "start_time": None,
         "end_datetime": end_dt,
