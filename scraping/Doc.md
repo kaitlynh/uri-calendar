@@ -26,6 +26,12 @@ Loads `sources.json`, dispatches all sources in parallel via `ThreadPoolExecutor
 
 Most sources use `custom`. The `static`, `rss`, and `js` types are generic — they work purely from config in `sources.json` without a dedicated scraper file.
 
+### AI Enrichment (`open-ai.py`)
+
+After scraping, GPT-5 with `web_search` enabled searches for additional events in Canton Uri for the next 14 days that the scrapers may have missed. The response is parsed as JSON using the same event schema (`template_data_ai.json`), deduplicated against the existing events, and merged into `events.json`. New AI-found events are tagged with `ai_updated: true` and `ai_updated_at` timestamp. A status file (`events/ai_status.json`) is written for the validation script to check.
+
+This step is non-fatal — if the API key is missing or the call fails, the pipeline continues with just the scraped events.
+
 ### Deduplication and Priority
 
 Events are deduplicated by **title + date + time**. When duplicates exist across sources, the event with the **lower `priority` number wins** (priority 1 beats priority 2). This matters for aggregate sources like Urner Wochenblatt that republish events from other sources — the original source (e.g. Kantonsbibliothek, priority 1) is preferred over the aggregator (priority 2).
@@ -81,7 +87,9 @@ Place these in `.env` at the project root. On the server, the scheduled GitHub A
 | Gemeinde Altdorf | altdorf.ch | custom | 2 |
 | Gemeinde Andermatt | gemeinde-andermatt.ch | custom | 2 |
 | Eventfrog | eventfrog.ch | custom | 2 |
+| Uri Tourismus | uri.swiss | custom | 2 |
 | Floorball Uri | floorballuri.ch | custom | 1 |
+| Volley Uri | volleyuri.ch | custom | 1 |
 
 ---
 
@@ -108,6 +116,8 @@ def _to_template(event, extracted_at: str) -> dict:
 
 Any extra config values from `sources.json` (e.g. `"weeks": 4`) are automatically passed as kwargs to `fetch_events()` if the parameter name matches.
 
+**Tip:** Swiss sites often have quirky date formatting (trailing commas, `Uhr` suffix, `ca. ab` prefixes). Strip aggressively in your parse functions — see `scrape_volleyuri.py` for an example.
+
 ### 2. Add entry to `sources.json`
 
 ```json
@@ -129,15 +139,25 @@ Any extra config values from `sources.json` (e.g. `"weeks": 4`) are automaticall
 
 For `rss` sources, you don't need a scraper file — just set `"type": "rss"`.
 
-### 3. Add the source icon
+### 3. Test standalone
+
+```bash
+scraping/.venv/bin/python3 scraping/scrape_example.py
+```
+
+Check that dates parse correctly (no `null` values for events that have dates on the page), times are captured, and descriptions are fetched from detail pages.
+
+### 4. Add the source icon
 
 Place a square PNG in `frontend/public/source-icons/<source_name-without-dots>.png`.
 
-### 4. Run the pipeline and set DB fields
+### 5. Run the pipeline
 
 ```bash
 bash scraping/run.sh
 ```
+
+### 6. Set DB display fields
 
 The first run auto-creates the `sources` row. Then set the display fields via SQL:
 
@@ -149,7 +169,7 @@ UPDATE sources SET
 WHERE source_name = 'example.ch';
 ```
 
-### 5. Verify
+### 7. Verify
 
 Check the pipeline output for the new source's event count, and check `validate_pipeline.py` passes.
 

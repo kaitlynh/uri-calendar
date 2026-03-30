@@ -63,12 +63,30 @@
     "priority": 2
   },
   {
+    "name": "Uri Tourismus",
+    "source_name": "uri.swiss",
+    "url": "https://opendata.myswitzerland.io/v1/attractions",
+    "base_url": "https://uri.swiss",
+    "type": "custom",
+    "scraper": "scrape_myswitzerland",
+    "priority": 2
+  },
+  {
     "name": "Floorball Uri",
     "source_name": "floorballuri.ch",
     "url": "https://www.floorballuri.ch/meisterschaft-2025-26",
     "base_url": "https://www.floorballuri.ch/meisterschaft-2025-26",
     "type": "custom",
     "scraper": "scrape_floorballuri",
+    "priority": 1
+  },
+  {
+    "name": "Volley Uri",
+    "source_name": "volleyuri.ch",
+    "url": "https://volleyuri.ch/veranstaltungen",
+    "base_url": "https://volleyuri.ch/veranstaltungen",
+    "type": "custom",
+    "scraper": "scrape_volleyuri",
     "priority": 1
   }
 ]

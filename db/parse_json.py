@@ -66,12 +66,14 @@ def ingest_events(json_file: str):
             source_name = event.get("source_name")
             priority = event.get("priority") or 67
 
-            # 1. Upsert source (using base_url as the unique identifier)
+            # 1. Upsert source (using source_name as the unique identifier)
             cur.execute(
                 """
                 INSERT INTO sources (source_name, base_url, priority)
                 VALUES (%s, %s, %s)
-                ON CONFLICT (base_url) DO UPDATE SET source_name = EXCLUDED.source_name
+                ON CONFLICT (source_name) DO UPDATE SET
+                    base_url = EXCLUDED.base_url,
+                    priority = EXCLUDED.priority
                 RETURNING source_id
                 """,
                 (source_name, base_url, priority)
