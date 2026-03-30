@@ -29,8 +29,8 @@ const Card: Component<EventProps> = (props) => {
             class="w-8 h-8 rounded-lg object-cover bg-[var(--border-color)] shrink-0"
           />
         ) : (
-          <div class="w-8 h-8 rounded-lg bg-[var(--border-color)] flex items-center justify-center text-[0.5rem] font-semibold text-[var(--text-muted)] shrink-0 text-center leading-tight">
-            {props.event.base_url?.replace(/^https?:\/\//, '').replace(/\/$/, '') || props.event.source_name}
+          <div class="w-8 h-8 rounded-lg bg-[var(--border-color)] flex items-center justify-center text-[0.35rem] font-semibold text-[var(--text-muted)] shrink-0 text-center leading-tight overflow-hidden break-words p-0.5">
+            {props.event.display_name || props.event.source_name}
           </div>
         )}
         <div class="flex items-center gap-2 min-w-0">
@@ -55,8 +55,8 @@ const Card: Component<EventProps> = (props) => {
               class="w-full h-full object-cover bg-[var(--border-color)]"
             />
           ) : (
-            <div class="w-full h-full bg-[var(--border-color)] flex items-center justify-center text-xs font-semibold text-[var(--text-muted)] text-center leading-tight p-2">
-              {props.event.base_url?.replace(/^https?:\/\//, '').replace(/\/$/, '') || props.event.source_name}
+            <div class="w-full h-full bg-[var(--border-color)] flex items-center justify-center text-sm font-semibold text-[var(--text-muted)] text-center leading-tight p-3 break-words overflow-hidden">
+              {props.event.display_name || props.event.source_name}
             </div>
           )}
         </div>

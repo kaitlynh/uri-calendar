@@ -88,5 +88,14 @@
     "type": "custom",
     "scraper": "scrape_volleyuri",
     "priority": 1
+  },
+  {
+    "name": "Gemeinde Schattdorf",
+    "source_name": "schattdorf.ch",
+    "url": "https://schattdorf.ch/erleben/veranstaltungen",
+    "base_url": "https://schattdorf.ch/erleben/veranstaltungen",
+    "type": "custom",
+    "scraper": "scrape_schattdorf",
+    "priority": 1
   }
 ]

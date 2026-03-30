@@ -306,7 +306,14 @@ const App: Component = () => {
             )}
           </For>
           {/* Categorized sources, grouped */}
-          <For each={[...new Set(knownSources().filter(s => s.category).map(s => s.category!))].sort()}>
+          <For each={(() => {
+            const order = ['Organisationen', 'Gemeinden', 'Schulen', 'Kirchen'];
+            const cats = [...new Set(knownSources().filter(s => s.category).map(s => s.category!))];
+            return cats.sort((a, b) => {
+              const ia = order.indexOf(a), ib = order.indexOf(b);
+              return (ia === -1 ? order.length : ia) - (ib === -1 ? order.length : ib);
+            });
+          })()}>
             {(category) => {
               const members = () => knownSources().filter(s => s.category === category).sort((a, b) => (a.display_name || a.name).localeCompare(b.display_name || b.name));
               const allChecked = () => members().every(s => enabledSources().has(s.name));
