@@ -124,5 +124,14 @@
     "type": "custom",
     "scraper": "scrape_seedorf",
     "priority": 1
+  },
+  {
+    "name": "Gemeinde Erstfeld",
+    "source_name": "erstfeld.ch",
+    "url": "https://erstfeld.ch/portrait/veranstaltungen",
+    "base_url": "https://erstfeld.ch/portrait/veranstaltungen",
+    "type": "custom",
+    "scraper": "scrape_erstfeld",
+    "priority": 1
   }
 ]
