@@ -5,19 +5,21 @@
 # 1. This scraper checks the page for PDFs and compares hashes against a processing log.
 # 2. If a new/changed PDF is detected, the scraper logs an ERROR (which creates a
 #    GitHub Issue via the pipeline), and we handle it manually.
-# 3. To process a new PDF: have an AI chat agent do a one-off processing of the
-#    PDF, then add the extracted events to .attinghausen_processed.json with the
+# 3. To process a new PDF: download it (or have the user attach it) and read it
+#    directly — Claude can read PDFs natively without any extra libraries.
+#    Then add the extracted events to .attinghausen_processed.json with the
 #    PDF's SHA256 hash.
 #
-# You can use an AI agent (e.g. Claude) with this prompt to extract the events:
-#
-#   Read this PDF from Gemeinde Attinghausen. It's an event calendar.
-#   Extract every event into a JSON array following the schema in
-#   template_data.json. Each event should have:
-#     - "title": "Event Name | Organizer" (e.g. "Probe | Feuerwehr")
-#     - "start_date": "YYYY-MM-DD"
-#     - "location": venue name or null
-#   See the existing entries in .attinghausen_processed.json for reference.
+# IMPORTANT for agents processing new PDFs:
+# - The PDFs change format between releases. Do NOT assume the format — look at
+#   the actual PDF and ASK THE USER how they want titles formatted before extracting.
+# - Known formats so far:
+#   1. Word-style with comma-separated lines (e.g. "Feuerwehr, Probe, Feuerwehrlokal")
+#      → Copy the full line verbatim as the title.
+#   2. Spreadsheet with Verein/Veranstaltung/Ort columns
+#      → Title = "Veranstaltung | Verein" (e.g. "Probe | Feuerwehr"), Ort → location field.
+# - Put venue/location info into the "location" field, not into the title.
+# - See existing entries in .attinghausen_processed.json for reference.
 
 import hashlib
 import json as json_mod
@@ -148,6 +150,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
         "location": event.get("location"),
         "description": None,
         "extracted_at": event.get("extracted_at", extracted_at),
+        "ai_updated": True,
     }
 
 

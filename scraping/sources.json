@@ -65,10 +65,10 @@
   {
     "name": "Uri Tourismus",
     "source_name": "uri.swiss",
-    "url": "https://opendata.myswitzerland.io/v1/attractions",
+    "url": "https://uri.swiss/api/filter",
     "base_url": "https://uri.swiss",
     "type": "custom",
-    "scraper": "scrape_myswitzerland",
+    "scraper": "scrape_uri_tourismus",
     "priority": 5
   },
   {
