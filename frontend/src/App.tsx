@@ -73,6 +73,12 @@ const App: Component = () => {
   // All known sources (accumulated as we fetch)
   const [knownSources, setKnownSources] = createSignal<SourceInfo[]>([]);
 
+  // Search state
+  const [searchQuery, setSearchQuery] = createSignal('');
+  const [searchResults, setSearchResults] = createSignal<{ title: Event[]; detail: Event[] } | null>(null);
+  const [searchLoading, setSearchLoading] = createSignal(false);
+  let searchTimeout: ReturnType<typeof setTimeout> | undefined;
+
   // Track how far ahead we've fetched
   let nextStartDate = new Date();
   // The date the feed starts from (for date picker resets)
@@ -94,6 +100,41 @@ const App: Component = () => {
     } catch (e) {
       console.error('Failed to fetch sources:', e);
     }
+  }
+
+  function handleSearch(query: string) {
+    setSearchQuery(query);
+    clearTimeout(searchTimeout);
+    if (query.length < 2) {
+      setSearchResults(null);
+      setSearchLoading(false);
+      return;
+    }
+    setSearchLoading(true);
+    searchTimeout = setTimeout(async () => {
+      try {
+        const resp = await fetch(`${API_BASE}/events/search?q=${encodeURIComponent(query)}`);
+        const data: (Event & { match_type: string })[] = await resp.json();
+        const enabled = enabledSources();
+        const filtered = data.filter(e => enabled.has(e.source_name));
+        setSearchResults({
+          title: filtered.filter(e => e.match_type === 'title'),
+          detail: filtered.filter(e => e.match_type === 'detail'),
+        });
+      } catch (e) {
+        console.error('Search failed:', e);
+        setSearchResults(null);
+      } finally {
+        setSearchLoading(false);
+      }
+    }, 300);
+  }
+
+  function clearSearch() {
+    setSearchQuery('');
+    setSearchResults(null);
+    setSearchLoading(false);
+    clearTimeout(searchTimeout);
   }
 
   function toggleSource(name: string) {
@@ -257,6 +298,28 @@ const App: Component = () => {
   function SidebarContent() {
     return (
       <>
+        <h2 class="text-base font-semibold mb-3">🔍 Suche</h2>
+        <div class="relative">
+          <input
+            type="text"
+            value={searchQuery()}
+            onInput={(e) => handleSearch(e.currentTarget.value)}
+            placeholder="Veranstaltungen suchen..."
+            class="w-full p-2 pr-8 border border-[var(--border-color)] rounded-md font-[inherit]"
+          />
+          <Show when={searchQuery()}>
+            <button
+              onClick={clearSearch}
+              class="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-main)] bg-transparent border-none cursor-pointer text-lg leading-none"
+              aria-label="Suche löschen"
+            >
+              ×
+            </button>
+          </Show>
+        </div>
+
+        <hr class="border-t border-[var(--border-color)] my-6" />
+
         <h2 class="text-base font-semibold mb-3">📅 Datum wählen</h2>
         <input
           type="date"
@@ -422,48 +485,98 @@ const App: Component = () => {
           <Show when={!loading()} fallback={
             <p class="text-[var(--text-muted)] text-center py-12">Laden...</p>
           }>
-            <For each={filteredDayGroups()}>
-              {(group) => (
-                <div class="mb-8" data-date={group.date}>
-                  <h3 class="sticky top-0 max-md:top-[49px] z-10 bg-[var(--bg-color)]/90 backdrop-blur-sm py-4 text-xl font-semibold border-b-2 border-[var(--border-color)] mb-4">
-                    {formatDateHeading(group.date)}
-                  </h3>
-
-                  <div class="flex flex-col gap-4">
-                    <For each={group.events}>
-                      {(event) => <Card event={event} />}
-                    </For>
+            {/* Search results mode */}
+            <Show when={searchQuery().length >= 2}>
+              <Show when={!searchLoading()} fallback={
+                <p class="text-[var(--text-muted)] text-center py-12">Suche...</p>
+              }>
+                <Show when={searchResults()} fallback={
+                  <div class="text-center py-16">
+                    <p class="text-[var(--text-muted)] text-lg">Keine Treffer gefunden.</p>
                   </div>
+                }>
+                  {(results) => (
+                    <>
+                      <Show when={results().title.length > 0}>
+                        <div class="mb-8">
+                          <h3 class="sticky top-0 max-md:top-[49px] z-10 bg-[var(--bg-color)]/90 backdrop-blur-sm py-4 text-xl font-semibold border-b-2 border-[var(--border-color)] mb-4">
+                            Beste Treffer
+                          </h3>
+                          <div class="flex flex-col gap-4">
+                            <For each={results().title}>
+                              {(event) => <Card event={event} />}
+                            </For>
+                          </div>
+                        </div>
+                      </Show>
+                      <Show when={results().detail.length > 0}>
+                        <div class="mb-8">
+                          <h3 class="sticky top-0 max-md:top-[49px] z-10 bg-[var(--bg-color)]/90 backdrop-blur-sm py-4 text-xl font-semibold border-b-2 border-[var(--border-color)] mb-4">
+                            Weitere Treffer
+                          </h3>
+                          <div class="flex flex-col gap-4">
+                            <For each={results().detail}>
+                              {(event) => <Card event={event} />}
+                            </For>
+                          </div>
+                        </div>
+                      </Show>
+                      <Show when={results().title.length === 0 && results().detail.length === 0}>
+                        <div class="text-center py-16">
+                          <p class="text-[var(--text-muted)] text-lg">Keine Treffer gefunden.</p>
+                        </div>
+                      </Show>
+                    </>
+                  )}
+                </Show>
+              </Show>
+            </Show>
+
+            {/* Normal feed mode */}
+            <Show when={searchQuery().length < 2}>
+              <For each={filteredDayGroups()}>
+                {(group) => (
+                  <div class="mb-8" data-date={group.date}>
+                    <h3 class="sticky top-0 max-md:top-[49px] z-10 bg-[var(--bg-color)]/90 backdrop-blur-sm py-4 text-xl font-semibold border-b-2 border-[var(--border-color)] mb-4">
+                      {formatDateHeading(group.date)}
+                    </h3>
+
+                    <div class="flex flex-col gap-4">
+                      <For each={group.events}>
+                        {(event) => <Card event={event} />}
+                      </For>
+                    </div>
+                  </div>
+                )}
+              </For>
+
+              {/* Empty state when no filtered events */}
+              <Show when={filteredDayGroups().length === 0 && !loading() && !loadingMore()}>
+                <div class="text-center py-16">
+                  <img src="/uri-lake-drawing.png" alt="Uri Berge" class="w-full mb-6 opacity-60" />
+                  <p class="text-[var(--text-muted)] text-lg">Keine Veranstaltungen gefunden. Wie wärs mit einem Ausflug in die Berge?</p>
                 </div>
-              )}
-            </For>
+              </Show>
 
-            {/* Empty state when no filtered events */}
-            <Show when={filteredDayGroups().length === 0 && !loading() && !loadingMore()}>
-              <div class="text-center py-16">
-                <img src="/uri-lake-drawing.png" alt="Uri Berge" class="w-full mb-6 opacity-60" />
-                <p class="text-[var(--text-muted)] text-lg">Keine Veranstaltungen gefunden. Wie wärs mit einem Ausflug in die Berge?</p>
-              </div>
-            </Show>
+              {/* Loading more indicator */}
+              <Show when={loadingMore() || loadingExtended()}>
+                <p class="text-[var(--text-muted)] text-center py-8">Mehr laden...</p>
+              </Show>
 
-            {/* Loading more indicator */}
-            <Show when={loadingMore() || loadingExtended()}>
-              <p class="text-[var(--text-muted)] text-center py-8">Mehr laden...</p>
-            </Show>
-
-            {/* Reached end — show load-more button */}
-            <Show when={reachedEnd() && !loadingExtended()}>
-              <div class="text-center py-8 border-t border-[var(--border-color)] mt-4">
-                <p class="text-[var(--text-muted)] text-sm mb-3">
-                  Geladen bis {loadedUntilDate()}
-                </p>
-                <button
-                  onClick={loadExtended}
-                  class="px-6 py-2 rounded-lg bg-[var(--alpine-blue)] text-white font-medium text-sm hover:bg-[var(--alpine-blue-hover)] transition-colors cursor-pointer"
-                >
-                  Weitere Veranstaltungen laden
-                </button>
-              </div>
+              {/* Reached end — show load-more button */}
+              <Show when={reachedEnd() && !loadingExtended()}>
+                <div class="text-center py-8 border-t border-[var(--border-color)] mt-4">
+                  <p class="text-[var(--text-muted)] text-sm mb-3">
+                    Geladen bis {loadedUntilDate()}
+                  </p>
+                  <button
+                    onClick={loadExtended}
+                    class="px-6 py-2 rounded-lg bg-[var(--alpine-blue)] text-white font-medium text-sm hover:bg-[var(--alpine-blue-hover)] transition-colors cursor-pointer"
+                  >
+                    Weitere Veranstaltungen laden
+                  </button>
+                </div>
+              </Show>
             </Show>
           </Show>
         </main>

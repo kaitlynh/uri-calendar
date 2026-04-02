@@ -116,6 +116,60 @@ def get_events():
     return jsonify([serialize_event(r) for r in rows])
 
 
+@app.route("/api/events/search")
+def search_events():
+    """Search future events by title, description, or location.
+
+    Query params:
+        q (required): search term (min 2 chars)
+
+    Returns events in two groups via match_type:
+        "title"  — query matched in event_title
+        "detail" — query matched in description or location only
+    Sorted by start_date ASC within each group, limited to 50 results.
+    """
+    q = request.args.get("q", "").strip()
+    if len(q) < 2:
+        return jsonify({"error": "Search query must be at least 2 characters."}), 400
+
+    pattern = f"%{q}%"
+    conn = get_db()
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            cur.execute(
+                """
+                SELECT e.event_id, e.event_title, e.start_date, e.start_time,
+                       e.end_datetime, e.location, e.description, e.extracted_at,
+                       e.source_url, e.ai_flag,
+                       s.source_name, s.base_url, s.display_name, s.icon_filename, s.category,
+                       CASE WHEN e.event_title ILIKE %s THEN 'title' ELSE 'detail' END AS match_type
+                FROM events e
+                JOIN sources s ON e.source_id = s.source_id
+                WHERE e.start_date >= CURRENT_DATE
+                  AND (e.event_title ILIKE %s
+                       OR e.description ILIKE %s
+                       OR e.location ILIKE %s)
+                ORDER BY
+                    CASE WHEN e.event_title ILIKE %s THEN 0 ELSE 1 END,
+                    e.start_date ASC,
+                    e.start_time ASC NULLS FIRST
+                LIMIT 50
+                """,
+                (pattern, pattern, pattern, pattern, pattern),
+            )
+            rows = cur.fetchall()
+    finally:
+        conn.close()
+
+    results = []
+    for r in rows:
+        event = serialize_event(r)
+        event["match_type"] = r["match_type"]
+        results.append(event)
+
+    return jsonify(results)
+
+
 @app.route("/api/admin/scraping-status", methods=["GET"])
 def get_scraping_status():
     """Per-source scraping stats for the admin dashboard."""
