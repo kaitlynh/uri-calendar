@@ -136,7 +136,7 @@ const Card: Component<EventProps> = (props) => {
             style={{ 'grid-template-rows': expanded() ? '1fr' : '0fr' }}
           >
             <div class="overflow-hidden">
-              <p class="text-[0.95rem] text-[var(--text-muted)] px-6 pt-4 pb-2 max-md:px-4">{props.event.description}</p>
+              <p class="text-[0.95rem] text-[var(--text-muted)] px-6 pt-4 pb-2 max-md:px-4 whitespace-pre-line">{props.event.description}</p>
             </div>
           </div>
 
