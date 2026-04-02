@@ -38,8 +38,11 @@ def _parse_listing_page(html: str) -> list[dict]:
             continue
 
         title = re.sub(r'<[^>]+>', '', title_m.group(1)).strip()
-        # Cinema CMS stores titles in ALL CAPS — convert to title case
-        if title == title.upper():
+        # Cinema CMS stores titles in ALL CAPS — convert to title case.
+        # Some titles have mixed-case suffixes in parens (e.g. "Vorpremiere")
+        # so we check the words outside parentheses.
+        core = re.sub(r'\([^)]*\)', '', title).strip()
+        if core and core == core.upper():
             title = title.title()
         # datetime attribute has +00:00 but values are actually local Zurich time (CMS bug)
         dt_str = time_m.group(1)
