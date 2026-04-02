@@ -160,7 +160,7 @@ jobs:
           name: pipeline-validation
           path: .
 
-      - name: Check for failures and create issue
+      - name: Check for failures and create/update issue
         uses: actions/github-script@v7
         with:
           script: |
@@ -190,20 +190,84 @@ jobs:
             const today = new Date().toISOString().split('T')[0];
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
+            // Extract [FAIL] lines and build a fingerprint for deduplication
+            const failLines = pipelineOutput
+              .split('\n')
+              .filter(line => line.includes('[FAIL]'))
+              .map(line => line.replace(/^\s*\[FAIL]\s*/, '').trim());
+
+            // Build a descriptive title from the failure reasons
+            const summaryParts = [];
+            if (hasApiFailure) summaryParts.push('API validation failed');
+            for (const line of failLines) {
+              // "0 events from source: Eventfrog (eventfrog.ch)" → "eventfrog.ch: 0 events"
+              const zeroMatch = line.match(/^0 events from source: .+\((.+)\)$/);
+              if (zeroMatch) { summaryParts.push(`${zeroMatch[1]}: 0 events`); continue; }
+              // "Orphaned sources in DB (not in JSON): x, y" → "orphaned DB sources: x, y"
+              const orphanMatch = line.match(/^Orphaned sources in DB \(not in JSON\): (.+)$/);
+              if (orphanMatch) { summaryParts.push(`orphaned DB sources: ${orphanMatch[1]}`); continue; }
+              // Fallback: use the line as-is, trimmed
+              summaryParts.push(line.length > 60 ? line.slice(0, 57) + '...' : line);
+            }
+
+            const titleSummary = summaryParts.join(', ');
+            const issueTitle = `Scrape failure: ${titleSummary}`;
+            // Fingerprint = sorted fail lines, so order doesn't matter
+            const fingerprint = failLines.slice().sort().join('\n');
+
+            const issueBody = [
+              '## Pipeline Validation (GitHub Actions)',
+              '```',
+              pipelineOutput,
+              '```',
+              '',
+              `## API Validation (server-side)`,
+              `See the [workflow run log](${runUrl}) → "Validate API on server" step for full output.`,
+              '',
+              `**Triggered by:** [workflow run](${runUrl})`,
+            ].join('\n');
+
+            // Search for existing open issues with the same failure fingerprint
+            const { data: openIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'pipeline-failure',
+              state: 'open',
+              per_page: 20,
+            });
+
+            // Check if any open issue has the same set of failures
+            for (const issue of openIssues) {
+              // Extract [FAIL] lines from the issue body
+              const existingFails = (issue.body || '')
+                .split('\n')
+                .filter(line => line.includes('[FAIL]'))
+                .map(line => line.replace(/^\s*\[FAIL]\s*/, '').trim())
+                .sort()
+                .join('\n');
+
+              if (existingFails === fingerprint) {
+                // Same failures — add a comment instead of a new issue
+                console.log(`Same failures as #${issue.number} — adding comment.`);
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: [
+                    `## Still failing — ${today}`,
+                    '',
+                    `Same failures detected. [Workflow run](${runUrl})`,
+                  ].join('\n'),
+                });
+                return;
+              }
+            }
+
+            // Different failures (or no open issue) — create a new issue
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Pipeline validation failed — ${today}`,
-              body: [
-                '## Pipeline Validation (GitHub Actions)',
-                '```',
-                pipelineOutput,
-                '```',
-                '',
-                `## API Validation (server-side)`,
-                `See the [workflow run log](${runUrl}) → "Validate API on server" step for full output.`,
-                '',
-                `**Triggered by:** [workflow run](${runUrl})`,
-              ].join('\n'),
-              labels: ['pipeline-failure']
+              title: issueTitle,
+              body: issueBody,
+              labels: ['pipeline-failure'],
             });
