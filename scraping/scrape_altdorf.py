@@ -108,6 +108,17 @@ def parse_events_from_html(page_html: str) -> list[dict]:
     return events
 
 
+def _is_kino(event: dict) -> bool:
+    """Detect cinema listings — these are scraped directly from cinema-leuzinger.ch."""
+    title = event.get("title", "")
+    if title.startswith("Kino:") or title.startswith("Kino "):
+        return True
+    location = event.get("location") or ""
+    if re.search(r"(?i)cinema\s+leuzinger|kino\s+leuzinger", location):
+        return True
+    return False
+
+
 def _to_template(event: dict, extracted_at: str) -> dict:
     end_dt = None
     if event.get("end_date") and event["end_date"] != event["start_date"]:
@@ -147,6 +158,12 @@ def fetch_events() -> list[dict]:
         return []
 
     events = parse_events_from_html(resp.text)
+    # Filter out cinema listings (scraped directly from cinema-leuzinger.ch)
+    before = len(events)
+    events = [e for e in events if not _is_kino(e)]
+    skipped = before - len(events)
+    if skipped:
+        log.info("skipped %d kino events (scraped from direct source)", skipped)
     log.info("found %d events, fetching details in parallel", len(events))
 
     with ThreadPoolExecutor(max_workers=8) as executor:

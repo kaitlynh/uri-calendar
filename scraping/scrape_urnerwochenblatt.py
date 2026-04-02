@@ -85,6 +85,12 @@ def _parse_end_datetime(start_date: Optional[str], time_str: str) -> Optional[st
     return None
 
 
+def _is_kino(event: dict) -> bool:
+    """Detect cinema listings — these are scraped directly from cinema-leuzinger.ch."""
+    title = event.get("title", "")
+    return title.startswith("Kino")
+
+
 def _to_template(event: dict, extracted_at: str) -> dict:
     start_date = _parse_date(event["date"])
     return {
@@ -189,7 +195,14 @@ def fetch_events(url: str = BASE_URL, weeks: int = 4) -> list[dict]:
             log.error("error: %s", e)
         current += timedelta(weeks=1)
 
-    return list(all_events.values())
+    events = list(all_events.values())
+    # Filter out cinema listings (scraped directly from cinema-leuzinger.ch)
+    before = len(events)
+    events = [e for e in events if not _is_kino(e)]
+    skipped = before - len(events)
+    if skipped:
+        log.info("skipped %d kino events (scraped from direct source)", skipped)
+    return events
 
 
 if __name__ == "__main__":

@@ -89,17 +89,34 @@ Place these in `.env` at the project root. On the server, the scheduled GitHub A
 
 | Name | source_name | Type | Priority |
 |---|---|---|---|
-| Urner Wochenblatt | urnerwochenblatt.ch | custom | 2 |
+| Urner Wochenblatt | urnerwochenblatt.ch | custom | 4 |
 | Kantonsbibliothek Uri | kbu.ch | custom | 1 |
 | Musikschule Uri | musikschule-uri.ch | custom | 1 |
 | Schulen Altdorf | schule-altdorf.ch | rss | 1 |
-| Gemeinde Altdorf | altdorf.ch | custom | 2 |
-| Gemeinde Andermatt | gemeinde-andermatt.ch | custom | 2 |
-| Eventfrog | eventfrog.ch | custom | 2 |
-| Uri Tourismus | uri.swiss | custom | 2 |
+| Gemeinde Altdorf | altdorf.ch | custom | 3 |
+| Gemeinde Andermatt | gemeinde-andermatt.ch | custom | 3 |
+| Eventfrog | eventfrog.ch | custom | 5 |
+| Uri Tourismus | uri.swiss | custom | 5 |
 | Floorball Uri | floorballuri.ch | custom | 1 |
 | Volley Uri | volleyuri.ch | custom | 1 |
 | OL KTV Altdorf | olg-ktv-altdorf.ch | custom | 1 |
+| Cinema Leuzinger | cinema-leuzinger.ch | custom | 1 |
+
+## Source-Level Deduplication
+
+Some sources are aggregators that republish events from original sources we already scrape directly (e.g. uri.swiss, Eventfrog, Urnerwochenblatt, Gemeinde calendars). The DB-level dedup (title + date) catches exact duplicates, but aggregator sources often reformat titles, drop showtimes, or use different location names, which prevents automatic matching.
+
+For known categories of duplicate events, scrapers filter them out at the source before they enter the pipeline. This is more reliable than fuzzy matching because each scraper knows its own data format.
+
+**Current source-level filters:**
+
+| Scraper | Filter | Reason |
+|---|---|---|
+| `scrape_uri_tourismus.py` | Skips `additionalType == "CinemaScreening"` | Cinema events scraped directly from cinema-leuzinger.ch |
+| `scrape_urnerwochenblatt.py` | Skips titles starting with `"Kino"` | Cinema events scraped directly from cinema-leuzinger.ch |
+| `scrape_altdorf.py` | Skips titles starting with `"Kino"` or location matching Cinema/Kino Leuzinger | Cinema events scraped directly from cinema-leuzinger.ch |
+
+When adding a new direct source that overlaps with aggregators, add corresponding skip logic to the aggregator scrapers. The filter functions are named `_is_kino()` (or similar) in each scraper file.
 
 ---
 
