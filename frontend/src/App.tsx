@@ -298,7 +298,7 @@ const App: Component = () => {
                     class="accent-[var(--alpine-blue)]"
                   />
                   <Show when={getSourceIcon(source.icon_filename)}>
-                    <img src={getSourceIcon(source.icon_filename)} alt="" class="w-5 h-5 rounded object-cover" />
+                    <img alt="" class="w-5 h-5 rounded object-cover" ref={(el) => { el.onerror = () => el.remove(); el.src = getSourceIcon(source.icon_filename)!; }} />
                   </Show>
                   {source.display_name || source.name}
                 </label>
@@ -353,7 +353,7 @@ const App: Component = () => {
                               class="accent-[var(--alpine-blue)]"
                             />
                             <Show when={getSourceIcon(source.icon_filename)}>
-                              <img src={getSourceIcon(source.icon_filename)} alt="" class="w-5 h-5 rounded object-cover" />
+                              <img alt="" class="w-5 h-5 rounded object-cover" ref={(el) => { el.onerror = () => el.remove(); el.src = getSourceIcon(source.icon_filename)!; }} />
                             </Show>
                             {source.display_name || source.name}
                           </label>
