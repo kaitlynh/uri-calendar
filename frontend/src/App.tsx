@@ -504,7 +504,7 @@ const App: Component = () => {
                           </h3>
                           <div class="flex flex-col gap-4">
                             <For each={results().title}>
-                              {(event) => <Card event={event} />}
+                              {(event) => <Card event={event} showDate={true} />}
                             </For>
                           </div>
                         </div>
@@ -516,7 +516,7 @@ const App: Component = () => {
                           </h3>
                           <div class="flex flex-col gap-4">
                             <For each={results().detail}>
-                              {(event) => <Card event={event} />}
+                              {(event) => <Card event={event} showDate={true} />}
                             </For>
                           </div>
                         </div>

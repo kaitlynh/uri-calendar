@@ -5,6 +5,7 @@ import { getSourceIcon } from './sources';
 
 type EventProps = {
   event: Event;
+  showDate?: boolean;
 };
 
 /** Format "HH:MM:SS" → "HH:MM", or null if missing */
@@ -90,8 +91,14 @@ const Card: Component<EventProps> = (props) => {
             )}
           </a>
 
-          {/* Time + location row */}
-          <div class="flex items-center gap-3 text-[0.85rem] text-[var(--text-muted)]">
+          {/* Date + time + location row */}
+          <div class="flex items-center gap-3 text-[0.85rem] text-[var(--text-muted)] flex-wrap">
+            {props.showDate && props.event.start_date && (
+              <>
+                <span class="font-semibold text-[var(--text-main)]">📅 {new Date(props.event.start_date + 'T00:00:00').toLocaleDateString('de-CH', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                <span>·</span>
+              </>
+            )}
             {time() && (
               <>
                 <span class="font-semibold text-[var(--text-main)]">🕐 {time()}</span>
