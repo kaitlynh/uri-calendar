@@ -230,6 +230,10 @@ SCRAPERS = {
 }
 
 
+MAX_RETRIES = 2
+RETRY_DELAY = 5  # seconds
+
+
 def _run_scraper(
     source: dict, extracted_at: str
 ) -> tuple[str, list[Event], Optional[str]]:
@@ -242,15 +246,25 @@ def _run_scraper(
         return source["name"], [], f"unknown type '{scraper_type}' — skipped"
     log.info("%-30s  starting", source["name"])
     t0 = time.monotonic()
-    try:
-        events = scraper_fn(source, extracted_at)
-        elapsed = time.monotonic() - t0
-        log.info("%-30s  %3d events  (%.1fs)", source["name"], len(events), elapsed)
-        return source["name"], events, None
-    except Exception as e:
-        elapsed = time.monotonic() - t0
-        log.error("%-30s  failed (%.1fs): %s", source["name"], elapsed, e)
-        return source["name"], [], f"ERROR: {e}"
+    last_err = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            events = scraper_fn(source, extracted_at)
+            elapsed = time.monotonic() - t0
+            if attempt > 1:
+                log.info("%-30s  %3d events  (%.1fs, succeeded on attempt %d)", source["name"], len(events), elapsed, attempt)
+            else:
+                log.info("%-30s  %3d events  (%.1fs)", source["name"], len(events), elapsed)
+            return source["name"], events, None
+        except Exception as e:
+            last_err = e
+            elapsed = time.monotonic() - t0
+            if attempt < MAX_RETRIES:
+                log.warning("%-30s  attempt %d failed (%.1fs): %s — retrying in %ds", source["name"], attempt, elapsed, e, RETRY_DELAY)
+                time.sleep(RETRY_DELAY)
+            else:
+                log.error("%-30s  failed after %d attempts (%.1fs): %s", source["name"], MAX_RETRIES, elapsed, last_err)
+    return source["name"], [], f"ERROR: {last_err}"
 
 
 def collect_all_events(
