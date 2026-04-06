@@ -31,35 +31,66 @@ def _extract_href(name_html: str) -> Optional[str]:
     return None
 
 
-def _fetch_detail_description(detail_url: str) -> str:
-    """Fetch an event detail page and extract the description text."""
+def _parse_time_from_lead(lead_text: str) -> Optional[str]:
+    """Extract start time from the icms-lead-container text.
+
+    Formats seen:
+      "25. Apr. 2026, 9.30 Uhr - 10.30 Uhr"
+      "16. Apr. 2026, 19:00 Uhr"
+      "18.00 Uhr*"
+      "ganztägig"  -> None
+      no time at all -> None
+    """
+    if not lead_text or "ganztägig" in lead_text.lower():
+        return None
+    # Match time like "9.30 Uhr" or "19:00 Uhr" (first occurrence = start time)
+    m = re.search(r'(\d{1,2})[.:](\d{2})\s*Uhr', lead_text)
+    if m:
+        return f"{int(m.group(1)):02d}:{m.group(2)}"
+    return None
+
+
+def _fetch_detail_info(detail_url: str) -> dict:
+    """Fetch an event detail page and extract description and start time."""
+    result = {"description": "", "start_time": None}
     try:
         resp = requests.get(detail_url, headers=HEADERS, timeout=15, verify=False)
         if resp.status_code != 200:
-            return ""
-        # Look for the main content area
+            return result
+
+        # Extract time from icms-lead-container
+        lead_match = re.search(
+            r'<div[^>]+class="[^"]*icms-lead-container[^"]*"[^>]*>(.*?)</div>',
+            resp.text, re.DOTALL
+        )
+        if lead_match:
+            lead_text = STRIP_TAGS.sub(' ', lead_match.group(1))
+            lead_text = html.unescape(lead_text).replace('\xa0', ' ')
+            result["start_time"] = _parse_time_from_lead(lead_text)
+
+        # Extract description from main content area
         match = re.search(
             r'<div[^>]+class="[^"]*icms-detail-text[^"]*"[^>]*>(.*?)</div>',
             resp.text, re.DOTALL
         )
         if not match:
-            # Fallback: try article/main content
             match = re.search(
                 r'<div[^>]+class="[^"]*content-area[^"]*"[^>]*>(.*?)</div>\s*</div>',
                 resp.text, re.DOTALL
             )
-        if not match:
-            return ""
-        raw = match.group(1)
-        text = re.sub(r'<br\s*/?>', '\n', raw)
-        text = re.sub(r'</p>\s*<p[^>]*>', '\n\n', text)
-        text = STRIP_TAGS.sub('', text)
-        text = html.unescape(text).replace('\xa0', ' ')
-        text = re.sub(r'\n{3,}', '\n\n', text)
-        return text.strip()
+        if match:
+            raw = match.group(1)
+            text = re.sub(r'<br\s*/?>', '\n', raw)
+            text = re.sub(r'</p>\s*<p[^>]*>', '\n\n', text)
+            text = STRIP_TAGS.sub('', text)
+            text = html.unescape(text).replace('\xa0', ' ')
+            text = re.sub(r'\n{3,}', '\n\n', text)
+            result["description"] = text.strip()
+
+        return result
     except Exception as e:
         log.warning("error fetching detail %s: %s", detail_url, e)
-        return ""
+        return result
 
 
 def parse_events_from_html(page_html: str) -> list[dict]:
@@ -135,7 +166,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
         "source_url": event["detail_url"],
         "event_title": title,
         "start_date": event["start_date"],
-        "start_time": None,
+        "start_time": event.get("start_time"),
         "end_datetime": end_dt,
         "location": event["location"],
         "description": event.get("description", ""),
@@ -168,11 +199,14 @@ def fetch_events() -> list[dict]:
 
     with ThreadPoolExecutor(max_workers=8) as executor:
         future_to_event = {
-            executor.submit(_fetch_detail_description, event["detail_url"]): event
+            executor.submit(_fetch_detail_info, event["detail_url"]): event
             for event in events
         }
         for future in as_completed(future_to_event):
-            future_to_event[future]["description"] = future.result()
+            info = future.result()
+            event = future_to_event[future]
+            event["description"] = info["description"]
+            event["start_time"] = info["start_time"]
 
     return events
 

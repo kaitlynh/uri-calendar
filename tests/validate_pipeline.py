@@ -16,19 +16,20 @@ Checks (JSON):
   12. Kino dedup — no "Kino" prefixed events from aggregator sources
   13. Cinema Leuzinger titles not ALL CAPS
   14. Cinema Leuzinger descriptions use newlines (not pipe separators)
-  15. uri.swiss events have plausible local times (not raw UTC)
-  16. uri.swiss locations include venue names (not just town names)
+  15. altdorf.ch events have start times (detail page extraction working)
+  16. uri.swiss events have plausible local times (not raw UTC)
+  17. uri.swiss locations include venue names (not just town names)
 
 Checks (DB):
-  17. Database connection works
-  18. Sources table has rows, formats are correct
-  19. Every DB source has at least 1 event
-  20. Future events exist
-  21. Ingest freshness — events with extracted_at in the last hour
-  22. JSON ↔ DB event count consistency
-  23. DB sources match JSON sources (no orphans, no missing)
-  24. AI enrichment — some events have ai_flag = true
-  25. No duplicate events in DB (title + date)
+  18. Database connection works
+  19. Sources table has rows, formats are correct
+  20. Every DB source has at least 1 event
+  21. Future events exist
+  22. Ingest freshness — events with extracted_at in the last hour
+  23. JSON ↔ DB event count consistency
+  24. DB sources match JSON sources (no orphans, no missing)
+  25. AI enrichment — some events have ai_flag = true
+  26. No duplicate events in DB (title + date)
 
 API checks run separately on the server — see tests/validate_api.py.
 
@@ -456,6 +457,30 @@ def check_cinema_descriptions(events, result):
         result.passed(f"Cinema descriptions use newlines ({newline_descs} with multi-line content)")
 
 
+def check_altdorf_times(events, result):
+    """Check that altdorf.ch events have start times (extracted from detail pages)."""
+    altdorf_events = [e for e in events if e.get("source_name") == "altdorf.ch"]
+    if not altdorf_events:
+        return
+
+    timed = [e for e in altdorf_events if e.get("start_time")]
+    total = len(altdorf_events)
+    pct = (len(timed) / total) * 100 if total else 0
+
+    if len(timed) == 0:
+        result.fail(
+            f"altdorf.ch: 0/{total} events have start_time "
+            f"— detail page time extraction may be broken"
+        )
+    elif pct < 50:
+        result.warn(
+            f"altdorf.ch: only {pct:.0f}% of events have start_time "
+            f"({len(timed)}/{total}) — expected >80%"
+        )
+    else:
+        result.passed(f"altdorf.ch: {len(timed)}/{total} ({pct:.0f}%) events have start_time")
+
+
 def check_uri_swiss_times(events, result):
     """Check that uri.swiss event times look like local Zurich times, not raw UTC."""
     uri_events = [e for e in events if e.get("source_name") == "uri.swiss"]
@@ -709,6 +734,7 @@ def main():
         check_kino_dedup(events, result)
         check_cinema_title_case(events, result)
         check_cinema_descriptions(events, result)
+        check_altdorf_times(events, result)
         check_uri_swiss_times(events, result)
         check_uri_swiss_locations(events, result)
 
