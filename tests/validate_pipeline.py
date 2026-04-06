@@ -13,17 +13,22 @@ Checks (JSON):
   9.  No dates far in the past (>1 year) or absurdly far in the future (>2 years)
   10. Event titles are non-empty, not too long, and don't contain HTML tags
   11. Per-source description/location fill rate
+  12. Kino dedup — no "Kino" prefixed events from aggregator sources
+  13. Cinema Leuzinger titles not ALL CAPS
+  14. Cinema Leuzinger descriptions use newlines (not pipe separators)
+  15. uri.swiss events have plausible local times (not raw UTC)
+  16. uri.swiss locations include venue names (not just town names)
 
 Checks (DB):
-  12. Database connection works
-  13. Sources table has rows, formats are correct
-  14. Every DB source has at least 1 event
-  15. Future events exist
-  16. Ingest freshness — events with extracted_at in the last hour
-  17. JSON ↔ DB event count consistency
-  18. DB sources match JSON sources (no orphans, no missing)
-  19. AI enrichment — some events have ai_flag = true
-  20. No duplicate events in DB (title + date)
+  17. Database connection works
+  18. Sources table has rows, formats are correct
+  19. Every DB source has at least 1 event
+  20. Future events exist
+  21. Ingest freshness — events with extracted_at in the last hour
+  22. JSON ↔ DB event count consistency
+  23. DB sources match JSON sources (no orphans, no missing)
+  24. AI enrichment — some events have ai_flag = true
+  25. No duplicate events in DB (title + date)
 
 API checks run separately on the server — see tests/validate_api.py.
 
@@ -373,6 +378,142 @@ def check_per_source_events(events, result):
         result.passed(f"  {name}: {counts[name]} events")
 
 
+# ─── Dedup & source-specific checks ─────────────────────────
+
+
+AGGREGATOR_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch"}
+
+
+def check_kino_dedup(events, result):
+    """Check that kino events have been filtered from aggregator sources."""
+    kino_leaks = []
+    for event in events:
+        source = event.get("source_name", "")
+        title = event.get("event_title", "")
+        if source in AGGREGATOR_SOURCES and (
+            title.startswith("Kino:") or title.startswith("Kino ")
+            or title.startswith("Kino –") or title.startswith("Kino-")
+        ):
+            kino_leaks.append(f"{source}: {title!r}")
+
+    # Also check uri.swiss for CinemaScreening leaks
+    for event in events:
+        if event.get("source_name") == "uri.swiss":
+            title = event.get("event_title", "").lower()
+            if "kino" in title or "cinema" in title:
+                kino_leaks.append(f"uri.swiss: {event.get('event_title')!r}")
+
+    if kino_leaks:
+        examples = "; ".join(kino_leaks[:5])
+        result.fail(f"{len(kino_leaks)} kino events leaked through aggregator filters — e.g. {examples}")
+    else:
+        result.passed("No kino events from aggregator sources (dedup working)")
+
+
+def check_cinema_title_case(events, result):
+    """Check that Cinema Leuzinger titles are not ALL CAPS."""
+    cinema_events = [e for e in events if e.get("source_name") == "cinema-leuzinger.ch"]
+    if not cinema_events:
+        result.warn("No cinema-leuzinger.ch events — skipping title case check")
+        return
+
+    allcaps = []
+    for event in cinema_events:
+        title = event.get("event_title", "")
+        # Strip parenthetical content before checking (may have mixed-case suffixes)
+        core = re.sub(r"\([^)]*\)", "", title).strip()
+        if len(core) > 3 and core == core.upper():
+            allcaps.append(title)
+
+    if allcaps:
+        examples = "; ".join(allcaps[:3])
+        result.fail(f"{len(allcaps)} cinema titles still in ALL CAPS — e.g. {examples}")
+    else:
+        result.passed(f"Cinema Leuzinger titles are properly cased ({len(cinema_events)} events)")
+
+
+def check_cinema_descriptions(events, result):
+    """Check that Cinema Leuzinger descriptions use newlines, not pipe separators."""
+    cinema_events = [e for e in events if e.get("source_name") == "cinema-leuzinger.ch"]
+    if not cinema_events:
+        result.warn("No cinema-leuzinger.ch events — skipping description check")
+        return
+
+    pipe_descs = []
+    newline_descs = 0
+    for event in cinema_events:
+        desc = event.get("description", "")
+        if not desc:
+            continue
+        if " | " in desc:
+            pipe_descs.append(event.get("event_title", "???"))
+        if "\n" in desc:
+            newline_descs += 1
+
+    if pipe_descs:
+        result.fail(f"{len(pipe_descs)} cinema descriptions use pipe separators instead of newlines")
+    else:
+        result.passed(f"Cinema descriptions use newlines ({newline_descs} with multi-line content)")
+
+
+def check_uri_swiss_times(events, result):
+    """Check that uri.swiss event times look like local Zurich times, not raw UTC."""
+    uri_events = [e for e in events if e.get("source_name") == "uri.swiss"]
+    if not uri_events:
+        # uri.swiss may legitimately have 0 events
+        return
+
+    # Heuristic: evening events (concerts, shows) should not have times like 16:00-17:00
+    # when they're actually 18:00-19:00 in Zurich. We can't be 100% sure, but if ALL
+    # events with times end at :00 or :30 and cluster suspiciously early, flag it.
+    timed = [e for e in uri_events if e.get("start_time")]
+    if not timed:
+        return
+
+    # Check that at least some events have times >= 18:00 (evening events exist in Uri)
+    evening = [e for e in timed if e["start_time"] >= "18:00:00"]
+    if len(evening) == 0 and len(timed) >= 5:
+        result.warn(
+            f"uri.swiss: {len(timed)} timed events but none after 18:00 "
+            f"— possible UTC timezone bug"
+        )
+    else:
+        result.passed(f"uri.swiss times look plausible ({len(evening)}/{len(timed)} are evening events)")
+
+
+def check_uri_swiss_locations(events, result):
+    """Check that uri.swiss locations include venue names, not just town names."""
+    uri_events = [e for e in events if e.get("source_name") == "uri.swiss"]
+    if not uri_events:
+        return
+
+    with_venue = 0
+    town_only = 0
+    # Town-only locations are typically a single word or very short (e.g. "Altdorf", "Bürglen")
+    for event in uri_events:
+        loc = event.get("location", "")
+        if not loc:
+            continue
+        # If location contains a comma, it likely has "Venue, Town" format
+        if "," in loc:
+            with_venue += 1
+        else:
+            town_only += 1
+
+    total = with_venue + town_only
+    if total == 0:
+        return
+
+    venue_pct = (with_venue / total) * 100
+    if venue_pct < 50 and total >= 5:
+        result.warn(
+            f"uri.swiss: only {venue_pct:.0f}% of locations have venue names "
+            f"({with_venue}/{total} have comma-separated venue+town)"
+        )
+    else:
+        result.passed(f"uri.swiss locations: {with_venue}/{total} ({venue_pct:.0f}%) include venue names")
+
+
 # ─── Database checks ─────────────────────────────────────────
 
 
@@ -562,6 +703,14 @@ def main():
         check_title_quality(events, result)
         check_field_fill_rates(events, result)
         check_per_source_events(events, result)
+
+    # --- Dedup & source-specific checks ---
+    if events:
+        check_kino_dedup(events, result)
+        check_cinema_title_case(events, result)
+        check_cinema_descriptions(events, result)
+        check_uri_swiss_times(events, result)
+        check_uri_swiss_locations(events, result)
 
     # --- Database checks ---
     check_database(result, json_events=events)
