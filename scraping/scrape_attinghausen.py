@@ -19,6 +19,8 @@
 #   2. Spreadsheet with Verein/Veranstaltung/Ort columns
 #      → Title = "Veranstaltung | Verein" (e.g. "Probe | Feuerwehr"), Ort → location field.
 # - Put venue/location info into the "location" field, not into the title.
+# - If the PDF includes start times, include them as "start_time" in HH:MM format
+#   (e.g. "19:00"). Omit the field if no time is given for an event.
 # - See existing entries in .attinghausen_processed.json for reference.
 
 import hashlib
@@ -145,10 +147,10 @@ def _to_template(event: dict, extracted_at: str) -> dict:
         "source_url": PAGE_URL,
         "event_title": event["title"],
         "start_date": event["start_date"],
-        "start_time": None,
-        "end_datetime": None,
+        "start_time": event.get("start_time"),
+        "end_datetime": event.get("end_datetime"),
         "location": event.get("location"),
-        "description": None,
+        "description": event.get("description"),
         "extracted_at": event.get("extracted_at", extracted_at),
         "ai_updated": True,
     }
