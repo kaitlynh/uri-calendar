@@ -107,6 +107,24 @@ def fetch_events() -> list[dict]:
             break
         page += 1
 
+    # Filter out KBU events (scraped directly from kbu.ch)
+    before = len(all_events)
+    all_events = [e for e in all_events
+                  if not re.search(r"(?i)kantonsbibliothek",
+                                   _de(e.get("locationAlias")) or "")]
+    skipped_kbu = before - len(all_events)
+    if skipped_kbu:
+        log.info("skipped %d KBU events (scraped from kbu.ch)", skipped_kbu)
+
+    # Filter out OL events (scraped directly from olg-ktv-altdorf.ch)
+    before = len(all_events)
+    all_events = [e for e in all_events
+                  if not re.search(r"(?i)OL-Cup|OLG\b|Orientierungslauf",
+                                   _de(e.get("title")) or "")]
+    skipped_ol = before - len(all_events)
+    if skipped_ol:
+        log.info("skipped %d OL events (scraped from olg-ktv-altdorf.ch)", skipped_ol)
+
     return all_events
 
 

@@ -13,12 +13,14 @@ Checks (JSON):
   9.  No dates far in the past (>1 year) or absurdly far in the future (>2 years)
   10. Event titles are non-empty, not too long, and don't contain HTML tags
   11. Per-source description/location fill rate
-  12. Kino dedup — no "Kino" prefixed events from aggregator sources
+  12. Kino dedup — no cinema events from aggregator sources
   13. Cinema Leuzinger titles not ALL CAPS
   14. Cinema Leuzinger descriptions use newlines (not pipe separators)
   15. altdorf.ch events have start times (detail page extraction working)
   16. uri.swiss events have plausible local times (not raw UTC)
   17. uri.swiss locations include venue names (not just town names)
+  18b. KBU dedup — no Kantonsbibliothek events from aggregator sources
+  18c. OL dedup — no OL-Cup/OLG/Orientierungslauf events from aggregator sources
 
 Checks (DB):
   18. Database connection works
@@ -382,7 +384,10 @@ def check_per_source_events(events, result):
 # ─── Dedup & source-specific checks ─────────────────────────
 
 
-AGGREGATOR_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch"}
+# Sources that should NOT contain cinema, library, or OL events
+KINO_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "uri.swiss", "uri.ch"}
+KBU_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "uri.swiss", "eventfrog.ch", "uri.ch"}
+OL_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "uri.swiss", "seedorf-uri.ch", "eventfrog.ch", "uri.ch"}
 
 
 def check_kino_dedup(events, result):
@@ -390,25 +395,57 @@ def check_kino_dedup(events, result):
     kino_leaks = []
     for event in events:
         source = event.get("source_name", "")
+        if source not in KINO_DEDUP_SOURCES:
+            continue
         title = event.get("event_title", "")
-        if source in AGGREGATOR_SOURCES and (
-            title.startswith("Kino:") or title.startswith("Kino ")
-            or title.startswith("Kino –") or title.startswith("Kino-")
-        ):
+        location = event.get("location") or ""
+        if (title.startswith("Kino:") or title.startswith("Kino ")
+                or title.startswith("Kino –") or title.startswith("Kino-")
+                or re.search(r"(?i)cinema\s+leuzinger", location)):
             kino_leaks.append(f"{source}: {title!r}")
-
-    # Also check uri.swiss for CinemaScreening leaks
-    for event in events:
-        if event.get("source_name") == "uri.swiss":
-            title = event.get("event_title", "").lower()
-            if "kino" in title or "cinema" in title:
-                kino_leaks.append(f"uri.swiss: {event.get('event_title')!r}")
 
     if kino_leaks:
         examples = "; ".join(kino_leaks[:5])
         result.fail(f"{len(kino_leaks)} kino events leaked through aggregator filters — e.g. {examples}")
     else:
         result.passed("No kino events from aggregator sources (dedup working)")
+
+
+def check_kbu_dedup(events, result):
+    """Check that Kantonsbibliothek events have been filtered from aggregator sources."""
+    kbu_leaks = []
+    for event in events:
+        source = event.get("source_name", "")
+        if source not in KBU_DEDUP_SOURCES:
+            continue
+        location = event.get("location") or ""
+        if re.search(r"(?i)kantonsbibliothek", location):
+            kbu_leaks.append(f"{source}: {event.get('event_title', '???')!r}")
+
+    if kbu_leaks:
+        examples = "; ".join(kbu_leaks[:5])
+        result.fail(f"{len(kbu_leaks)} KBU events leaked through aggregator filters — e.g. {examples}")
+    else:
+        result.passed("No Kantonsbibliothek events from aggregator sources (dedup working)")
+
+
+def check_ol_dedup(events, result):
+    """Check that OL events have been filtered from aggregator sources."""
+    ol_leaks = []
+    ol_re = re.compile(r"(?i)OL-Cup|OLG\b|Orientierungslauf")
+    for event in events:
+        source = event.get("source_name", "")
+        if source not in OL_DEDUP_SOURCES:
+            continue
+        title = event.get("event_title", "")
+        if ol_re.search(title):
+            ol_leaks.append(f"{source}: {title!r}")
+
+    if ol_leaks:
+        examples = "; ".join(ol_leaks[:5])
+        result.fail(f"{len(ol_leaks)} OL events leaked through aggregator filters — e.g. {examples}")
+    else:
+        result.passed("No OL events from aggregator sources (dedup working)")
 
 
 def check_cinema_title_case(events, result):
@@ -732,6 +769,8 @@ def main():
     # --- Dedup & source-specific checks ---
     if events:
         check_kino_dedup(events, result)
+        check_kbu_dedup(events, result)
+        check_ol_dedup(events, result)
         check_cinema_title_case(events, result)
         check_cinema_descriptions(events, result)
         check_altdorf_times(events, result)

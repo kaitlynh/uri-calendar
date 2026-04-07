@@ -6,6 +6,9 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
+# OL events — scraped directly from olg-ktv-altdorf.ch
+_SKIP_OL_RE = re.compile(r"(?i)OL-Cup|OLG\b|Orientierungslauf")
+
 log = logging.getLogger(__name__)
 
 API_URL = "https://www.seedorf-uri.ch/index.php?option=com_dpcalendar&view=events&format=raw&limit=0&Itemid=175"
@@ -72,7 +75,14 @@ def fetch_events() -> list:
         log.error("error: %s", e)
         return []
 
-    log.info("found %d events", len(data))
+    log.info("found %d raw events", len(data))
+
+    # Filter out OL events (scraped directly from olg-ktv-altdorf.ch)
+    before = len(data)
+    data = [item for item in data if not _SKIP_OL_RE.search(item.get("title", ""))]
+    skipped_ol = before - len(data)
+    if skipped_ol:
+        log.info("skipped %d OL events (scraped from olg-ktv-altdorf.ch)", skipped_ol)
 
     events = []
     for item in data:

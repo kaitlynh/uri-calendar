@@ -169,5 +169,14 @@
     "type": "custom",
     "scraper": "scrape_cinema_leuzinger",
     "priority": 1
+  },
+  {
+    "name": "UriAgenda",
+    "source_name": "uri.ch",
+    "url": "https://www.uri.ch/api/rest/2.0/portals/search-offers/1089644949",
+    "base_url": "https://www.uri.ch/de",
+    "type": "custom",
+    "scraper": "scrape_uri_agenda",
+    "priority": 5
   }
 ]

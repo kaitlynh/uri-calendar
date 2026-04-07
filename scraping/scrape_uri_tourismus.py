@@ -31,6 +31,9 @@ ZURICH_CEST = timezone(timedelta(hours=2))
 # Skip cinema events — these are scraped directly from cinema-leuzinger.ch
 SKIP_TYPES = {"CinemaScreening"}
 
+# OL events — scraped directly from olg-ktv-altdorf.ch
+_SKIP_OL_RE = re.compile(r"(?i)OL-Cup|OLG\b|Orientierungslauf")
+
 
 def _is_cest(dt: datetime) -> bool:
     """Check if a UTC datetime falls within CEST (Central European Summer Time).
@@ -131,9 +134,16 @@ def fetch_events() -> list[dict]:
     # Filter out cinema events (scraped directly from cinema-leuzinger.ch)
     before = len(all_events)
     all_events = [e for e in all_events if e.get("additionalType") not in SKIP_TYPES]
-    skipped = before - len(all_events)
-    if skipped:
-        log.info("skipped %d CinemaScreening events (scraped from direct source)", skipped)
+    skipped_kino = before - len(all_events)
+    if skipped_kino:
+        log.info("skipped %d CinemaScreening events (scraped from cinema-leuzinger.ch)", skipped_kino)
+
+    # Filter out OL events (scraped directly from olg-ktv-altdorf.ch)
+    before = len(all_events)
+    all_events = [e for e in all_events if not _SKIP_OL_RE.search(e.get("name") or "")]
+    skipped_ol = before - len(all_events)
+    if skipped_ol:
+        log.info("skipped %d OL events (scraped from olg-ktv-altdorf.ch)", skipped_ol)
 
     # Fetch venue names from detail pages (concurrent)
     log.info("fetching venue names for %d events", len(all_events))
@@ -151,6 +161,14 @@ def fetch_events() -> list[dict]:
     # Attach venue info to events
     for event in all_events:
         event["_venue"] = venues.get(event.get("slug") or "")
+
+    # Filter out KBU events after venue resolution (scraped directly from kbu.ch)
+    before = len(all_events)
+    all_events = [e for e in all_events
+                  if not re.search(r"(?i)kantonsbibliothek", e.get("_venue") or "")]
+    skipped_kbu = before - len(all_events)
+    if skipped_kbu:
+        log.info("skipped %d KBU events (scraped from kbu.ch)", skipped_kbu)
 
     log.info("done: %d events from uri.swiss", len(all_events))
     return all_events

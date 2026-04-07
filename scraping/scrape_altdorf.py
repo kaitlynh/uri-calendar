@@ -150,6 +150,18 @@ def _is_kino(event: dict) -> bool:
     return False
 
 
+def _is_kbu(event: dict) -> bool:
+    """Detect library events — these are scraped directly from kbu.ch."""
+    location = event.get("location") or ""
+    return bool(re.search(r"(?i)kantonsbibliothek", location))
+
+
+def _is_ol(event: dict) -> bool:
+    """Detect OL events — these are scraped directly from olg-ktv-altdorf.ch."""
+    title = event.get("title", "")
+    return bool(re.search(r"(?i)OL-Cup|OLG\b|Orientierungslauf", title))
+
+
 def _to_template(event: dict, extracted_at: str) -> dict:
     end_dt = None
     if event.get("end_date") and event["end_date"] != event["start_date"]:
@@ -189,12 +201,22 @@ def fetch_events() -> list[dict]:
         return []
 
     events = parse_events_from_html(resp.text)
-    # Filter out cinema listings (scraped directly from cinema-leuzinger.ch)
+    # Filter out events scraped from direct sources
     before = len(events)
     events = [e for e in events if not _is_kino(e)]
-    skipped = before - len(events)
-    if skipped:
-        log.info("skipped %d kino events (scraped from direct source)", skipped)
+    skipped_kino = before - len(events)
+    if skipped_kino:
+        log.info("skipped %d kino events (scraped from cinema-leuzinger.ch)", skipped_kino)
+    before = len(events)
+    events = [e for e in events if not _is_kbu(e)]
+    skipped_kbu = before - len(events)
+    if skipped_kbu:
+        log.info("skipped %d KBU events (scraped from kbu.ch)", skipped_kbu)
+    before = len(events)
+    events = [e for e in events if not _is_ol(e)]
+    skipped_ol = before - len(events)
+    if skipped_ol:
+        log.info("skipped %d OL events (scraped from olg-ktv-altdorf.ch)", skipped_ol)
     log.info("found %d events, fetching details in parallel", len(events))
 
     with ThreadPoolExecutor(max_workers=8) as executor:

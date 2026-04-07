@@ -101,6 +101,7 @@ Place these in `.env` at the project root. On the server, the scheduled GitHub A
 | Volley Uri | volleyuri.ch | custom | 1 |
 | OL KTV Altdorf | olg-ktv-altdorf.ch | custom | 1 |
 | Cinema Leuzinger | cinema-leuzinger.ch | custom | 1 |
+| UriAgenda | uri.ch | custom | 5 |
 
 ## Source-Level Deduplication
 
@@ -115,8 +116,19 @@ For known categories of duplicate events, scrapers filter them out at the source
 | `scrape_uri_tourismus.py` | Skips `additionalType == "CinemaScreening"` | Cinema events scraped directly from cinema-leuzinger.ch |
 | `scrape_urnerwochenblatt.py` | Skips titles starting with `"Kino"` | Cinema events scraped directly from cinema-leuzinger.ch |
 | `scrape_altdorf.py` | Skips titles starting with `"Kino"` or location matching Cinema/Kino Leuzinger | Cinema events scraped directly from cinema-leuzinger.ch |
+| `scrape_altdorf.py` | Skips location matching `Kantonsbibliothek` | Library events scraped directly from kbu.ch |
+| `scrape_urnerwochenblatt.py` | Skips location matching `Kantonsbibliothek` | Library events scraped directly from kbu.ch |
+| `scrape_uri_tourismus.py` | Skips venue matching `Kantonsbibliothek` (after detail page fetch) | Library events scraped directly from kbu.ch |
+| `scrape_eventfrog.py` | Skips `locationAlias` matching `Kantonsbibliothek` | Library events scraped directly from kbu.ch |
+| `scrape_uri_agenda.py` | Skips `textLine2` matching `Kantonsbibliothek Uri` | Library events scraped directly from kbu.ch |
+| `scrape_altdorf.py` | Skips titles matching `OL-Cup`, `OLG`, or `Orientierungslauf` | OL events scraped directly from olg-ktv-altdorf.ch |
+| `scrape_urnerwochenblatt.py` | Skips titles matching `OL-Cup`, `OLG`, or `Orientierungslauf` | OL events scraped directly from olg-ktv-altdorf.ch |
+| `scrape_uri_tourismus.py` | Skips titles matching `OL-Cup`, `OLG`, or `Orientierungslauf` | OL events scraped directly from olg-ktv-altdorf.ch |
+| `scrape_seedorf.py` | Skips titles matching `OL-Cup`, `OLG`, or `Orientierungslauf` | OL events scraped directly from olg-ktv-altdorf.ch |
+| `scrape_eventfrog.py` | Skips titles matching `OL-Cup`, `OLG`, or `Orientierungslauf` | OL events scraped directly from olg-ktv-altdorf.ch |
+| `scrape_uri_agenda.py` | Skips titles matching `OL-Cup`, `OLG`, or `Orientierungslauf` | OL events scraped directly from olg-ktv-altdorf.ch |
 
-When adding a new direct source that overlaps with aggregators, add corresponding skip logic to the aggregator scrapers. The filter functions are named `_is_kino()` (or similar) in each scraper file.
+When adding a new direct source that overlaps with aggregators, add corresponding skip logic to the aggregator scrapers. The filter functions are named `_is_kino()`, `_is_kbu()`, `_is_ol()` (or similar) in each scraper file.
 
 ---
 
