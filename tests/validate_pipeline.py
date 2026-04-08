@@ -389,7 +389,7 @@ def check_per_source_events(events, result):
 KINO_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "uri.swiss", "uri.ch"}
 KBU_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "uri.swiss", "eventfrog.ch", "uri.ch"}
 OL_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "uri.swiss", "seedorf-uri.ch", "eventfrog.ch", "uri.ch"}
-THEATER_URI_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "eventfrog.ch"}
+THEATER_URI_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "eventfrog.ch", "uri.swiss"}
 
 
 def check_kino_dedup(events, result):
@@ -458,8 +458,9 @@ def check_theater_uri_dedup(events, result):
         if source not in THEATER_URI_DEDUP_SOURCES:
             continue
         location = event.get("location") or ""
-        if re.search(r"(?i)theater\s+uri", location):
-            leaks.append(f"{source}: {event.get('event_title', '???')!r}")
+        title = event.get("event_title") or ""
+        if re.search(r"(?i)theater\s+uri", location) or re.search(r"(?i)theater\s+uri", title):
+            leaks.append(f"{source}: {title!r}")
 
     if leaks:
         examples = "; ".join(leaks[:5])

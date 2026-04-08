@@ -106,7 +106,9 @@ def _is_ol(event: dict) -> bool:
 def _is_theater_uri(event: dict) -> bool:
     """Detect Theater Uri events — these are scraped directly from theater-uri.ch."""
     location = event.get("location") or ""
-    return bool(re.search(r"(?i)theater\s+uri", location))
+    title = event.get("title", "")
+    return bool(re.search(r"(?i)theater\s+uri", location) or
+                re.search(r"(?i)theater\s+uri", title))
 
 
 def _to_template(event: dict, extracted_at: str) -> dict:

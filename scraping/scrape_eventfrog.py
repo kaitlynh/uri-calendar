@@ -128,8 +128,10 @@ def fetch_events() -> list[dict]:
     # Filter out Theater Uri events (scraped directly from theater-uri.ch)
     before = len(all_events)
     all_events = [e for e in all_events
-                  if not re.search(r"(?i)theater\s+uri",
-                                   _de(e.get("locationAlias")) or "")]
+                  if not (re.search(r"(?i)theater\s+uri",
+                                    _de(e.get("locationAlias")) or "") or
+                          re.search(r"(?i)theater\s+uri",
+                                    _de(e.get("title")) or ""))]
     skipped_theater = before - len(all_events)
     if skipped_theater:
         log.info("skipped %d Theater Uri events (scraped from theater-uri.ch)", skipped_theater)
