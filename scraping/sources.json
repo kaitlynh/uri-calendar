@@ -81,6 +81,15 @@
     "priority": 1
   },
   {
+    "name": "Rollhockey Club Uri",
+    "source_name": "rhc-uri.ch",
+    "url": "https://calendar.clubdesk.com/clubdesk/ical/63505/1000321/djEtghYihgJmXrDqwgFBmjVXdjKnO-vsfvBfY47oKLgOr7I=/basic.ics",
+    "base_url": "https://www.rhc-uri.ch/unser_verein/spiel-saisonplaene",
+    "type": "custom",
+    "scraper": "scrape_rhc_uri",
+    "priority": 1
+  },
+  {
     "name": "Volley Uri",
     "source_name": "volleyuri.ch",
     "url": "https://volleyuri.ch/veranstaltungen",
