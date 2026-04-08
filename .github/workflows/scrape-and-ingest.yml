@@ -78,6 +78,9 @@ jobs:
           DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
         run: python db/parse_json.py
 
+      - name: Push events.json to server
+        run: scp events/events.json ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/uri-calendar/events/events.json
+
   validate:
     name: Validate pipeline results
     runs-on: ubuntu-latest

@@ -106,6 +106,7 @@ def _fetch_description(url: str) -> Optional[str]:
 
 def fetch_events() -> list[dict]:
     """Fetch all events from uri.ch API, with descriptions from detail pages."""
+    seen_keys = set()
     all_offers = []
     page = 1
 
@@ -123,11 +124,18 @@ def fetch_events() -> list[dict]:
         groups = data.get("groups") or []
         for group in groups:
             for offer in group.get("offers", []):
+                # The API returns the same offer across multiple date groups.
+                # An event with multiple showtimes (e.g. matinee + evening) has the
+                # same id but different schedule values, so use (id, firstShow, schedule).
+                key = (offer.get("id"), offer.get("firstShow"), offer.get("schedule"))
+                if key in seen_keys:
+                    continue
+                seen_keys.add(key)
                 offer["_group_date"] = group.get("label", "")
                 all_offers.append(offer)
 
         more = data.get("moreExists", False)
-        log.info("page %d: %d groups, moreExists=%s (total offers so far: %d)",
+        log.info("page %d: %d groups, moreExists=%s (unique offers so far: %d)",
                  page, len(groups), more, len(all_offers))
         if not more:
             break
