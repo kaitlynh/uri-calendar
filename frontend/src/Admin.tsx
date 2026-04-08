@@ -1,6 +1,6 @@
 import { createResource, For, Show, type Component } from 'solid-js';
 
-const API_BASE = 'http://178.104.80.19/api';
+const API_BASE = '/api';
 
 type SourceStatus = {
   source_name: string;

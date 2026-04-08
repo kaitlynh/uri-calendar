@@ -4,7 +4,7 @@ import Card from './Card';
 import type { Event } from './event';
 import { getSourceIcon } from './sources';
 
-const API_BASE = 'http://178.104.80.19/api';
+const API_BASE = '/api';
 const DAYS_PER_BATCH = 14;
 
 /** "2026-03-28" → "Samstag, 28. März 2026" */
