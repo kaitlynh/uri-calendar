@@ -199,22 +199,28 @@ jobs:
               .filter(line => line.includes('[FAIL]'))
               .map(line => line.replace(/^\s*\[FAIL]\s*/, '').trim());
 
-            // Build a descriptive title from the failure reasons
-            const summaryParts = [];
-            if (hasApiFailure) summaryParts.push('API validation failed');
-            for (const line of failLines) {
-              // "0 events from source: Eventfrog (eventfrog.ch)" → "eventfrog.ch: 0 events"
-              const zeroMatch = line.match(/^0 events from source: .+\((.+)\)$/);
-              if (zeroMatch) { summaryParts.push(`${zeroMatch[1]}: 0 events`); continue; }
-              // "Orphaned sources in DB (not in JSON): x, y" → "orphaned DB sources: x, y"
-              const orphanMatch = line.match(/^Orphaned sources in DB \(not in JSON\): (.+)$/);
-              if (orphanMatch) { summaryParts.push(`orphaned DB sources: ${orphanMatch[1]}`); continue; }
-              // Fallback: use the line as-is, trimmed
-              summaryParts.push(line.length > 60 ? line.slice(0, 57) + '...' : line);
-            }
+            // Build a short, readable title
+            // Dedup uses the fingerprint (body FAIL lines), so the title
+            // only needs to be human-scannable, not encode every failure.
+            const failCount = failLines.length + (hasApiFailure ? 1 : 0);
+            // Extract failed source domains for the title
+            const failedSources = failLines
+              .map(line => {
+                const m = line.match(/\(([a-z0-9.-]+\.[a-z]+)\)$/);
+                return m ? m[1] : null;
+              })
+              .filter(Boolean);
 
-            const titleSummary = summaryParts.join(', ');
-            const issueTitle = `Scrape failure: ${titleSummary}`;
+            let issueTitle;
+            if (hasApiFailure && failLines.length === 0) {
+              issueTitle = 'Pipeline failure: API validation';
+            } else if (failedSources.length === 1) {
+              issueTitle = `Pipeline failure: ${failedSources[0]}`;
+            } else if (failedSources.length > 1) {
+              issueTitle = `Pipeline failure: ${failedSources.join(', ')}`;
+            } else {
+              issueTitle = `Pipeline failure: ${failCount} check${failCount === 1 ? '' : 's'}`;
+            }
             // Fingerprint = sorted fail lines, so order doesn't matter
             const fingerprint = failLines.slice().sort().join('\n');
 
