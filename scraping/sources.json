@@ -171,6 +171,15 @@
     "priority": 1
   },
   {
+    "name": "Theater Uri Altdorf",
+    "source_name": "theater-uri.ch",
+    "url": "https://www.theater-uri.ch/spielplan/",
+    "base_url": "https://www.theater-uri.ch/spielplan/",
+    "type": "custom",
+    "scraper": "scrape_theater_uri",
+    "priority": 1
+  },
+  {
     "name": "UriAgenda",
     "source_name": "uri.ch",
     "url": "https://www.uri.ch/api/rest/2.0/portals/search-offers/1089644949",

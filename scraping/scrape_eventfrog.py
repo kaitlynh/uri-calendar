@@ -125,6 +125,15 @@ def fetch_events() -> list[dict]:
     if skipped_ol:
         log.info("skipped %d OL events (scraped from olg-ktv-altdorf.ch)", skipped_ol)
 
+    # Filter out Theater Uri events (scraped directly from theater-uri.ch)
+    before = len(all_events)
+    all_events = [e for e in all_events
+                  if not re.search(r"(?i)theater\s+uri",
+                                   _de(e.get("locationAlias")) or "")]
+    skipped_theater = before - len(all_events)
+    if skipped_theater:
+        log.info("skipped %d Theater Uri events (scraped from theater-uri.ch)", skipped_theater)
+
     return all_events
 
 

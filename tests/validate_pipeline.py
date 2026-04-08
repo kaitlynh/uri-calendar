@@ -21,6 +21,7 @@ Checks (JSON):
   17. uri.swiss locations include venue names (not just town names)
   18b. KBU dedup — no Kantonsbibliothek events from aggregator sources
   18c. OL dedup — no OL-Cup/OLG/Orientierungslauf events from aggregator sources
+  18d. Theater Uri dedup — no Theater Uri events from aggregator sources
 
 Checks (DB):
   18. Database connection works
@@ -388,6 +389,7 @@ def check_per_source_events(events, result):
 KINO_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "uri.swiss", "uri.ch"}
 KBU_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "uri.swiss", "eventfrog.ch", "uri.ch"}
 OL_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "uri.swiss", "seedorf-uri.ch", "eventfrog.ch", "uri.ch"}
+THEATER_URI_DEDUP_SOURCES = {"altdorf.ch", "urnerwochenblatt.ch", "eventfrog.ch"}
 
 
 def check_kino_dedup(events, result):
@@ -446,6 +448,24 @@ def check_ol_dedup(events, result):
         result.fail(f"{len(ol_leaks)} OL events leaked through aggregator filters — e.g. {examples}")
     else:
         result.passed("No OL events from aggregator sources (dedup working)")
+
+
+def check_theater_uri_dedup(events, result):
+    """Check that Theater Uri events have been filtered from aggregator sources."""
+    leaks = []
+    for event in events:
+        source = event.get("source_name", "")
+        if source not in THEATER_URI_DEDUP_SOURCES:
+            continue
+        location = event.get("location") or ""
+        if re.search(r"(?i)theater\s+uri", location):
+            leaks.append(f"{source}: {event.get('event_title', '???')!r}")
+
+    if leaks:
+        examples = "; ".join(leaks[:5])
+        result.fail(f"{len(leaks)} Theater Uri events leaked through aggregator filters — e.g. {examples}")
+    else:
+        result.passed("No Theater Uri events from aggregator sources (dedup working)")
 
 
 def check_cinema_title_case(events, result):
@@ -771,6 +791,7 @@ def main():
         check_kino_dedup(events, result)
         check_kbu_dedup(events, result)
         check_ol_dedup(events, result)
+        check_theater_uri_dedup(events, result)
         check_cinema_title_case(events, result)
         check_cinema_descriptions(events, result)
         check_altdorf_times(events, result)

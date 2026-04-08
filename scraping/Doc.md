@@ -101,6 +101,7 @@ Place these in `.env` at the project root. On the server, the scheduled GitHub A
 | Volley Uri | volleyuri.ch | custom | 1 |
 | OL KTV Altdorf | olg-ktv-altdorf.ch | custom | 1 |
 | Cinema Leuzinger | cinema-leuzinger.ch | custom | 1 |
+| Theater Uri Altdorf | theater-uri.ch | custom | 1 |
 | UriAgenda | uri.ch | custom | 5 |
 
 ## Source-Level Deduplication
@@ -128,7 +129,11 @@ For known categories of duplicate events, scrapers filter them out at the source
 | `scrape_eventfrog.py` | Skips titles matching `OL-Cup`, `OLG`, or `Orientierungslauf` | OL events scraped directly from olg-ktv-altdorf.ch |
 | `scrape_uri_agenda.py` | Skips titles matching `OL-Cup`, `OLG`, or `Orientierungslauf` | OL events scraped directly from olg-ktv-altdorf.ch |
 
-When adding a new direct source that overlaps with aggregators, add corresponding skip logic to the aggregator scrapers. The filter functions are named `_is_kino()`, `_is_kbu()`, `_is_ol()` (or similar) in each scraper file.
+| `scrape_altdorf.py` | Skips location matching `Theater Uri` | Theater Uri events scraped directly from theater-uri.ch |
+| `scrape_urnerwochenblatt.py` | Skips location matching `Theater Uri` | Theater Uri events scraped directly from theater-uri.ch |
+| `scrape_eventfrog.py` | Skips `locationAlias` matching `Theater Uri` | Theater Uri events scraped directly from theater-uri.ch |
+
+When adding a new direct source that overlaps with aggregators, add corresponding skip logic to the aggregator scrapers. The filter functions are named `_is_kino()`, `_is_kbu()`, `_is_ol()`, `_is_theater_uri()` (or similar) in each scraper file.
 
 ---
 

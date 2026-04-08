@@ -162,6 +162,12 @@ def _is_ol(event: dict) -> bool:
     return bool(re.search(r"(?i)OL-Cup|OLG\b|Orientierungslauf", title))
 
 
+def _is_theater_uri(event: dict) -> bool:
+    """Detect Theater Uri events — these are scraped directly from theater-uri.ch."""
+    location = event.get("location") or ""
+    return bool(re.search(r"(?i)theater\s+uri", location))
+
+
 def _to_template(event: dict, extracted_at: str) -> dict:
     end_dt = None
     if event.get("end_date") and event["end_date"] != event["start_date"]:
@@ -217,6 +223,11 @@ def fetch_events() -> list[dict]:
     skipped_ol = before - len(events)
     if skipped_ol:
         log.info("skipped %d OL events (scraped from olg-ktv-altdorf.ch)", skipped_ol)
+    before = len(events)
+    events = [e for e in events if not _is_theater_uri(e)]
+    skipped_theater = before - len(events)
+    if skipped_theater:
+        log.info("skipped %d Theater Uri events (scraped from theater-uri.ch)", skipped_theater)
     log.info("found %d events, fetching details in parallel", len(events))
 
     with ThreadPoolExecutor(max_workers=8) as executor:
