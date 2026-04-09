@@ -9,6 +9,7 @@ log = logging.getLogger(__name__)
 ICAL_URL = "https://calendar.clubdesk.com/clubdesk/ical/63505/1000321/djEtghYihgJmXrDqwgFBmjVXdjKnO-vsfvBfY47oKLgOr7I=/basic.ics"
 BASE_URL = "https://www.rhc-uri.ch/unser_verein/spiel-saisonplaene"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HOME_VENUE = "Sporthalle Seedorf"
 
 
 def _parse_ical(text: str) -> list:
@@ -18,7 +19,7 @@ def _parse_ical(text: str) -> list:
     for line in text.splitlines():
         # Handle line folding (continuation lines start with space/tab)
         if current is not None and line.startswith((" ", "\t")):
-            current["_last_key"] += line[1:]
+            current[current["_last_key"]] += line[1:]
             continue
 
         if line == "BEGIN:VEVENT":
@@ -111,7 +112,15 @@ def fetch_events() -> list:
             end_datetime = f"{end_date}T{end_time}"
 
         description = _clean_description(ev.get("DESCRIPTION", ""))
-        location = ev.get("LOCATION", "").strip() or None
+        raw_location = ev.get("LOCATION", "").strip()
+
+        # Enrich location: "Seedorf" (+ typo "Seeedorf" in feed) = home venue
+        if re.match(r"^se+dorf$", raw_location.strip(), re.IGNORECASE):
+            location = HOME_VENUE
+        elif not raw_location and "heimspiel" in summary.lower():
+            location = HOME_VENUE
+        else:
+            location = raw_location or None
 
         # Enrich short titles (e.g. "NLB" or "Damen") with opponent from description
         title = summary

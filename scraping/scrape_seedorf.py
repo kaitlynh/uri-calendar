@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 
 # OL events — scraped directly from olg-ktv-altdorf.ch
 _SKIP_OL_RE = re.compile(r"(?i)OL-Cup|OLG\b|Orientierungslauf")
+# RHC events — scraped directly from rhc-uri.ch
+_SKIP_RHC_RE = re.compile(r"(?i)\bRHC\b")
 
 log = logging.getLogger(__name__)
 
@@ -83,6 +85,13 @@ def fetch_events() -> list:
     skipped_ol = before - len(data)
     if skipped_ol:
         log.info("skipped %d OL events (scraped from olg-ktv-altdorf.ch)", skipped_ol)
+
+    # Filter out RHC events (scraped directly from rhc-uri.ch)
+    before = len(data)
+    data = [item for item in data if not _SKIP_RHC_RE.search(item.get("title", ""))]
+    skipped_rhc = before - len(data)
+    if skipped_rhc:
+        log.info("skipped %d RHC events (scraped from rhc-uri.ch)", skipped_rhc)
 
     events = []
     for item in data:

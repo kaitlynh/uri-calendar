@@ -102,6 +102,7 @@ Place these in `.env` at the project root. On the server, the scheduled GitHub A
 | OL KTV Altdorf | olg-ktv-altdorf.ch | custom | 1 |
 | Cinema Leuzinger | cinema-leuzinger.ch | custom | 1 |
 | Theater Uri Altdorf | theater-uri.ch | custom | 1 |
+| Rollhockey Club Uri | rhc-uri.ch | custom | 1 |
 | UriAgenda | uri.ch | custom | 5 |
 
 ## Source-Level Deduplication
@@ -133,6 +134,8 @@ For known categories of duplicate events, scrapers filter them out at the source
 | `scrape_urnerwochenblatt.py` | Skips location matching `Theater Uri` | Theater Uri events scraped directly from theater-uri.ch |
 | `scrape_eventfrog.py` | Skips `locationAlias` or title matching `Theater Uri` | Theater Uri events scraped directly from theater-uri.ch |
 | `scrape_uri_tourismus.py` | Skips venue or title matching `Theater Uri` | Theater Uri events scraped directly from theater-uri.ch |
+
+| `scrape_seedorf.py` | Skips titles matching `RHC` | RHC events scraped directly from rhc-uri.ch |
 
 When adding a new direct source that overlaps with aggregators, add corresponding skip logic to the aggregator scrapers. The filter functions are named `_is_kino()`, `_is_kbu()`, `_is_ol()`, `_is_theater_uri()` (or similar) in each scraper file.
 
