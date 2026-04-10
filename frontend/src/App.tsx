@@ -101,6 +101,25 @@ const App: Component = () => {
   // -- UI state -------------------------------------------------------------
   const [showFab, setShowFab] = createSignal(false);
   const [showFilters, setShowFilters] = createSignal(false);
+
+  // -- Dark mode (persisted in localStorage, falls back to OS preference) ---
+  const prefersDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [darkMode, setDarkMode] = createSignal(
+    localStorage.getItem('theme') === 'dark' ||
+    (localStorage.getItem('theme') === null && prefersDark())
+  );
+
+  function applyDarkMode(dark: boolean) {
+    document.documentElement.classList.toggle('dark', dark);
+  }
+  applyDarkMode(darkMode());
+
+  function toggleDarkMode() {
+    const next = !darkMode();
+    setDarkMode(next);
+    applyDarkMode(next);
+    localStorage.setItem('theme', next ? 'dark' : 'light');
+  }
   const [feedStartDate, setFeedStartDate] = createSignal(toDateString(new Date()));
 
   // -- Source filters -------------------------------------------------------
@@ -309,10 +328,12 @@ const App: Component = () => {
     setLoading(false);
   });
 
-  // If the filtered results don't fill the viewport, keep loading
+  // If the filtered results don't fill the viewport, keep loading.
+  // Skip when no sources are enabled — nothing will ever pass the filter.
   createEffect(() => {
     filteredDayGroups(); // track changes
     if (loading() || loadingMore() || loadingExtended() || reachedEnd()) return;
+    if (enabledSources().size === 0) return;
 
     requestAnimationFrame(() => {
       if (document.body.offsetHeight <= window.innerHeight + 200) {
@@ -327,7 +348,7 @@ const App: Component = () => {
 
     const nearBottom =
       window.innerHeight + window.scrollY >= document.body.offsetHeight - SCROLL_LOAD_THRESHOLD;
-    if (nearBottom && !loadingMore() && !loading() && !reachedEnd()) {
+    if (nearBottom && !loadingMore() && !loading() && !reachedEnd() && enabledSources().size > 0) {
       loadNextBatch();
     }
   }
@@ -438,6 +459,21 @@ const App: Component = () => {
         >
           Scraping-Status anzeigen &rarr;
         </a>
+
+        <hr class="border-t border-[var(--border-color)] my-6" />
+
+        {/* Dark mode toggle */}
+        <button
+          onClick={toggleDarkMode}
+          class="flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-main)] bg-transparent border-none cursor-pointer transition-colors"
+        >
+          <Show when={darkMode()} fallback={
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          }>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </Show>
+          {darkMode() ? 'Hellmodus' : 'Dunkelmodus'}
+        </button>
       </>
     );
   }
@@ -555,11 +591,11 @@ const App: Component = () => {
         <main class="grow min-w-0">
           {/* Error banner */}
           <Show when={error()}>
-            <div class="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 flex items-center justify-between" aria-live="assertive">
-              <p class="text-red-800 text-sm">{error()}</p>
+            <div class="mb-4 p-4 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 flex items-center justify-between" aria-live="assertive">
+              <p class="text-red-800 dark:text-red-300 text-sm">{error()}</p>
               <button
                 onClick={() => { setError(null); loadNextBatch(); }}
-                class="text-sm font-medium text-red-700 hover:text-red-900 bg-transparent border-none cursor-pointer whitespace-nowrap ml-4"
+                class="text-sm font-medium text-red-700 dark:text-red-400 hover:text-red-900 dark:hover:text-red-200 bg-transparent border-none cursor-pointer whitespace-nowrap ml-4"
               >
                 Erneut versuchen
               </button>
@@ -623,7 +659,7 @@ const App: Component = () => {
               {/* Empty state */}
               <Show when={filteredDayGroups().length === 0 && !loading() && !loadingMore()}>
                 <div class="text-center py-16">
-                  <img src="/uri-lake-drawing.png" alt="Uri Berge" class="w-full mb-6 opacity-60" />
+                  <img src={darkMode() ? '/uri-lake-drawing-transparent.png' : '/uri-lake-drawing.png'} alt="Uri Berge" class="w-full mb-6 opacity-60" />
                   <p class="text-[var(--text-muted)] text-lg">
                     Keine Veranstaltungen gefunden. Wie wärs mit einem Ausflug in die Berge?
                   </p>

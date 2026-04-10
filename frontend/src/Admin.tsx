@@ -41,9 +41,9 @@ function freshnessStatus(lastExtracted: string | null): 'fresh' | 'stale' | 'old
 }
 
 const STATUS_STYLES = {
-  fresh: { dot: 'bg-green-500', badge: 'bg-green-50 text-green-700 border-green-200', label: 'Aktuell' },
-  stale: { dot: 'bg-yellow-500', badge: 'bg-yellow-50 text-yellow-700 border-yellow-200', label: 'Veraltet' },
-  old:   { dot: 'bg-red-500',   badge: 'bg-red-50 text-red-700 border-red-200',       label: 'Fehlt' },
+  fresh: { dot: 'bg-green-500', badge: 'bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800', label: 'Aktuell' },
+  stale: { dot: 'bg-yellow-500', badge: 'bg-yellow-50 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800', label: 'Veraltet' },
+  old:   { dot: 'bg-red-500',   badge: 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800',       label: 'Fehlt' },
 };
 
 const Admin: Component = () => {
@@ -86,11 +86,11 @@ const Admin: Component = () => {
                 </div>
                 <div class="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-xl p-5">
                   <p class="text-[var(--text-muted)] text-sm mb-1">Aktuell (&lt;6h)</p>
-                  <p class="text-2xl font-bold text-green-600">{fresh}</p>
+                  <p class="text-2xl font-bold text-green-600 dark:text-green-400">{fresh}</p>
                 </div>
                 <div class="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-xl p-5">
                   <p class="text-[var(--text-muted)] text-sm mb-1">Veraltet / Fehlt</p>
-                  <p class="text-2xl font-bold text-red-600">{stale + old}</p>
+                  <p class="text-2xl font-bold text-red-600 dark:text-red-400">{stale + old}</p>
                 </div>
               </div>
             );
