@@ -5,60 +5,17 @@ Parses event cards with CSS classes: .event, .tag, .monat, .event-titel,
 """
 
 import logging
-import re
-from datetime import date
-from typing import Optional
 
 import requests
 from bs4 import BeautifulSoup
+
+from parse_utils import parse_german_date, parse_time, parse_end_time
 
 log = logging.getLogger(__name__)
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
 }
-
-MONTHS_DE = {
-    "Jan.": 1, "Feb.": 2, "Marz": 3, "März": 3, "Apr.": 4,
-    "Mai": 5, "Juni": 6, "Juli": 7, "Aug.": 8,
-    "Sep.": 9, "Sept.": 9, "Okt.": 10, "Nov.": 11, "Dez.": 12,
-}
-
-
-def _parse_date(day_str: str, month_str: str) -> Optional[str]:
-    """Parse day + German month abbreviation into YYYY-MM-DD, inferring year."""
-    try:
-        day = int(day_str.strip())
-        month = MONTHS_DE.get(month_str.strip())
-        if not month:
-            return None
-        today = date.today()
-        year = today.year
-        if date(year, month, day) < today.replace(day=1):
-            year += 1
-        return f"{year:04d}-{month:02d}-{day:02d}"
-    except Exception:
-        return None
-
-
-def _parse_time(time_str: str) -> Optional[str]:
-    """Extract start time from '13.30 - 14.15 Uhr' or '19.00 Uhr'."""
-    if not time_str or time_str.strip() in ("–", "-", ""):
-        return None
-    m = re.search(r"(\d{1,2})[.:](\d{2})", time_str)
-    if m:
-        return f"{int(m.group(1)):02d}:{m.group(2)}:00"
-    return None
-
-
-def _parse_end_time(time_str: str) -> Optional[str]:
-    """Extract end time from '13.30 - 14.15 Uhr'."""
-    if not time_str:
-        return None
-    m = re.search(r"\d{1,2}[.:]\d{2}\s*-\s*(\d{1,2})[.:](\d{2})", time_str)
-    if m:
-        return f"{int(m.group(1)):02d}:{m.group(2)}:00"
-    return None
 
 
 def scrape(source: dict, extracted_at: str) -> list:
@@ -108,9 +65,11 @@ def scrape(source: dict, extracted_at: str) -> list:
         if location and location in ("–", "-"):
             location = None
 
-        start_date = _parse_date(day_el.get_text(strip=True), month_el.get_text(strip=True))
-        start_time = _parse_time(time_str)
-        end_time = _parse_end_time(time_str)
+        day_text = day_el.get_text(strip=True)
+        month_text = month_el.get_text(strip=True)
+        start_date = parse_german_date(int(day_text), month_text)
+        start_time = parse_time(time_str)
+        end_time = parse_end_time(time_str)
         end_datetime = f"{start_date}T{end_time}" if start_date and end_time else None
 
         events.append(

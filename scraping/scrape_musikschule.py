@@ -8,44 +8,14 @@ from typing import Optional
 
 urllib3.disable_warnings()
 
+from parse_utils import parse_german_date_string, parse_time
+
 log = logging.getLogger(__name__)
 
 BASE_URL = "https://www.musikschule-uri.ch/events-news/"  # Events listing page — used for fetching and as base_url in output
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"
-
-# German month names for parsing
-MONTHS_DE = {
-    "Januar": "01", "Februar": "02", "März": "03", "April": "04",
-    "Mai": "05", "Juni": "06", "Juli": "07", "August": "08",
-    "September": "09", "Oktober": "10", "November": "11", "Dezember": "12",
-}
-
-
-def _parse_date_from_text(text: str) -> Optional[str]:
-    """Parse date from free-text German strings into 'YYYY-MM-DD'."""
-    # Try: DD.MM.YYYY
-    m = re.search(r'(\d{1,2})\.(\d{2})\.(\d{4})', text)
-    if m:
-        return f"{m.group(3)}-{m.group(2)}-{m.group(1).zfill(2)}"
-
-    # Try: DD. MonthName YYYY (e.g. '18. April 2026')
-    m = re.search(r'(\d{1,2})\.\s*([A-Za-zä]+)\s+(\d{4})', text)
-    if m:
-        month = MONTHS_DE.get(m.group(2))
-        if month:
-            return f"{m.group(3)}-{month}-{m.group(1).zfill(2)}"
-
-    return None
-
-
-def _parse_time_from_text(text: str) -> Optional[str]:
-    """Parse time from free-text German strings into 'HH:MM:SS'."""
-    m = re.search(r'(\d{1,2}):(\d{2})\s*Uhr', text)
-    if m:
-        return f"{int(m.group(1)):02d}:{m.group(2)}:00"
-    return None
 
 
 def _extract_location(h3_text: str) -> str:
@@ -97,8 +67,8 @@ def parse_events_from_html(html: str) -> list[dict]:
         if h3_match:
             h3_text = STRIP_TAGS.sub('', h3_match.group(1).replace('<br />', '\n').replace('<br>', '\n')).strip()
 
-        start_date = _parse_date_from_text(h3_text)
-        start_time = _parse_time_from_text(h3_text)
+        start_date = parse_german_date_string(h3_text)
+        start_time = parse_time(h3_text)
         location = _extract_location(h3_text)
 
         # Description from <p> tags (skip download links)

@@ -1,49 +1,14 @@
 import logging
-import re
 import requests
-from datetime import datetime
-from typing import Optional
 
 from bs4 import BeautifulSoup
+
+from parse_utils import parse_german_date_string, parse_time
 
 log = logging.getLogger(__name__)
 
 URL = "https://schattdorf.ch/erleben/veranstaltungen"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
-
-MONTHS_DE = {
-    "Januar": 1, "Februar": 2, "März": 3, "April": 4,
-    "Mai": 5, "Juni": 6, "Juli": 7, "August": 8,
-    "September": 9, "Oktober": 10, "November": 11, "Dezember": 12,
-}
-
-
-def _parse_date(date_str: str) -> Optional[str]:
-    """Parse '2. April 2026' into 'YYYY-MM-DD'."""
-    try:
-        cleaned = date_str.strip()
-        match = re.match(r'(\d{1,2})\.\s*(\w+)\s+(\d{4})', cleaned)
-        if not match:
-            return None
-        day = int(match.group(1))
-        month = MONTHS_DE.get(match.group(2))
-        year = int(match.group(3))
-        if not month:
-            return None
-        return f"{year:04d}-{month:02d}-{day:02d}"
-    except Exception:
-        return None
-
-
-def _parse_time(time_str: str) -> Optional[str]:
-    """Parse '17.30 Uhr' or '17.30\xa0Uhr' into 'HH:MM:00'."""
-    if not time_str:
-        return None
-    cleaned = time_str.replace('\xa0', ' ').strip()
-    match = re.search(r'(\d{1,2})[.:](\d{2})', cleaned)
-    if match:
-        return f"{int(match.group(1)):02d}:{match.group(2)}:00"
-    return None
 
 
 def fetch_events() -> list:
@@ -91,8 +56,8 @@ def _to_template(event: dict, extracted_at: str) -> dict:
     return {
         "source_url": URL,
         "event_title": event["title"],
-        "start_date": _parse_date(event["date"]),
-        "start_time": _parse_time(event.get("time", "")),
+        "start_date": parse_german_date_string(event["date"]),
+        "start_time": parse_time(event.get("time", "").replace('\xa0', ' ')),
         "end_datetime": None,
         "location": event["location"],
         "description": None,

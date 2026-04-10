@@ -15,52 +15,7 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW
 STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"
 
-MONTHS_DE = {
-    "Januar": 1, "Jan.": 1, "Jan": 1,
-    "Februar": 2, "Feb.": 2, "Feb": 2,
-    "März": 3, "Mär.": 3, "Mär": 3,
-    "April": 4, "Apr.": 4, "Apr": 4,
-    "Mai": 5,
-    "Juni": 6, "Jun.": 6, "Jun": 6,
-    "Juli": 7, "Jul.": 7, "Jul": 7,
-    "August": 8, "Aug.": 8, "Aug": 8,
-    "September": 9, "Sep.": 9, "Sep": 9, "Sept.": 9,
-    "Oktober": 10, "Okt.": 10, "Okt": 10,
-    "November": 11, "Nov.": 11, "Nov": 11,
-    "Dezember": 12, "Dez.": 12, "Dez": 12,
-}
-
-
-def _parse_date(datum_text: str) -> Optional[str]:
-    """Parse 'Freitag, 27. März' or 'DD.MM.YYYY' into 'YYYY-MM-DD', inferring year if needed."""
-    # Try DD.MM.YYYY first
-    m = re.search(r'(\d{1,2})\.(\d{2})\.(\d{4})', datum_text)
-    if m:
-        return f"{m.group(3)}-{m.group(2)}-{m.group(1).zfill(2)}"
-    # Try 'DD. MonthName' without year
-    m = re.search(r'(\d{1,2})\.\s*([A-Za-zä]+\.?)', datum_text)
-    if m:
-        day = int(m.group(1))
-        month = MONTHS_DE.get(m.group(2))
-        if not month:
-            return None
-        today = datetime.today()
-        year = today.year
-        if month < today.month or (month == today.month and day < today.day):
-            year += 1
-        try:
-            return datetime(year, month, day).strftime("%Y-%m-%d")
-        except ValueError:
-            return None
-    return None
-
-
-def _parse_time(time_str: str) -> Optional[str]:
-    """Parse 'HH.MM' or 'HH:MM' into 'HH:MM:SS'."""
-    m = re.match(r'(\d{1,2})[.:](\d{2})', time_str.strip())
-    if m:
-        return f"{int(m.group(1)):02d}:{m.group(2)}:00"
-    return None
+from parse_utils import parse_german_date_string, parse_time
 
 
 def _parse_start_time(time_part: str) -> Optional[str]:
@@ -68,7 +23,7 @@ def _parse_start_time(time_part: str) -> Optional[str]:
     if not time_part:
         return None
     start = time_part.split("–")[0].replace("Uhr", "").strip()
-    return _parse_time(start)
+    return parse_time(start)
 
 
 def _parse_end_datetime(start_date: Optional[str], time_str: str) -> Optional[str]:
@@ -77,7 +32,7 @@ def _parse_end_datetime(start_date: Optional[str], time_str: str) -> Optional[st
         return None
     try:
         end_part = time_str.split("–")[1].replace("Uhr", "").strip()
-        end_time = _parse_time(end_part)
+        end_time = parse_time(end_part)
         if end_time:
             return f"{start_date}T{end_time}"
     except Exception:
@@ -112,7 +67,7 @@ def _is_theater_uri(event: dict) -> bool:
 
 
 def _to_template(event: dict, extracted_at: str) -> dict:
-    start_date = _parse_date(event["date"])
+    start_date = parse_german_date_string(event["date"])
     return {
         "source_url": event["website"] or BASE_URL,
         "event_title": event["title"],
