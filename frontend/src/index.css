@@ -15,13 +15,14 @@
 }
 
 .dark {
-  --bg-color: #0F172A;
+  --bg-color: #020617;
   --text-main: #E2E8F0;
   --text-muted: #94A3B8;
   --alpine-blue: #38BDF8;
   --alpine-blue-hover: #7DD3FC;
   --card-bg: #1E293B;
   --border-color: #334155;
+  color-scheme: dark;
 }
 
 /* ── Base reset & typography ── */

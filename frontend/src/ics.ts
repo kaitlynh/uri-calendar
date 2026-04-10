@@ -1,7 +1,7 @@
 import type { Event } from './event';
 
-/** Format a Date to ICS datetime string: 20260328T140000 */
-function toICSDateTime(date: Date): string {
+/** @internal Format a Date to ICS datetime string: 20260328T140000 */
+export function toICSDateTime(date: Date): string {
   const pad = (n: number) => String(n).padStart(2, '0');
   return (
     date.getFullYear().toString() +
@@ -14,13 +14,13 @@ function toICSDateTime(date: Date): string {
   );
 }
 
-/** Format "YYYY-MM-DD" to ICS date string: 20260328 */
-function toICSDate(dateStr: string): string {
+/** @internal Format "YYYY-MM-DD" to ICS date string: 20260328 */
+export function toICSDate(dateStr: string): string {
   return dateStr.replace(/-/g, '');
 }
 
-/** Escape text for ICS (newlines, commas, semicolons, backslashes) */
-function escapeICS(text: string): string {
+/** @internal Escape text for ICS (newlines, commas, semicolons, backslashes) */
+export function escapeICS(text: string): string {
   return text
     .replace(/\\/g, '\\\\')
     .replace(/;/g, '\\;')
@@ -28,9 +28,17 @@ function escapeICS(text: string): string {
     .replace(/\n/g, '\\n');
 }
 
-/** Add minutes to a Date and return new Date */
-function addMinutes(date: Date, minutes: number): Date {
+/** @internal Add minutes to a Date and return new Date */
+export function addMinutes(date: Date, minutes: number): Date {
   return new Date(date.getTime() + minutes * 60 * 1000);
+}
+
+/** @internal Add one day to a YYYY-MM-DD string without timezone conversion. */
+export function nextDateStr(dateStr: string): string {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const next = new Date(y, m - 1, d + 1); // local date arithmetic
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${next.getFullYear()}-${pad(next.getMonth() + 1)}-${pad(next.getDate())}`;
 }
 
 /** Generate a Google Calendar URL for the event */
@@ -42,9 +50,7 @@ export function googleCalendarUrl(event: Event): string {
   if (!event.start_time) {
     // All-day event: dates only, no times
     const startStr = toICSDate(event.start_date);
-    const endDate = new Date(event.start_date + 'T00:00:00');
-    endDate.setDate(endDate.getDate() + 1);
-    const endStr = toICSDate(endDate.toISOString().slice(0, 10));
+    const endStr = toICSDate(nextDateStr(event.start_date));
     params.set('dates', `${startStr}/${endStr}`);
   } else {
     const start = new Date(`${event.start_date}T${event.start_time}`);
@@ -87,12 +93,8 @@ export function downloadICS(event: Event): void {
   if (!event.start_time) {
     // All-day event
     lines.push(`DTSTART;VALUE=DATE:${toICSDate(event.start_date)}`);
-    // All-day end is the next day (exclusive)
-    const startDate = new Date(event.start_date + 'T00:00:00');
-    const nextDay = new Date(startDate);
-    nextDay.setDate(nextDay.getDate() + 1);
-    const nextDayStr = nextDay.toISOString().slice(0, 10);
-    lines.push(`DTEND;VALUE=DATE:${toICSDate(nextDayStr)}`);
+    // All-day end is the next day (exclusive per ICS spec)
+    lines.push(`DTEND;VALUE=DATE:${toICSDate(nextDateStr(event.start_date))}`);
   } else {
     // Timed event — all times are Europe/Zurich
     const start = new Date(`${event.start_date}T${event.start_time}`);
