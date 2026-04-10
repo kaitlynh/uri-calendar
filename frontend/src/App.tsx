@@ -529,7 +529,7 @@ const App: Component = () => {
   return (
     <>
       {/* Mobile-only sticky header */}
-      <Header onToggleFilters={() => setShowFilters(!showFilters())} />
+      <Header onToggleFilters={() => setShowFilters(!showFilters())} filtersOpen={showFilters()} />
 
       {/* Mobile filter drawer */}
       <Show when={showFilters()}>
@@ -555,7 +555,7 @@ const App: Component = () => {
         <main class="grow min-w-0">
           {/* Error banner */}
           <Show when={error()}>
-            <div class="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 flex items-center justify-between">
+            <div class="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 flex items-center justify-between" aria-live="assertive">
               <p class="text-red-800 text-sm">{error()}</p>
               <button
                 onClick={() => { setError(null); loadNextBatch(); }}
@@ -568,13 +568,13 @@ const App: Component = () => {
 
           <Show
             when={!loading()}
-            fallback={<p class="text-[var(--text-muted)] text-center py-12">Laden...</p>}
+            fallback={<p class="text-[var(--text-muted)] text-center py-12" aria-live="polite">Laden...</p>}
           >
             {/* Search results */}
             <Show when={searchQuery().length >= 2}>
               <Show
                 when={!searchLoading()}
-                fallback={<p class="text-[var(--text-muted)] text-center py-12">Suche...</p>}
+                fallback={<p class="text-[var(--text-muted)] text-center py-12" aria-live="polite">Suche...</p>}
               >
                 <Show
                   when={searchResults()}

@@ -2,6 +2,7 @@ import type { Component } from 'solid-js';
 
 type HeaderProps = {
   onToggleFilters: () => void;
+  filtersOpen: boolean;
 };
 
 const Header: Component<HeaderProps> = (props) => {
@@ -10,6 +11,8 @@ const Header: Component<HeaderProps> = (props) => {
       <h1 class="text-lg font-bold">Veranstaltungen im Kanton Uri</h1>
       <button
         onClick={props.onToggleFilters}
+        aria-label="Filter ein-/ausblenden"
+        aria-expanded={props.filtersOpen}
         class="text-sm font-medium px-3 py-1.5 border border-[var(--border-color)] rounded-md text-[var(--text-muted)] hover:text-[var(--text-main)] hover:border-[var(--text-muted)] transition-colors"
       >
         Filter

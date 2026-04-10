@@ -94,6 +94,7 @@ const Card: Component<EventProps> = (props) => {
             {props.event.source_name && (
               <span> | {props.event.source_name}</span>
             )}
+            <span class="sr-only"> (öffnet neues Fenster)</span>
           </a>
 
           {/* Date + time + location row */}
@@ -121,7 +122,7 @@ const Card: Component<EventProps> = (props) => {
               rel="noopener noreferrer"
               class="bg-[var(--alpine-blue)] text-white px-4 py-2 rounded-md font-medium text-[0.9rem] no-underline transition-colors hover:bg-[var(--alpine-blue-hover)]"
             >
-              Zum Event
+              Zum Event <span class="sr-only">(öffnet neues Fenster)</span>
             </a>
             <a
               href={googleCalendarUrl(props.event)}
@@ -130,7 +131,7 @@ const Card: Component<EventProps> = (props) => {
               class="bg-transparent text-[var(--text-muted)] border border-[var(--border-color)] px-4 py-2 rounded-md font-medium text-[0.9rem] flex items-center gap-2 cursor-pointer transition-colors hover:text-[var(--text-main)] hover:border-[var(--text-muted)] no-underline"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Google Calendar
+              Google Calendar <span class="sr-only">(öffnet neues Fenster)</span>
             </a>
             <button
               onClick={() => downloadICS(props.event)}
@@ -161,6 +162,7 @@ const Card: Component<EventProps> = (props) => {
             onClick={() => setExpanded(!expanded())}
             class="w-full flex justify-center cursor-pointer text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--bg-color)] transition-colors py-1.5"
             aria-label={expanded() ? 'Weniger anzeigen' : 'Mehr anzeigen'}
+            aria-expanded={expanded()}
           >
             <svg
               width="20"

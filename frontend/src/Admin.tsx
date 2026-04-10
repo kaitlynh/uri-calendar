@@ -135,7 +135,7 @@ const Admin: Component = () => {
                               rel="noopener noreferrer"
                               class="text-[var(--text-muted)] hover:text-[var(--alpine-blue)] truncate max-w-[200px] block transition-colors"
                             >
-                              {source.base_url}
+                              {source.base_url} <span class="sr-only">(öffnet neues Fenster)</span>
                             </a>
                           </td>
                           <td class="px-6 py-4">
