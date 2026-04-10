@@ -20,6 +20,13 @@ const Card: Component<EventProps> = (props) => {
   const time = () => formatTime(props.event.start_time);
   const iconSrc = () => !iconError() ? getSourceIcon(props.event.icon_filename) : undefined;
 
+  // ref pattern: onError doesn't fire for images that fail before hydration
+  const iconRef = (el: HTMLImageElement) => {
+    el.onerror = () => setIconError(true);
+    const src = getSourceIcon(props.event.icon_filename);
+    if (src) el.src = src;
+  };
+
   return (
     <article class="bg-[var(--card-bg)] rounded-xl border border-[var(--border-color)] shadow-[0_2px_4px_-1px_rgba(0,0,0,0.03)] flex flex-col transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_15px_-3px_rgba(0,0,0,0.05)] overflow-hidden">
 
@@ -27,10 +34,9 @@ const Card: Component<EventProps> = (props) => {
       <div class="hidden max-md:flex items-center gap-3 px-4 pt-4 pb-3 border-b border-[var(--border-color)]">
         {iconSrc() ? (
           <img
-            src={iconSrc()}
             alt={props.event.source_name}
             class="w-8 h-8 rounded-lg object-cover bg-[var(--border-color)] shrink-0"
-            onError={() => setIconError(true)}
+            ref={iconRef}
           />
         ) : (
           <div class="w-8 h-8 rounded-lg bg-[var(--border-color)] flex items-center justify-center text-[0.35rem] font-semibold text-[var(--text-muted)] shrink-0 text-center leading-tight overflow-hidden break-words p-0.5">
@@ -54,10 +60,9 @@ const Card: Component<EventProps> = (props) => {
         <div class="w-[156px] h-[156px] shrink-0 max-md:hidden">
           {iconSrc() ? (
             <img
-              src={iconSrc()}
               alt={props.event.source_name}
               class="w-full h-full object-cover bg-[var(--border-color)]"
-              onError={() => setIconError(true)}
+              ref={iconRef}
             />
           ) : (
             <div class="w-full h-full bg-[var(--border-color)] flex items-center justify-center text-sm font-semibold text-[var(--text-muted)] text-center leading-tight p-3 break-words overflow-hidden">

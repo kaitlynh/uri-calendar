@@ -8,6 +8,7 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
+      // For local API: '/api': 'http://localhost:5000',
       '/api': 'https://urikalender.ch',
     },
   },
