@@ -15,4 +15,5 @@ export type Event = {
   description: string,
   extracted_at: string,
   ai_flag?: boolean | null,
+  ai_flag_at?: string | null,
 }

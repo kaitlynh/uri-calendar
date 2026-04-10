@@ -8,5 +8,7 @@
   "end_datetime": "string (YYYY-MM-DDTHH:MM:SS, no timezone) or null",
   "location": "string",
   "description": "string",
-  "extracted_at": "ISO8601 string"
+  "extracted_at": "ISO8601 string",
+  "ai_flag": "boolean (true for AI-found events)",
+  "ai_flag_at": "ISO8601 string (when AI enrichment happened) or null"
 }

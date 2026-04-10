@@ -12,6 +12,7 @@
  created_at   | timestamp with time zone |           |          | CURRENT_TIMESTAMP
  source_url   | text                     |           | not null | 
  ai_flag      | boolean                  |           |          | false
+ ai_flag_at   | timestamp with time zone |           |          |
 Indexes:
     "events_pkey" PRIMARY KEY, btree (event_id)
     "unique_title_date_time" UNIQUE, btree (event_title, start_date, COALESCE(start_time, '00:00:00'::time without time zone))

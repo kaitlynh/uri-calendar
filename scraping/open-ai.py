@@ -123,8 +123,8 @@ if parsed:
         key = (e["event_title"].lower().strip(), (e.get("start_date") or "")[:10], e.get("start_time") or "")
         if key not in seen:
             seen.add(key)
-            e["ai_updated"] = True
-            e["ai_updated_at"] = ai_now
+            e["ai_flag"] = True
+            e["ai_flag_at"] = ai_now
             new_events.append(e)
 
     merged = existing_events + new_events

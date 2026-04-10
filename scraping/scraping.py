@@ -36,8 +36,8 @@ class Event:
     description: Optional[str]
     extracted_at: str
     priority: int
-    ai_updated: Optional[bool] = False
-    ai_updated_at: Optional[str] = None
+    ai_flag: Optional[bool] = False
+    ai_flag_at: Optional[str] = None
 
 
 def load_sources(path: str = "scraping/sources.json") -> list[dict]:

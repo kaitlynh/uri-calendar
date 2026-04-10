@@ -97,9 +97,10 @@ def ingest_events(json_file: str):
                     location,
                     description,
                     extracted_at,
-                    ai_flag
+                    ai_flag,
+                    ai_flag_at
                 )
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (event_title, start_date, COALESCE(start_time, '00:00:00'))
                 DO UPDATE SET
                     source_id = EXCLUDED.source_id,
@@ -111,7 +112,8 @@ def ingest_events(json_file: str):
                     description = EXCLUDED.description,
                     extracted_at = EXCLUDED.extracted_at,
                     source_url = EXCLUDED.source_url,
-                    ai_flag = EXCLUDED.ai_flag
+                    ai_flag = EXCLUDED.ai_flag,
+                    ai_flag_at = EXCLUDED.ai_flag_at
                 WHERE (
                     -- 1. Lower priority (Note: We join the priority from the sources table)
                     (SELECT s.priority FROM sources s WHERE s.source_id = EXCLUDED.source_id) < 
@@ -146,7 +148,8 @@ def ingest_events(json_file: str):
                     event.get("location"),
                     event.get("description"),
                     event.get("extracted_at"),
-                    event.get("ai_updated"),
+                    event.get("ai_flag"),
+                    event.get("ai_flag_at"),
                 )
             )
             cur.execute("RELEASE SAVEPOINT ev")

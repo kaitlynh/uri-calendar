@@ -152,7 +152,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
         "location": event.get("location"),
         "description": event.get("description"),
         "extracted_at": event.get("extracted_at", extracted_at),
-        "ai_updated": True,
+        "ai_flag": True,
     }
 
 

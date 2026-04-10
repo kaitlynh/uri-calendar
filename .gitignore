@@ -18,6 +18,9 @@ venv/
 .DS_Store
 Thumbs.db
 
+# Pipeline output (lives on server, not in repo)
+events/events.json
+
 # Test result logs (kept locally, not committed)
 tests/test-results/*.log
 
