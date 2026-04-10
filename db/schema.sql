@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS sources (
     source_id    uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     source_name  text UNIQUE,                -- bare domain, e.g. "kbu.ch"
     base_url     text NOT NULL,              -- full URL to events listing page
-    priority     integer NOT NULL DEFAULT 67, -- lower = preferred in dedup
+    priority     integer NOT NULL DEFAULT 67, -- lower = preferred in dedup; 67 = fallback so unconfigured sources never win
     display_name text,                       -- human-friendly name (set manually)
     icon_filename text,                      -- filename in frontend/public/source-icons/ (set manually)
     category     text,                       -- filter group: Gemeinden, Schulen, Organisationen (set manually)

@@ -3,7 +3,6 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 from pathlib import Path
-from datetime import datetime
 
 # Load .env from project root
 load_dotenv(dotenv_path=Path(__file__).parent.parent / '.env')
@@ -27,18 +26,6 @@ def get_db_connection():
     except psycopg2.OperationalError as e:
         print(f"Connection failed: {e}")
         raise
-
-
-def parse_start_datetime(value):
-    """Split ISO8601 datetime string into (date, time) or (None, None)."""
-    if not value:
-        return None, None
-    try:
-        dt = datetime.fromisoformat(value)
-        return dt.date(), dt.time()
-    except ValueError:
-        print(f"Could not parse start_datetime: {value}")
-        return None, None
 
 
 def ingest_events(json_file: str):
