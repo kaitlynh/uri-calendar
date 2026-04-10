@@ -3,11 +3,9 @@ import requests
 import re
 import json
 import html
-import urllib3
 from datetime import datetime
 from typing import Optional
 
-urllib3.disable_warnings()
 
 log = logging.getLogger(__name__)
 
@@ -54,7 +52,7 @@ def _fetch_detail_info(detail_url: str) -> dict:
     """Fetch an event detail page and extract description and start time."""
     result = {"description": "", "start_time": None}
     try:
-        resp = requests.get(detail_url, headers=HEADERS, timeout=15, verify=False)
+        resp = requests.get(detail_url, headers=HEADERS, timeout=15)
         if resp.status_code != 200:
             return result
 
@@ -200,7 +198,7 @@ def fetch_events() -> list[dict]:
 
     log.info("fetching %s", BASE_URL)
     try:
-        resp = requests.get(BASE_URL, headers=HEADERS, timeout=15, verify=False)
+        resp = requests.get(BASE_URL, headers=HEADERS, timeout=15)
         if resp.status_code != 200:
             log.warning("HTTP %s", resp.status_code)
             return []
@@ -249,7 +247,7 @@ def fetch_events() -> list[dict]:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
-    extracted_at = datetime.utcnow().strftime(ISO_FMT)
+    extracted_at = datetime.now(timezone.utc).strftime(ISO_FMT)
     formatted = [_to_template(e, extracted_at) for e in events]
     log.info("total events: %d", len(formatted))
     output_path = "../events/altdorf_events.json"

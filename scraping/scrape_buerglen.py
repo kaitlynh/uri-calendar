@@ -3,12 +3,9 @@ import requests
 import re
 import json
 import html
-import urllib3
 from datetime import datetime
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
-urllib3.disable_warnings()
 
 log = logging.getLogger(__name__)
 
@@ -39,7 +36,7 @@ def _fetch_detail(detail_url: str) -> dict:
     """Fetch detail page, extract time and description from icms-lead-container."""
     result = {"start_time": None, "end_time": None, "description": ""}
     try:
-        resp = requests.get(detail_url, headers=HEADERS, timeout=15, verify=False)
+        resp = requests.get(detail_url, headers=HEADERS, timeout=15)
         if resp.status_code != 200:
             return result
 
@@ -80,7 +77,7 @@ def fetch_events() -> list:
     """Fetch all events from buerglen.ch/anlaesseaktuelles."""
     log.info("fetching %s", URL)
     try:
-        resp = requests.get(URL, headers=HEADERS, timeout=15, verify=False)
+        resp = requests.get(URL, headers=HEADERS, timeout=15)
         if resp.status_code != 200:
             log.warning("HTTP %s", resp.status_code)
             return []
@@ -168,6 +165,6 @@ if __name__ == "__main__":
     import json as json_mod
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
-    extracted_at = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+    extracted_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
     formatted = [_to_template(e, extracted_at) for e in events]
     print(json_mod.dumps(formatted, ensure_ascii=False, indent=2))

@@ -1,4 +1,5 @@
 import logging
+import os
 import requests
 import re
 import json
@@ -198,10 +199,10 @@ def fetch_events(url: str = BASE_URL, weeks: int = 4) -> list[dict]:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events(weeks=4)
-    extracted_at = datetime.utcnow().strftime(ISO_FMT)
+    extracted_at = datetime.now(timezone.utc).strftime(ISO_FMT)
     formatted = [_to_template(e, extracted_at) for e in events]
     log.info("total unique events: %d", len(formatted))
-    output_path = "urnerwochenblatt_events.json"
+    output_path = os.path.join(os.path.dirname(__file__), "..", "events", "urnerwochenblatt_events.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(formatted, f, ensure_ascii=False, indent=2)
     log.info("events saved to %s", output_path)

@@ -222,7 +222,7 @@ if __name__ == "__main__":
     import json
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
-    extracted_at = datetime.utcnow().isoformat()
+    extracted_at = datetime.now(timezone.utc).isoformat()
     formatted = [_to_template(e, extracted_at) for e in events]
     log.info("total events: %d", len(formatted))
     with open("../events/uri_tourismus_events.json", "w", encoding="utf-8") as f:

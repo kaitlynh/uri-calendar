@@ -125,7 +125,7 @@ if __name__ == "__main__":
     import os
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
-    extracted_at = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+    extracted_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
     formatted = [_to_template(e, extracted_at) for e in events]
     log.info("total events: %d", len(formatted))
     output_path = os.path.join(os.path.dirname(__file__), "..", "events", "theater_uri_events.json")

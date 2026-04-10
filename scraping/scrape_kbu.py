@@ -163,7 +163,7 @@ def fetch_events() -> list[dict]:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
-    extracted_at = datetime.utcnow().strftime(ISO_FMT)
+    extracted_at = datetime.now(timezone.utc).strftime(ISO_FMT)
     formatted = [_to_template(e, extracted_at) for e in events]
     log.info("total events: %d", len(formatted))
     output_path = "../events/kbu_events.json"

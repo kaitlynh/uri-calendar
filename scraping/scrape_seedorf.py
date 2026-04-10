@@ -158,6 +158,6 @@ if __name__ == "__main__":
     import json
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
-    extracted_at = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S")
+    extracted_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
     formatted = [_to_template(e, extracted_at) for e in events]
     print(json.dumps(formatted, ensure_ascii=False, indent=2))
