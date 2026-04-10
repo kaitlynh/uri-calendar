@@ -1,15 +1,22 @@
+"""Scraper for Gemeinde Andermatt — mountain village events.
+
+Paginates through the municipality events listing, then fetches each
+event's detail page to resolve venue/location.  The site rate-limits
+after ~43 sequential requests, so we include a cooldown-and-retry
+strategy for location resolution.
+"""
+
 import logging
-import requests
 import re
 import html
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 from typing import Optional
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131"  # Events listing page — used for fetching and as base_url in output
+BASE_URL = "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131"
 DETAIL_BASE = "https://www.gemeinde-andermatt.ch"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"

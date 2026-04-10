@@ -1,3 +1,9 @@
+"""Scraper for Gemeinde Flüelen — DPCalendar JSON API.
+
+Flüelen runs Joomla with the DPCalendar component, which exposes a
+raw JSON endpoint.  No HTML parsing needed — just fetch and transform.
+"""
+
 import logging
 import re
 import requests

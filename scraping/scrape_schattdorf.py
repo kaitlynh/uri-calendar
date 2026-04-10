@@ -1,3 +1,5 @@
+"""Scraper for Gemeinde Schattdorf — municipality event listing."""
+
 import logging
 import requests
 

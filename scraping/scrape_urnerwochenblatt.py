@@ -1,9 +1,19 @@
+"""Scraper for Urner Wochenblatt — the canton's weekly newspaper.
+
+The Wochenblatt aggregates events from across Uri on a week-by-week
+paginated listing.  We iterate N weeks ahead (default 4), parse the
+accordion-style HTML, and filter out events that we scrape directly
+from their primary source (Cinema Leuzinger, KBU, OL, Theater Uri).
+
+The site uses an older SSL config, so verify=False is needed.
+"""
+
 import logging
 import os
-import requests
 import re
 import json
 import urllib3
+import requests
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
@@ -11,7 +21,7 @@ urllib3.disable_warnings()
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.urnerwochenblatt.ch/veranstaltungen/"  # Events listing page — used for fetching and as base_url in output
+BASE_URL = "https://www.urnerwochenblatt.ch/veranstaltungen/"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"

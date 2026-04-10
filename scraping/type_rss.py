@@ -1,4 +1,8 @@
-"""RSS/Atom feed scraper type."""
+"""Scraper type: RSS/Atom feed parsing.
+
+Uses feedparser to extract events from standard RSS or Atom feeds.
+The published date is split into start_date and start_time.
+"""
 
 from datetime import datetime
 from urllib.parse import urlsplit

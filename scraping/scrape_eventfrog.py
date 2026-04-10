@@ -1,3 +1,12 @@
+"""Scraper for Eventfrog — Switzerland's largest event platform.
+
+Eventfrog exposes a proper REST API, so instead of scraping HTML we
+query it directly with all Canton Uri ZIP codes as filters.  Since
+Eventfrog aggregates events from many sources, we filter out events
+that are scraped directly from their primary source (KBU, OL, Theater Uri)
+to avoid duplicates with lower-quality metadata.
+"""
+
 import logging
 import os
 import re
@@ -10,11 +19,11 @@ log = logging.getLogger(__name__)
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
-API_URL = "https://api.eventfrog.net/public/v1/events"  # API endpoint for fetching event data
-BASE_URL = "https://eventfrog.ch/de/events.html?searchTerm=uri"  # Events listing page — used as base_url in output and as fallback link
-SOURCE_NAME = "eventfrog.ch"  # Bare domain identifier
+API_URL = "https://api.eventfrog.net/public/v1/events"
+BASE_URL = "https://eventfrog.ch/de/events.html?searchTerm=uri"
+SOURCE_NAME = "eventfrog.ch"
 
-# All ZIP codes belonging to Canton Uri (UR)
+# Every ZIP code in Canton Uri — used as the geographic filter
 URI_ZIPS = [
     "6452",  # Sisikon
     "6454",  # Flüelen

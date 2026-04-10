@@ -1,8 +1,16 @@
+"""Scraper for Kantonsbibliothek Uri (KBU) — the cantonal library.
+
+Parses the TYPO3-powered event listing, extracts audience category tags
+(Kinder, Jugendliche, Erwachsene) from colored <hr> elements, and
+fetches detail pages for full descriptions.  The library's location is
+hardcoded since all events are at the same address.
+"""
+
 import logging
-import requests
 import re
 import json
 import urllib3
+import requests
 from datetime import datetime
 from typing import Optional
 
@@ -10,7 +18,7 @@ urllib3.disable_warnings()
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.kbu.ch/treffpunkt/veranstaltungen/"  # Events listing page — used for fetching and as base_url in output
+BASE_URL = "https://www.kbu.ch/treffpunkt/veranstaltungen/"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"

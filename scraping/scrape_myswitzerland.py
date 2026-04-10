@@ -1,3 +1,10 @@
+"""Scraper for MySwitzerland Open Data API — Switzerland Tourism events.
+
+Fetches events from the opendata.myswitzerland.io API and filters by a
+geographic bounding box around Canton Uri.  Uses concurrent requests
+with a global rate limiter to stay within API limits.
+"""
+
 import logging
 import os
 import time

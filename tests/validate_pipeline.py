@@ -47,22 +47,22 @@ import sys
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-# Resolve project root (works whether called from root or tests/)
+# ── Paths ───────────────────────────────────────────────────────────────
+# Resolve project root so the script works from any working directory
 SCRIPT_DIR = Path(__file__).parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 EVENTS_FILE = PROJECT_ROOT / "events" / "events.json"
 SOURCES_FILE = PROJECT_ROOT / "scraping" / "sources.json"
 RESULTS_DIR = SCRIPT_DIR / "test-results"
 
-# Try to load .env for DB connection
 try:
     from dotenv import load_dotenv
     load_dotenv(dotenv_path=PROJECT_ROOT / ".env")
 except ImportError:
     pass
 
-# HTML tag pattern for detecting leaked markup
-HTML_TAG_RE = re.compile(r"<[a-zA-Z/][^>]*>")
+# ── Format validation patterns ──────────────────────────────────────────
+HTML_TAG_RE = re.compile(r"<[a-zA-Z/][^>]*>")  # leaked markup in text fields
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 TIME_RE = re.compile(r"^\d{2}:\d{2}:\d{2}$")
 END_DT_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$")

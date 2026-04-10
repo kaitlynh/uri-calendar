@@ -1,4 +1,11 @@
-"""JavaScript-rendered page scraper type — Playwright + BeautifulSoup."""
+"""Scraper type: JavaScript-rendered pages — Playwright + BeautifulSoup.
+
+For SPAs and pages with lazy-loaded content that don't exist in the
+initial HTML.  Launches a headless Chromium browser, waits for network
+idle, then hands the fully rendered DOM to BeautifulSoup for extraction.
+
+Selectors are configured the same way as in type_static.py.
+"""
 
 from bs4 import BeautifulSoup
 
@@ -9,7 +16,6 @@ def scrape(source: dict, extracted_at: str) -> list:
     from scraping import Event
 
     sel = source.get("selectors", {})
-
     source_name = source.get("source_name") or source.get("name")
     base_url = source.get("base_url") or source["url"]
 

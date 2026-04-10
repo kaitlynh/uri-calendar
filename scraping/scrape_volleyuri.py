@@ -1,3 +1,5 @@
+"""Scraper for Volley Uri — volleyball club events and matches."""
+
 import logging
 import re
 import requests

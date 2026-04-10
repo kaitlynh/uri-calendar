@@ -1,3 +1,9 @@
+"""Scraper for Gemeinde Seedorf — DPCalendar JSON API.
+
+Similar to Flüelen (same CMS), but with additional dedup filters for
+OL and RHC events that are scraped from their primary sources.
+"""
+
 import logging
 import re
 import requests

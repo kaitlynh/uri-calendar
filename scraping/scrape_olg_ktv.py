@@ -1,3 +1,10 @@
+"""Scraper for OLG KTV Altdorf — orienteering club.
+
+Scrapes two separate ClubDesk pages (Vereinstermine and Nachwuchstrainings),
+deduplicates across them, and merges missing fields when the same event
+appears on both pages with different detail levels.
+"""
+
 import logging
 import re
 import requests

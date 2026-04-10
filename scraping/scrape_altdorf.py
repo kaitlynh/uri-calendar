@@ -1,15 +1,25 @@
-import logging
-import requests
-import re
-import json
+"""Scraper for Gemeinde Altdorf — the cantonal capital.
+
+Altdorf embeds all event data as a JSON blob in a data-entities HTML
+attribute (rather than rendering it server-side), making parsing reliable.
+We extract the JSON, then fetch each event's detail page in parallel to
+get start times and descriptions.
+
+Like other aggregator scrapers, we filter out events that belong to
+sources we scrape directly (Cinema Leuzinger, KBU, OL, Theater Uri).
+"""
+
 import html
+import json
+import logging
+import re
+import requests
 from datetime import datetime
 from typing import Optional
 
-
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.altdorf.ch/anlaesseaktuelles"  # Events listing page — used for fetching and as base_url in output
+BASE_URL = "https://www.altdorf.ch/anlaesseaktuelles"
 DETAIL_BASE = "https://www.altdorf.ch"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 STRIP_TAGS = re.compile(r'<[^>]+>')

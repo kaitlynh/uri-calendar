@@ -1,4 +1,20 @@
-"""Static HTML scraper type — CSS selector-based extraction."""
+"""Scraper type: static HTML — CSS selector-based extraction.
+
+Used for server-rendered pages where event data lives in predictable
+DOM elements.  Selectors are configured per-source in sources.json:
+
+    "selectors": {
+        "container": ".event-card",
+        "title": "h3",
+        "date": "time",
+        "location": ".venue",
+        "description": ".summary",
+        "link": "a"
+    }
+
+Falls back to sensible defaults (.event, h3, time, etc.) when selectors
+are not specified.
+"""
 
 import requests
 from bs4 import BeautifulSoup

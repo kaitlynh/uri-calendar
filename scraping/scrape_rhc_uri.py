@@ -1,3 +1,13 @@
+"""Scraper for RHC Uri — Rollhockey Club Uri.
+
+The club publishes their schedule as an iCal (.ics) feed via ClubDesk.
+We parse it with a lightweight custom iCal parser (no external library)
+and enrich the data:
+  - Short titles like "NLB" get prefixed with "RHC Uri"
+  - "Seedorf" (including the typo "Seeedorf" in the feed) → home venue
+  - Opponent info from the description gets merged into the title
+"""
+
 import logging
 import re
 import requests

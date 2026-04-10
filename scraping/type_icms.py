@@ -1,7 +1,17 @@
-"""ICMS CMS scraper type — used by municipalities running the ICMS platform.
+"""Scraper type: ICMS CMS — used by several Uri municipalities.
 
-Parses event cards with CSS classes: .event, .tag, .monat, .event-titel,
-.uhrzeit, .ort. Handles German month abbreviations and Swiss time formats.
+The ICMS platform (used by Erstfeld, Silenen, and others) renders event
+cards with a consistent DOM structure:
+
+    .event
+        .tag      → day number ("15")
+        .monat    → German month abbreviation ("Apr.")
+        .event-titel b → event title
+        .uhrzeit  → time, often as "19.30 - 21.00 Uhr"
+        .ort      → location/venue
+
+Date and time parsing is delegated to parse_utils (German month names,
+Swiss time format with period separator).
 """
 
 import logging

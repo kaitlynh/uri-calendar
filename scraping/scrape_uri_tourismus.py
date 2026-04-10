@@ -1,3 +1,15 @@
+"""Scraper for Uri Tourismus (uri.swiss) — the official tourism board.
+
+Fetches events via a POST-based filter API with OData-style queries.
+Event times arrive in UTC and must be converted to Europe/Zurich local
+time (CET/CEST) — we compute the offset manually to avoid adding a
+pytz/dateutil dependency.  Venue names are resolved by fetching each
+event's detail page concurrently.
+
+Like other aggregator sources, cinema, KBU, OL, and Theater Uri events
+are filtered out to avoid duplicates.
+"""
+
 from __future__ import annotations
 
 import logging

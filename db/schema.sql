@@ -1,9 +1,14 @@
--- URI Calendar database schema
--- Usage: psql -U uri_calendar -d uri_calendar -f db/schema.sql
+-- URI Calendar — database schema
+-- Run once: psql -U uri_calendar -d uri_calendar -f db/schema.sql
+--
+-- Two tables: sources (websites we scrape) and events (what we found).
+-- Events are deduplicated on (title, date, time) via a unique index.
+-- UUIDs are generated server-side with pgcrypto so IDs are URL-safe
+-- and don't leak insert order.
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- Sources: one row per scraped website
+-- ── Sources: one row per scraped website ────────────────────────────────
 CREATE TABLE IF NOT EXISTS sources (
     source_id    uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     source_name  text UNIQUE,                -- bare domain, e.g. "kbu.ch"
@@ -15,7 +20,7 @@ CREATE TABLE IF NOT EXISTS sources (
     created_at   timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
 
--- Events: one row per event showing
+-- ── Events: one row per event occurrence ─────────────────────────────────
 CREATE TABLE IF NOT EXISTS events (
     event_id     uuid DEFAULT gen_random_uuid() PRIMARY KEY,
     source_id    uuid NOT NULL REFERENCES sources(source_id) ON DELETE CASCADE,

@@ -1,3 +1,9 @@
+"""Scraper for Floorball Uri — unihockey club match schedule.
+
+Parses the meisterschaft page for upcoming game cards with teams,
+dates, times, and venues.  Past games are filtered out.
+"""
+
 import logging
 import re
 import requests
@@ -7,8 +13,8 @@ from typing import Optional
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.floorballuri.ch/meisterschaft-2025-26"  # Events listing page — used as base_url in output and as fallback link
-SOURCE_NAME = "floorballuri.ch"  # Bare domain identifier
+BASE_URL = "https://www.floorballuri.ch/meisterschaft-2025-26"
+SOURCE_NAME = "floorballuri.ch"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
 
 # DD.MM.YYYY at the start of a <strong> tag

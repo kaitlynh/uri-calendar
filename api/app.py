@@ -1,17 +1,15 @@
-"""
-Events API for the Uri Calendar.
+"""REST API for the Uri Calendar (urikalender.ch).
+
+Serves event data from a PostgreSQL database populated by the scraping
+pipeline.  Designed to sit behind Nginx on the same VPS as the frontend.
 
 Endpoints:
+    GET /api/events          — events for a date or date range
+    GET /api/events/search   — full-text search across future events
+    GET /api/sources         — list all scraped sources
+    GET /api/admin/scraping-status — per-source stats for the admin dashboard
 
-    GET /api/events?date=2026-03-28   — events for a given date
-    GET /api/sources                  — list all event sources
-
-See docs/event-schema.json for the event response shape.
-Events without a start_time (all-day events) appear first.
-
-Setup:
-    pip install -r requirements.txt
-    python app.py
+See docs/event-schema.json for the response shape.
 """
 
 import os
@@ -26,17 +24,22 @@ load_dotenv()
 
 app = Flask(__name__)
 
+# ── Database ────────────────────────────────────────────────────────────
+
 
 def get_db():
-    """Connect using the DB_CONNECTION_STRING env var (see .env)."""
+    """Open a connection using the DB_CONNECTION_STRING env var."""
     return psycopg2.connect(os.environ["DB_CONNECTION_STRING"])
 
 
-def serialize_event(row):
-    """Convert a DB row to JSON matching docs/event-schema.json.
+# ── Serialization ───────────────────────────────────────────────────────
 
-    Dates become "YYYY-MM-DD", times become "HH:MM:SS", and nulls stay null
-    (e.g. start_time is null for all-day events).
+
+def serialize_event(row):
+    """Convert a psycopg2 RealDictRow into a JSON-safe dict.
+
+    - Dates → "YYYY-MM-DD", times → "HH:MM:SS"
+    - Nulls stay null (e.g. start_time is null for all-day events)
     """
     return {
         "event_id": str(row["event_id"]),
@@ -57,20 +60,19 @@ def serialize_event(row):
     }
 
 
+
+# ── Endpoints ───────────────────────────────────────────────────────────
+
+
 @app.route("/api/events")
 def get_events():
     """Fetch events for a single date or a date range.
 
-    Query params (option A — single date):
-        date (required): YYYY-MM-DD
+    Query params:
+        ?date=YYYY-MM-DD                           (single date)
+        ?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD (range)
 
-    Query params (option B — date range):
-        start_date (required): YYYY-MM-DD
-        end_date   (required): YYYY-MM-DD
-
-    Returns:
-        200: JSON array of events (may be empty)
-        400: missing or invalid parameters
+    All-day events (start_time IS NULL) sort first within each date.
     """
     date_str = request.args.get("date")
     start_str = request.args.get("start_date")
@@ -124,10 +126,8 @@ def search_events():
     Query params:
         q (required): search term (min 2 chars)
 
-    Returns events in two groups via match_type:
-        "title"  — query matched in event_title
-        "detail" — query matched in description or location only
-    Sorted by start_date ASC within each group, limited to 50 results.
+    Results are ranked: title matches first, then description/location.
+    Limited to 50 results to keep the response snappy.
     """
     q = request.args.get("q", "").strip()
     if len(q) < 2:
@@ -137,6 +137,8 @@ def search_events():
     conn = get_db()
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            # ILIKE = case-insensitive LIKE (PostgreSQL extension).
+            # The CASE expression ranks title matches above body matches.
             cur.execute(
                 """
                 SELECT e.event_id, e.event_title, e.start_date, e.start_time,
@@ -238,9 +240,14 @@ def get_sources():
     ])
 
 
+
+# ── CORS ────────────────────────────────────────────────────────────────
+# In production Nginx proxies /api/ to this server, so CORS is a non-issue.
+# The permissive header here is for local dev (Vite on :5173 → Flask on :5000).
+
+
 @app.after_request
 def add_cors_headers(response):
-    """Allow cross-origin requests so the frontend can call us during dev."""
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "GET"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type"

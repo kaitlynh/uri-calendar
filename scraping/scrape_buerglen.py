@@ -1,8 +1,14 @@
-import logging
-import requests
-import re
-import json
+"""Scraper for Gemeinde Bürglen — same ICMS platform as Altdorf.
+
+Extracts events from the embedded JSON data-entities attribute, then
+fetches detail pages in parallel to resolve times and descriptions.
+"""
+
 import html
+import json
+import logging
+import re
+import requests
 from datetime import datetime
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed

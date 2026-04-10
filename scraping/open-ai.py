@@ -1,10 +1,26 @@
-import os
+"""AI enrichment step — discovers additional events via OpenAI web search.
+
+This script supplements the deterministic scrapers by asking an LLM with
+web-search capabilities to find events in Canton Uri that our scrapers
+might miss (one-off events, small venues, etc.).
+
+It runs as an optional step in the GitHub Actions pipeline with
+continue-on-error: true — the calendar works fine without it, but AI
+events fill in gaps.  Discovered events are merged into events.json
+with ai_flag=true so the frontend can distinguish them.
+
+Writes ai_status.json alongside events.json so the validation script
+can check whether AI enrichment ran and what it found.
+"""
+
+import datetime
 import json
 import logging
-import datetime
+import os
 import re
-from openai import OpenAI
+
 from dotenv import load_dotenv
+from openai import OpenAI
 
 logging.basicConfig(
     level=logging.INFO,
@@ -13,26 +29,30 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-# Load env
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY"),
-)
+# ── Paths ───────────────────────────────────────────────────────────────
 
-# Load schema
-with open(os.path.join(os.path.dirname(__file__), "..", "docs", "event-schema-ai.json"), encoding="utf-8") as f:
+EVENTS_PATH = os.path.join(os.path.dirname(__file__), "..", "events", "events.json")
+AI_STATUS_PATH = os.path.join(os.path.dirname(__file__), "..", "events", "ai_status.json")
+SCHEMA_PATH = os.path.join(os.path.dirname(__file__), "..", "docs", "event-schema-ai.json")
+
+# ── OpenAI client ───────────────────────────────────────────────────────
+
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+
+with open(SCHEMA_PATH, encoding="utf-8") as f:
     template_data = json.load(f)
 
-# Today's date
 today = datetime.datetime.now().strftime("%Y-%m-%d")
 
-events_path = os.path.join(os.path.dirname(__file__), "..", "events", "events.json")
-ai_status_path = os.path.join(os.path.dirname(__file__), "..", "events", "ai_status.json")
 
-def write_status(status, message, events_added=0):
+# ── Helpers ─────────────────────────────────────────────────────────────
+
+
+def write_status(status: str, message: str, events_added: int = 0):
     """Write AI enrichment status for the validation script to read."""
-    with open(ai_status_path, "w", encoding="utf-8") as f:
+    with open(AI_STATUS_PATH, "w", encoding="utf-8") as f:
         json.dump({
             "status": status,
             "message": message,
@@ -40,21 +60,23 @@ def write_status(status, message, events_added=0):
             "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         }, f)
 
-# --- Helper: clean markdown ---
-def extract_json(text: str):
+
+def extract_json(text: str) -> str:
+    """Strip markdown fencing if the model wraps its response in ```json."""
     match = re.search(r"```(?:json)?\s*(.*?)```", text, re.DOTALL)
     if match:
         text = match.group(1)
     return text.strip()
 
-# --- Prompt ---
-prompt = f"""
+
+# ── Prompt ──────────────────────────────────────────────────────────────
+
+PROMPT = f"""
 Find events taking place on {today} and the next 14 days in the canton of Uri, Switzerland.
 Only include real, verifiable events from official sources (e.g., tourism boards, municipality websites, official event platforms).
 
 Return the result strictly as a JSON array. Each object must follow this exact schema:
 {json.dumps(template_data, indent=2)}
-
 
 CRITICAL OUTPUT RULES:
 - Output ONLY valid JSON
@@ -75,14 +97,15 @@ FORMATTING:
 - Location: "City, Uri, Switzerland"
 """
 
-# --- API call ---
+# ── Main ────────────────────────────────────────────────────────────────
+
 log.info("sending request to OpenAI (web_search enabled)")
 try:
     response = client.responses.create(
         model="gpt-5",
         tools=[{"type": "web_search"}],
         instructions="You are a strict JSON generator. Any deviation from valid JSON is a failure.",
-        input=prompt,
+        input=PROMPT,
     )
 except Exception as e:
     error_msg = f"OpenAI API call failed: {e}"
@@ -93,7 +116,7 @@ except Exception as e:
 raw_output = response.output_text
 cleaned = extract_json(raw_output)
 
-# --- Parse JSON safely ---
+# Parse and validate the AI response
 log.info("received response, parsing JSON")
 try:
     parsed = json.loads(cleaned)
@@ -103,14 +126,15 @@ except json.JSONDecodeError:
     write_status("error", "AI response was not valid JSON")
     parsed = []
 
-# --- Merge into events.json ---
+# Merge new events into events.json, deduplicating on (title, date, time)
 if parsed:
-    if os.path.exists(events_path):
-        with open(events_path, encoding="utf-8") as f:
+    if os.path.exists(EVENTS_PATH):
+        with open(EVENTS_PATH, encoding="utf-8") as f:
             existing_events = json.load(f)
     else:
         existing_events = []
 
+    # Build a set of existing event keys for O(1) dedup lookups
     seen = {
         (e["event_title"].lower().strip(), (e.get("start_date") or "")[:10], e.get("start_time") or "")
         for e in existing_events
@@ -130,11 +154,13 @@ if parsed:
     merged = existing_events + new_events
     merged.sort(key=lambda e: e.get("start_date") or "")
 
-    with open(events_path, "w", encoding="utf-8") as f:
+    with open(EVENTS_PATH, "w", encoding="utf-8") as f:
         json.dump(merged, f, ensure_ascii=False, indent=2)
 
-    log.info("%d new AI events added (%d dupes skipped) → %s", len(new_events), len(parsed) - len(new_events), events_path)
-    write_status("ok", f"{len(new_events)} new events added, {len(parsed) - len(new_events)} dupes skipped", len(new_events))
+    log.info("%d new AI events added (%d dupes skipped) → %s",
+             len(new_events), len(parsed) - len(new_events), EVENTS_PATH)
+    write_status("ok", f"{len(new_events)} new events added, {len(parsed) - len(new_events)} dupes skipped",
+                 len(new_events))
 else:
     log.info("no AI events found")
     write_status("ok", "No new AI events found", 0)
