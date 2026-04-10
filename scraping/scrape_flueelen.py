@@ -65,8 +65,10 @@ def fetch_events() -> list:
                     start_time += ":00"
 
         end_datetime = None
-        if end and not all_day:
-            end_datetime = end
+        if end and not all_day and len(end) >= 16:
+            end_datetime = end[:10] + "T" + end[11:19]
+            if len(end_datetime) < 19:
+                end_datetime += ":00"
 
         detail_url = f"{DETAIL_BASE}{url}" if url and url.startswith("/") else url
         description = _parse_description(desc_html)

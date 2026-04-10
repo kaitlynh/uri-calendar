@@ -64,6 +64,8 @@ except ImportError:
 # HTML tag pattern for detecting leaked markup
 HTML_TAG_RE = re.compile(r"<[a-zA-Z/][^>]*>")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+TIME_RE = re.compile(r"^\d{2}:\d{2}:\d{2}$")
+END_DT_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$")
 
 
 class ValidationResult:
@@ -199,6 +201,31 @@ def check_date_format(events, result):
         result.fail(f"{bad_count} events have invalid start_date format (expected YYYY-MM-DD)")
     else:
         result.passed("All start_date values are valid YYYY-MM-DD")
+
+
+def check_time_formats(events, result):
+    """Check that start_time is HH:MM:SS and end_datetime is YYYY-MM-DDTHH:MM:SS (no timezone)."""
+    bad_start = []
+    bad_end = []
+    for event in events:
+        st = event.get("start_time")
+        if st and not TIME_RE.match(st):
+            bad_start.append(f"{event.get('source_name')}: {st}")
+        ed = event.get("end_datetime")
+        if ed and not END_DT_RE.match(ed):
+            bad_end.append(f"{event.get('source_name')}: {ed}")
+
+    if bad_start:
+        examples = "; ".join(bad_start[:5])
+        result.fail(f"{len(bad_start)} events have invalid start_time format (expected HH:MM:SS): {examples}")
+    else:
+        result.passed("All start_time values are valid HH:MM:SS")
+
+    if bad_end:
+        examples = "; ".join(bad_end[:5])
+        result.fail(f"{len(bad_end)} events have invalid end_datetime format (expected YYYY-MM-DDTHH:MM:SS, no timezone): {examples}")
+    else:
+        result.passed("All end_datetime values are valid YYYY-MM-DDTHH:MM:SS (no timezone)")
 
 
 def check_source_url(events, result):
@@ -780,6 +807,7 @@ def main():
         check_source_name_format(events, result)
         check_base_url_format(events, result)
         check_date_format(events, result)
+        check_time_formats(events, result)
         check_source_url(events, result)
         check_duplicates(events, result)
         check_date_sanity(events, result)

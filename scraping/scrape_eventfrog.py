@@ -146,7 +146,13 @@ def _to_template(event: dict, extracted_at: str) -> dict:
 
     start_date, start_time = _parse_dt(event.get("begin"))
     end_iso = event.get("end")
-    end_datetime = end_iso if end_iso else None
+    end_datetime = None
+    if end_iso:
+        try:
+            end_dt = datetime.fromisoformat(end_iso)
+            end_datetime = end_dt.strftime("%Y-%m-%dT%H:%M:%S")
+        except ValueError:
+            end_datetime = None
 
     location = _de(event.get("locationAlias"))
     description = _de(event.get("shortDescription"))

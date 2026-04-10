@@ -99,7 +99,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
     if end_raw:
         dt = _parse_datetime(end_raw)
         if dt:
-            end_datetime = dt.isoformat()
+            end_datetime = dt.strftime("%Y-%m-%dT%H:%M:%S")
 
     # Description — strip HTML
     description = ""

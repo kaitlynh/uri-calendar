@@ -46,7 +46,7 @@ def _parse_time_from_lead(lead_text: str) -> Optional[str]:
     # Match time like "9.30 Uhr" or "19:00 Uhr" (first occurrence = start time)
     m = re.search(r'(\d{1,2})[.:](\d{2})\s*Uhr', lead_text)
     if m:
-        return f"{int(m.group(1)):02d}:{m.group(2)}"
+        return f"{int(m.group(1)):02d}:{m.group(2)}:00"
     return None
 
 
@@ -173,7 +173,7 @@ def _is_theater_uri(event: dict) -> bool:
 def _to_template(event: dict, extracted_at: str) -> dict:
     end_dt = None
     if event.get("end_date") and event["end_date"] != event["start_date"]:
-        end_dt = event["end_date"]
+        end_dt = f"{event['end_date']}T00:00:00"
 
     title = event["title"]
     if event.get("organisator"):

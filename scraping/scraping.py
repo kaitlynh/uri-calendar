@@ -7,11 +7,6 @@ import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from typing import Optional
-from urllib.parse import urlsplit
-
-import feedparser
-import requests
-from bs4 import BeautifulSoup
 
 logging.basicConfig(
     level=logging.INFO,
@@ -51,117 +46,13 @@ def load_sources(path: str = "scraping/sources.json") -> list[dict]:
 
 
 ########################
-# Built-in Scrapers
+# Scraper Type Handlers
 ########################
 
-
-def scrape_static(source: dict, extracted_at: str) -> list[Event]:
-    sel = source.get("selectors", {})
-    headers = source.get("headers", {"User-Agent": "Mozilla/5.0"})
-    res = requests.get(source["url"], headers=headers, timeout=10)
-    soup = BeautifulSoup(res.text, "html.parser")
-    events = []
-
-    source_name = source.get("source_name") or source.get("name")
-    base_url = source.get("base_url") or source["url"]
-
-    for item in soup.select(sel.get("container", ".event")):
-        title_el = item.select_one(sel.get("title", "h3"))
-        date_el = item.select_one(sel.get("date", "time"))
-        loc_el = item.select_one(sel.get("location", ".location"))
-        desc_el = item.select_one(sel.get("description", ".description"))
-        link_el = item.select_one(sel.get("link", "a"))
-
-        events.append(
-            Event(
-                source_name=source_name,
-                source_url=link_el["href"] if link_el else source["url"],
-                base_url=base_url,
-                event_title=title_el.text.strip() if title_el else "",
-                start_date=date_el.get("datetime", date_el.text.strip())
-                if date_el
-                else None,
-                start_time=None,
-                end_datetime=None,
-                location=loc_el.text.strip() if loc_el else None,
-                description=desc_el.text.strip() if desc_el else None,
-                extracted_at=extracted_at,
-                priority=source["priority"],
-            )
-        )
-    return events
-
-
-def scrape_rss(source: dict, extracted_at: str) -> list[Event]:
-    feed = feedparser.parse(source["url"])
-    events = []
-
-    source_name = source.get("source_name") or urlsplit(source["url"]).netloc
-    base_url = source.get("base_url") or source["url"]
-
-    for entry in feed.entries:
-        date_str = None
-        if hasattr(entry, "published_parsed") and entry.published_parsed:
-            date_str = datetime(*entry.published_parsed[:6]).isoformat()
-
-        events.append(
-            Event(
-                source_name=source_name,
-                base_url=base_url,
-                source_url=entry.get("link", source["url"]),
-                event_title=entry.get("title", ""),
-                start_date=date_str.split("T")[0] if date_str else None,
-                start_time=date_str.split("T")[1].split(".")[0] if date_str else None,
-                end_datetime=None,
-                location=entry.get("location", None),
-                description=entry.get("summary", None),
-                extracted_at=extracted_at,
-                priority=source["priority"],
-            )
-        )
-    return events
-
-
-def scrape_js(source: dict, extracted_at: str) -> list[Event]:
-    from playwright.sync_api import sync_playwright
-
-    sel = source.get("selectors", {})
-    events = []
-
-    source_name = source.get("source_name") or source.get("name")
-    base_url = source.get("base_url") or source["url"]
-
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.goto(source["url"], wait_until="networkidle")
-        soup = BeautifulSoup(page.content(), "html.parser")
-        browser.close()
-
-    for item in soup.select(sel.get("container", ".event")):
-        title_el = item.select_one(sel.get("title", "h3"))
-        date_el = item.select_one(sel.get("date", "time"))
-        loc_el = item.select_one(sel.get("location", ".location"))
-        link_el = item.select_one(sel.get("link", "a"))
-
-        events.append(
-            Event(
-                source_name=source_name,
-                source_url=link_el["href"] if link_el else source["url"],
-                base_url=base_url,
-                event_title=title_el.text.strip() if title_el else "",
-                start_date=date_el.get("datetime", date_el.text.strip())
-                if date_el
-                else None,
-                start_time=None,
-                end_datetime=None,
-                location=loc_el.text.strip() if loc_el else None,
-                description=None,
-                extracted_at=extracted_at,
-                priority=source["priority"],
-            )
-        )
-    return events
+from type_static import scrape as scrape_static
+from type_rss import scrape as scrape_rss
+from type_js import scrape as scrape_js
+from type_icms import scrape as scrape_icms
 
 
 ########################
@@ -226,6 +117,7 @@ SCRAPERS = {
     "static": scrape_static,
     "rss": scrape_rss,
     "js": scrape_js,
+    "icms": scrape_icms,
     "custom": scrape_custom,
 }
 

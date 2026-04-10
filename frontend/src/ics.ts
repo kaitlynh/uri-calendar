@@ -54,6 +54,7 @@ export function googleCalendarUrl(event: Event): string {
     params.set('dates', `${toICSDateTime(start)}/${toICSDateTime(end)}`);
   }
 
+  params.set('ctz', 'Europe/Zurich');
   if (event.location) params.set('location', event.location);
   if (event.description) params.set('details', event.description);
 
@@ -93,17 +94,17 @@ export function downloadICS(event: Event): void {
     const nextDayStr = nextDay.toISOString().slice(0, 10);
     lines.push(`DTEND;VALUE=DATE:${toICSDate(nextDayStr)}`);
   } else {
-    // Timed event
+    // Timed event — all times are Europe/Zurich
     const start = new Date(`${event.start_date}T${event.start_time}`);
-    lines.push(`DTSTART:${toICSDateTime(start)}`);
+    lines.push(`DTSTART;TZID=Europe/Zurich:${toICSDateTime(start)}`);
 
     if (event.end_datetime) {
       const end = new Date(event.end_datetime);
-      lines.push(`DTEND:${toICSDateTime(end)}`);
+      lines.push(`DTEND;TZID=Europe/Zurich:${toICSDateTime(end)}`);
     } else {
       // No end time: 5 minute placeholder
       const end = addMinutes(start, 5);
-      lines.push(`DTEND:${toICSDateTime(end)}`);
+      lines.push(`DTEND;TZID=Europe/Zurich:${toICSDateTime(end)}`);
     }
   }
 

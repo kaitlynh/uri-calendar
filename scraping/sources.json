@@ -139,8 +139,7 @@
     "source_name": "erstfeld.ch",
     "url": "https://erstfeld.ch/portrait/veranstaltungen",
     "base_url": "https://erstfeld.ch/portrait/veranstaltungen",
-    "type": "custom",
-    "scraper": "scrape_erstfeld",
+    "type": "icms",
     "priority": 3
   },
   {
@@ -148,8 +147,7 @@
     "source_name": "silenen.ch",
     "url": "https://silenen.ch/veranstaltungen",
     "base_url": "https://silenen.ch/veranstaltungen",
-    "type": "custom",
-    "scraper": "scrape_silenen",
+    "type": "icms",
     "priority": 3
   },
   {

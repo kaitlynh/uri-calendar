@@ -135,7 +135,13 @@ def _to_template(event: dict, extracted_at: str) -> dict:
     end_raw = event.get("endDate") or event.get("end_date") or event.get("dateTo")
     start_date, start_time = _parse_date(start_raw)
     end_date, _ = _parse_date(end_raw)
-    end_datetime = end_raw if end_raw and end_raw != start_raw else None
+    end_datetime = None
+    if end_raw and end_raw != start_raw:
+        end_d, end_t = _parse_date(end_raw)
+        if end_d and end_t:
+            end_datetime = f"{end_d}T{end_t}"
+        elif end_d:
+            end_datetime = f"{end_d}T00:00:00"
 
     location_obj = event.get("location") or event.get("place") or {}
     if isinstance(location_obj, dict):

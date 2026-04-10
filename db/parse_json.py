@@ -57,11 +57,11 @@ def ingest_events(json_file: str):
     skipped = 0
 
     for event in events:
-        inserted += 1
-
         try:
+            cur.execute("SAVEPOINT ev")
+
             # Mapping from JSON - Adjust these keys if your JSON uses different names
-            base_url = event.get("base_url") 
+            base_url = event.get("base_url")
             source_url = event.get("source_url") # The specific URL for this event
             source_name = event.get("source_name")
             priority = event.get("priority") or 67
@@ -100,7 +100,7 @@ def ingest_events(json_file: str):
                     ai_flag
                 )
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT ON CONSTRAINT unique_title_date_time
+                ON CONFLICT (event_title, start_date, COALESCE(start_time, '00:00:00'))
                 DO UPDATE SET
                     source_id = EXCLUDED.source_id,
                     event_title = EXCLUDED.event_title,
@@ -149,12 +149,12 @@ def ingest_events(json_file: str):
                     event.get("ai_updated"),
                 )
             )
-            conn.commit()
-
+            cur.execute("RELEASE SAVEPOINT ev")
+            inserted += 1
 
         except psycopg2.Error as e:
             print(f"Skipping event '{event.get('event_title')}' due to error: {e}")
-            conn.rollback() # Important to rollback the transaction on error
+            cur.execute("ROLLBACK TO SAVEPOINT ev")
             skipped += 1
             continue
 

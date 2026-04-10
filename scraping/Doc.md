@@ -34,7 +34,15 @@ This step is non-fatal — if the API key is missing or the call fails, the pipe
 
 ### Deduplication and Priority
 
-Events are deduplicated by **title + date + time**. When duplicates exist across sources, the event with the **lower `priority` number wins**. Priority levels:
+Deduplication happens in two layers:
+
+1. **Source-level filters** (in scraper code) — aggregator scrapers skip events from categories we scrape directly (cinema, theater, KBU, OL). This is necessary because aggregators often reformat titles (e.g. "Super Mario Bros" vs "Kino: Super Mario Bros" vs "Kino | Super Mario Bros"), which prevents exact matching. Each scraper knows its own data format, so filtering at the source is more reliable than fuzzy matching.
+
+2. **DB-level unique constraint** (in `parse_json.py`) — catches remaining exact duplicates on upsert, matched by title + date + time. When duplicates exist, the event with the lower `priority` number wins.
+
+`events.json` intentionally contains duplicates — it's the raw output of all scrapers before DB-level dedup. The DB constraint handles the final dedup on ingest. This is by design, not a bug.
+
+Priority levels:
 
 | Priority | Category | Example |
 |----------|----------|---------|
@@ -47,7 +55,7 @@ This means the original source (e.g. Kantonsbibliothek, priority 1) is preferred
 
 ### DB Ingest (`db/parse_json.py`)
 
-Upserts events into the `events` table (matched on title + date). If a `source_name` doesn't exist in the `sources` table yet, it auto-creates a row. However, three fields must be set **manually via SQL** after the first ingest:
+Upserts events into the `events` table (matched on title + date + time). If a `source_name` doesn't exist in the `sources` table yet, it auto-creates a row. However, three fields must be set **manually via SQL** after the first ingest:
 
 - `display_name` — human-friendly name for the frontend filter
 - `icon_filename` — filename of the source icon in `frontend/public/source-icons/` (square PNG)
@@ -107,9 +115,7 @@ Place these in `.env` at the project root. On the server, the scheduled GitHub A
 
 ## Source-Level Deduplication
 
-Some sources are aggregators that republish events from original sources we already scrape directly (e.g. uri.swiss, Eventfrog, Urnerwochenblatt, Gemeinde calendars). The DB-level dedup (title + date) catches exact duplicates, but aggregator sources often reformat titles, drop showtimes, or use different location names, which prevents automatic matching.
-
-For known categories of duplicate events, scrapers filter them out at the source before they enter the pipeline. This is more reliable than fuzzy matching because each scraper knows its own data format.
+As described in [Deduplication and Priority](#deduplication-and-priority), aggregator scrapers filter out events from categories we scrape directly. This is layer 1 of dedup — it catches the cases where title reformatting would prevent DB-level exact matching.
 
 **Current source-level filters:**
 
