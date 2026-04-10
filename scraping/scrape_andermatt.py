@@ -2,6 +2,7 @@ import logging
 import requests
 import re
 import html
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import BeautifulSoup
 from datetime import datetime
 from typing import Optional
@@ -81,10 +82,31 @@ def _get_total_pages(page_html: str) -> int:
     return 1
 
 
+def _fetch_location(session: requests.Session, detail_url: str) -> Optional[str]:
+    """Fetch a detail page and extract venue name from p.location."""
+    try:
+        resp = session.get(detail_url, timeout=15)
+        if resp.status_code != 200:
+            return None
+        soup = BeautifulSoup(resp.text, "html.parser")
+        loc_el = soup.select_one("p.location")
+        if not loc_el:
+            return None
+        first_text = loc_el.find(string=True, recursive=False)
+        if first_text:
+            return first_text.strip() or None
+    except Exception as e:
+        log.debug("error fetching location for %s: %s", detail_url, e)
+    return None
+
+
 def fetch_events() -> list[dict]:
+    session = requests.Session()
+    session.headers.update(HEADERS)
+
     log.info("fetching %s", BASE_URL)
     try:
-        resp = requests.get(_page_url(1), headers=HEADERS, timeout=15)
+        resp = session.get(_page_url(1), timeout=15)
         resp.raise_for_status()
     except Exception as e:
         log.error("error: %s", e)
@@ -98,11 +120,31 @@ def fetch_events() -> list[dict]:
         url = _page_url(page)
         log.info("fetching page %d: %s", page, url)
         try:
-            r = requests.get(url, headers=HEADERS, timeout=15)
+            r = session.get(url, timeout=15)
             r.raise_for_status()
             all_events.extend(_parse_page(r.text))
         except Exception as e:
             log.error("error on page %d: %s", page, e)
+
+    # Fetch locations from detail pages (session cookies required by site)
+    import time
+    log.info("fetching locations for %d events", len(all_events))
+    for e in all_events:
+        e["location"] = _fetch_location(session, e["detail_url"])
+        time.sleep(0.3)
+    # Retry failures — site rate-limits after ~43 requests, wait for reset
+    missing = [e for e in all_events if not e.get("location")]
+    if missing:
+        log.info("retrying %d events after 60s cooldown", len(missing))
+        time.sleep(60)
+        session2 = requests.Session()
+        session2.headers.update(HEADERS)
+        session2.get(_page_url(1), timeout=15)
+        for e in missing:
+            e["location"] = _fetch_location(session2, e["detail_url"])
+            time.sleep(1)
+    resolved = sum(1 for e in all_events if e.get("location"))
+    log.info("resolved %d/%d locations", resolved, len(all_events))
 
     log.info("found %d events total", len(all_events))
     return all_events
@@ -122,7 +164,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
         "start_date": event["start_date"],
         "start_time": event.get("start_time"),
         "end_datetime": event.get("end_datetime"),
-        "location": None,
+        "location": event.get("location"),
         "description": event.get("description", ""),
         "extracted_at": extracted_at,
     }
@@ -131,7 +173,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
-    extracted_at = datetime.utcnow().strftime(ISO_FMT)
+    extracted_at = datetime.now(timezone.utc).strftime(ISO_FMT)
     import json
     formatted = [_to_template(e, extracted_at) for e in events]
     log.info("total events: %d", len(formatted))
