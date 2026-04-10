@@ -28,7 +28,7 @@ Most sources use `custom`. The `static`, `rss`, and `js` types are generic — t
 
 ### AI Enrichment (`open-ai.py`)
 
-After scraping, GPT-5 with `web_search` enabled searches for additional events in Canton Uri for the next 14 days that the scrapers may have missed. The response is parsed as JSON using the same event schema (`template_data_ai.json`), deduplicated against the existing events, and merged into `events.json`. New AI-found events are tagged with `ai_updated: true` and `ai_updated_at` timestamp. A status file (`events/ai_status.json`) is written for the validation script to check.
+After scraping, GPT-5 with `web_search` enabled searches for additional events in Canton Uri for the next 14 days that the scrapers may have missed. The response is parsed as JSON using the same event schema (`docs/event-schema-ai.json`), deduplicated against the existing events, and merged into `events.json`. New AI-found events are tagged with `ai_updated: true` and `ai_updated_at` timestamp. A status file (`events/ai_status.json`) is written for the validation script to check.
 
 This step is non-fatal — if the API key is missing or the call fails, the pipeline continues with just the scraped events.
 

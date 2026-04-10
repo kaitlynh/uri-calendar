@@ -5,10 +5,58 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
+  build:
+    name: Build frontend
     runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy via SSH
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+          retention-days: 1
+
+  deploy:
+    name: Deploy to server
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist/
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Deploy frontend
+        run: |
+          rsync -az --delete dist/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/uri-calendar/frontend/dist/
+
+      - name: Deploy nginx config and reload
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -16,9 +64,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /opt/uri-calendar
-            git pull origin main
-            cd frontend
-            npm install
-            npm run build
-            cp /opt/uri-calendar/nginx/uri-calendar.conf /etc/nginx/sites-enabled/default
+            git pull origin main --quiet
+            cp nginx/uri-calendar.conf /etc/nginx/sites-enabled/default
             nginx -t && systemctl reload nginx

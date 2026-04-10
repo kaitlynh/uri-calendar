@@ -21,7 +21,7 @@ client = OpenAI(
 )
 
 # Load schema
-with open(os.path.join(os.path.dirname(__file__), "..", "template_data_ai.json"), encoding="utf-8") as f:
+with open(os.path.join(os.path.dirname(__file__), "..", "docs", "event-schema-ai.json"), encoding="utf-8") as f:
     template_data = json.load(f)
 
 # Today's date

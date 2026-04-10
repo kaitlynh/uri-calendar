@@ -72,6 +72,8 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
           ssh -f -N -L 5432:localhost:5432 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}
+          sleep 2
+          nc -z localhost 5432 || { echo "SSH tunnel failed to establish"; exit 1; }
 
       - name: Ingest into database
         env:
@@ -80,6 +82,10 @@ jobs:
 
       - name: Push events.json to server
         run: scp events/events.json ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/opt/uri-calendar/events/events.json
+
+      - name: Close SSH tunnel
+        if: always()
+        run: pkill -f "ssh -f -N -L 5432" || true
 
   validate:
     name: Validate pipeline results
@@ -111,6 +117,8 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
           ssh -f -N -L 5432:localhost:5432 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}
+          sleep 2
+          nc -z localhost 5432 || { echo "SSH tunnel failed to establish"; exit 1; }
 
       - name: Run pipeline validation
         id: pipeline_validate
@@ -119,6 +127,10 @@ jobs:
         # continue-on-error so the API validation still runs
         continue-on-error: true
         run: python tests/validate_pipeline.py 2>&1 | tee pipeline_output.txt
+
+      - name: Close SSH tunnel
+        if: always()
+        run: pkill -f "ssh -f -N -L 5432" || true
 
       - name: Upload pipeline output
         uses: actions/upload-artifact@v4

@@ -6,7 +6,7 @@ Endpoints:
     GET /api/events?date=2026-03-28   — events for a given date
     GET /api/sources                  — list all event sources
 
-See template_data.json for the event response shape.
+See docs/event-schema.json for the event response shape.
 Events without a start_time (all-day events) appear first.
 
 Setup:
@@ -33,7 +33,7 @@ def get_db():
 
 
 def serialize_event(row):
-    """Convert a DB row to JSON matching template_data.json.
+    """Convert a DB row to JSON matching docs/event-schema.json.
 
     Dates become "YYYY-MM-DD", times become "HH:MM:SS", and nulls stay null
     (e.g. start_time is null for all-day events).
