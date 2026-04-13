@@ -7,10 +7,12 @@ that are scraped directly from their primary source (KBU, OL, Theater Uri)
 to avoid duplicates with lower-quality metadata.
 """
 
+import json
 import logging
 import os
 import re
 import requests
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from typing import Optional
 from dotenv import load_dotenv
@@ -145,7 +147,65 @@ def fetch_events() -> list[dict]:
     if skipped_theater:
         log.info("skipped %d Theater Uri events (scraped from theater-uri.ch)", skipped_theater)
 
+    # Fetch locations from detail pages for events missing locationAlias
+    missing = [e for e in all_events if not _de(e.get("locationAlias"))]
+    if missing:
+        log.info("fetching locations from %d detail pages", len(missing))
+        urls = [e.get("url") for e in missing]
+        with ThreadPoolExecutor(max_workers=5) as pool:
+            locations = list(pool.map(_scrape_detail_location, urls))
+        for event, loc in zip(missing, locations):
+            if loc:
+                event["_scraped_location"] = loc
+
     return all_events
+
+
+def _scrape_detail_location(url: str) -> Optional[str]:
+    """Scrape location from an eventfrog detail page via JSON-LD structured data."""
+    if not url:
+        return None
+    try:
+        resp = requests.get(url, timeout=15)
+        if resp.status_code != 200:
+            return None
+    except Exception:
+        return None
+
+    # Extract location from JSON-LD
+    for m in re.finditer(r'<script[^>]*type="application/ld\+json"[^>]*>(.*?)</script>',
+                         resp.text, re.DOTALL):
+        try:
+            ld = json.loads(m.group(1))
+            # JSON-LD can be a single object or an array
+            items = ld if isinstance(ld, list) else [ld]
+            loc = None
+            for item in items:
+                if isinstance(item, dict) and item.get("location"):
+                    loc = item["location"]
+                    break
+            if not loc:
+                continue
+            name = loc.get("name", "")
+            addr = loc.get("address", {})
+            street = addr.get("streetAddress", "")
+            city = addr.get("addressLocality", "")
+            postal = addr.get("postalCode", "")
+            # Build location string, avoiding duplicate name/street
+            parts = []
+            if name and name != street:
+                parts.append(name)
+            if street:
+                parts.append(street)
+            if postal and city:
+                parts.append(f"{postal} {city}")
+            elif city:
+                parts.append(city)
+            if parts:
+                return ", ".join(parts)
+        except (json.JSONDecodeError, AttributeError):
+            continue
+    return None
 
 
 def _to_template(event: dict, extracted_at: str) -> dict:
@@ -163,7 +223,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
         except ValueError:
             end_datetime = None
 
-    location = _de(event.get("locationAlias"))
+    location = _de(event.get("locationAlias")) or event.get("_scraped_location")
     description = _de(event.get("shortDescription"))
 
     return {
