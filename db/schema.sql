@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS events (
     source_id    uuid NOT NULL REFERENCES sources(source_id) ON DELETE CASCADE,
     source_url   text NOT NULL,              -- direct link to the event page
     event_title  text,
+    title_normalized text,          -- lowercase, no punctuation, sorted words — used for dedup only
     start_date   date NOT NULL,
     start_time   time without time zone,     -- HH:MM:SS, null for all-day events
     end_datetime timestamp without time zone, -- YYYY-MM-DDTHH:MM:SS, no timezone
@@ -37,6 +38,8 @@ CREATE TABLE IF NOT EXISTS events (
     created_at   timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
 
--- Dedup: same title + date + time = same event (NULL time treated as 00:00:00)
+-- Dedup: same normalized title + date + time = same event (NULL time treated as 00:00:00)
+-- title_normalized is lowercase, punctuation-stripped, word-sorted so that
+-- "Musikschule Uri – Vortragsübung" and "Vortragsübung Musikschule Uri" match.
 CREATE UNIQUE INDEX IF NOT EXISTS unique_title_date_time
-    ON events (event_title, start_date, COALESCE(start_time, '00:00:00'));
+    ON events (title_normalized, start_date, COALESCE(start_time, '00:00:00'));

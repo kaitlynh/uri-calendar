@@ -242,19 +242,28 @@ def check_source_url(events, result):
         result.passed("All events have a non-empty source_url")
 
 
+def _normalize_title(title):
+    """Lowercase, strip punctuation, sort words — mirrors parse_json.normalize_title."""
+    import re
+    t = title.lower()
+    t = re.sub(r"[^\w\s]", " ", t, flags=re.UNICODE)
+    return " ".join(sorted(t.split()))
+
+
 def check_duplicates(events, result):
-    """Check for duplicate events (same title + date + time)."""
+    """Check for duplicate events (same normalized title + date + time)."""
     seen = {}
     dupes = 0
     for event in events:
-        key = (event.get("event_title"), event.get("start_date"), event.get("start_time"))
+        title = event.get("event_title", "")
+        key = (_normalize_title(title), event.get("start_date"), event.get("start_time"))
         if key in seen:
             dupes += 1
         else:
             seen[key] = True
 
     if dupes:
-        result.warn(f"{dupes} duplicate events in JSON (same title + date + time)")
+        result.warn(f"{dupes} duplicate events in JSON (same normalized title + date + time)")
     else:
         result.passed("No duplicate events in JSON")
 
@@ -775,9 +784,9 @@ def check_database(result, json_events=None):
     # --- DB duplicates ---
 
     cur.execute("""
-        SELECT event_title, start_date, count(*) as cnt
+        SELECT title_normalized, start_date, count(*) as cnt
         FROM events
-        GROUP BY event_title, start_date
+        GROUP BY title_normalized, start_date
         HAVING count(*) > 1
     """)
     db_dupes = cur.fetchall()
