@@ -731,14 +731,18 @@ def check_database(result, json_events=None):
 
     if json_events is not None:
         json_count = len(json_events)
-        # DB should have at least as many events as the JSON (DB accumulates over time)
-        if db_event_count < json_count:
+        # DB is normally smaller than JSON because ingest dedupes on
+        # (title_normalized, start_date, start_time) across aggregator sources.
+        # Only warn when the shortfall is large enough to suggest a half-failed
+        # ingest rather than normal dedup (~15-20% is typical).
+        tolerance = 0.6
+        if db_event_count < json_count * tolerance:
             result.warn(
-                f"DB has fewer events ({db_event_count}) than JSON ({json_count}) "
-                f"— ingest may have skipped duplicates or filtered events"
+                f"DB has far fewer events ({db_event_count}) than JSON ({json_count}) "
+                f"— below {int(tolerance * 100)}% threshold, ingest may have partially failed"
             )
         else:
-            result.passed(f"DB event count ({db_event_count}) >= JSON event count ({json_count})")
+            result.passed(f"DB event count ({db_event_count}) within tolerance of JSON ({json_count})")
 
         # Check that every source_name in JSON exists in the DB
         json_source_names = {e.get("source_name") for e in json_events if e.get("source_name")}
