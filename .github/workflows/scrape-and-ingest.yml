@@ -177,7 +177,7 @@ jobs:
           name: pipeline-validation
           path: .
 
-      - name: Check for failures and create/update issue
+      - name: Check for failures and create/update issues
         uses: actions/github-script@v7
         with:
           script: |
@@ -190,14 +190,11 @@ jobs:
               pipelineOutput = '(pipeline validation output not available)';
             }
 
-            // Check if any upstream job failed
             const validateResult = '${{ needs.validate.result }}';
             const apiResult = '${{ needs.validate-api.result }}';
-            const pipelineStepResult = '${{ needs.validate.outputs.pipeline_validate_outcome || 'unknown' }}';
-
             const hasPipelineFailure = pipelineOutput.includes('[FAIL]');
             const hasApiFailure = apiResult === 'failure';
-            const hasAnyFailure = hasPipelineFailure || hasApiFailure || validateResult === 'failure' || apiResult === 'failure';
+            const hasAnyFailure = hasPipelineFailure || hasApiFailure || validateResult === 'failure';
 
             if (!hasAnyFailure) {
               console.log('All checks passed — no issue needed.');
@@ -207,90 +204,184 @@ jobs:
             const today = new Date().toISOString().split('T')[0];
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
 
-            // Extract [FAIL] lines and build a fingerprint for deduplication
+            // Parse each [FAIL] line into one-or-more structured failures.
+            // Each failure has a stable `key` used to dedupe against existing open issues.
             const failLines = pipelineOutput
               .split('\n')
               .filter(line => line.includes('[FAIL]'))
               .map(line => line.replace(/^\s*\[FAIL]\s*/, '').trim());
 
-            // Build a short, readable title
-            // Dedup uses the fingerprint (body FAIL lines), so the title
-            // only needs to be human-scannable, not encode every failure.
-            const failCount = failLines.length + (hasApiFailure ? 1 : 0);
-            // Extract failed source domains for the title
-            const failedSources = failLines
-              .map(line => {
-                const m = line.match(/\(([a-z0-9.-]+\.[a-z]+)\)$/);
-                return m ? m[1] : null;
-              })
-              .filter(Boolean);
+            const failures = [];
 
-            let issueTitle;
-            if (hasApiFailure && failLines.length === 0) {
-              issueTitle = 'Pipeline failure: API validation';
-            } else if (failedSources.length === 1) {
-              issueTitle = `Pipeline failure: ${failedSources[0]}`;
-            } else if (failedSources.length > 1) {
-              issueTitle = `Pipeline failure: ${failedSources.join(', ')}`;
-            } else {
-              issueTitle = `Pipeline failure: ${failCount} check${failCount === 1 ? '' : 's'}`;
+            if (hasApiFailure) {
+              failures.push({
+                key: 'api-validation',
+                title: 'Pipeline failure: API validation (server-side)',
+                detail: 'API validation failed. See workflow run → "Validate API on server" step for details.',
+              });
             }
-            // Fingerprint = sorted fail lines, so order doesn't matter
-            const fingerprint = failLines.slice().sort().join('\n');
 
-            const issueBody = [
-              '## Pipeline Validation (GitHub Actions)',
-              '```',
-              pipelineOutput,
-              '```',
-              '',
-              `## API Validation (server-side)`,
-              `See the [workflow run log](${runUrl}) → "Validate API on server" step for full output.`,
-              '',
-              `**Triggered by:** [workflow run](${runUrl})`,
-            ].join('\n');
+            for (const line of failLines) {
+              // "Orphaned sources in DB (not in JSON): a.ch, b.ch, c.ch" — split into one issue per source
+              let m = line.match(/^Orphaned sources in DB \(not in JSON\):\s*(.+)$/);
+              if (m) {
+                const sources = m[1].split(',').map(s => s.trim()).filter(Boolean);
+                for (const source of sources) {
+                  failures.push({
+                    key: `orphaned-source:${source}`,
+                    title: `Pipeline failure: orphaned source ${source}`,
+                    detail: `Source \`${source}\` exists in the DB but is not present in the JSON output.`,
+                  });
+                }
+                continue;
+              }
 
-            // Search for existing open issues with the same failure fingerprint
+              // "0 events from source: Display Name (domain.ch)"
+              m = line.match(/^0 events from source:\s*.+\(([a-z0-9.-]+\.[a-z]+)\)\s*$/);
+              if (m) {
+                const source = m[1];
+                failures.push({
+                  key: `zero-events:${source}`,
+                  title: `Pipeline failure: 0 events from ${source}`,
+                  detail: line,
+                });
+                continue;
+              }
+
+              // "N events have invalid end_datetime format (...): source.ch: date, source.ch: date, ..."
+              m = line.match(/^\d+ events have invalid end_datetime format[^:]*:\s*(.+)$/);
+              if (m) {
+                const sources = [...new Set(
+                  m[1].split(',').map(part => {
+                    const sm = part.trim().match(/^([a-z0-9.-]+\.[a-z]+):/);
+                    return sm ? sm[1] : null;
+                  }).filter(Boolean)
+                )];
+                if (sources.length) {
+                  for (const source of sources) {
+                    failures.push({
+                      key: `invalid-end-datetime:${source}`,
+                      title: `Pipeline failure: invalid end_datetime in ${source}`,
+                      detail: line,
+                    });
+                  }
+                } else {
+                  failures.push({
+                    key: 'invalid-end-datetime',
+                    title: 'Pipeline failure: invalid end_datetime format',
+                    detail: line,
+                  });
+                }
+                continue;
+              }
+
+              // "N KBU events leaked through aggregator filters — e.g. ..."
+              if (/^\d+ KBU events leaked through aggregator filters/.test(line)) {
+                failures.push({
+                  key: 'kbu-leak',
+                  title: 'Pipeline failure: KBU events leaking through aggregator filters',
+                  detail: line,
+                });
+                continue;
+              }
+
+              // "N Theater Uri events leaked through aggregator filters — e.g. ..."
+              if (/^\d+ Theater Uri events leaked through aggregator filters/.test(line)) {
+                failures.push({
+                  key: 'theater-uri-leak',
+                  title: 'Pipeline failure: Theater Uri events leaking through aggregator filters',
+                  detail: line,
+                });
+                continue;
+              }
+
+              // "N duplicate title+date combinations in DB (unique constraint may be broken)"
+              if (/^\d+ duplicate title\+date combinations in DB/.test(line)) {
+                failures.push({
+                  key: 'duplicate-titles',
+                  title: 'Pipeline failure: duplicate title+date combinations in DB',
+                  detail: line,
+                });
+                continue;
+              }
+
+              // "DB has fewer events (N) than JSON (M) — ingest may ..."
+              if (/^DB has fewer events/.test(line)) {
+                failures.push({
+                  key: 'db-fewer-events-than-json',
+                  title: 'Pipeline failure: DB has fewer events than JSON',
+                  detail: line,
+                });
+                continue;
+              }
+
+              // Unknown failure shape — key off the line with volatile numbers/examples stripped.
+              const normalized = line
+                .replace(/\d+/g, 'N')
+                .replace(/\s*—\s*e\.g\..*$/, '')
+                .trim()
+                .slice(0, 100);
+              failures.push({
+                key: `other:${normalized}`,
+                title: `Pipeline failure: ${line.slice(0, 70)}`,
+                detail: line,
+              });
+            }
+
+            // Look up existing open issues with the pipeline-failure label.
+            // The hidden key tag in the body is how we dedupe.
             const { data: openIssues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: 'pipeline-failure',
               state: 'open',
-              per_page: 20,
+              per_page: 100,
             });
 
-            // Check if any open issue has the same set of failures
+            const KEY_TAG = /<!--\s*failure-key:\s*([^\s]+)\s*-->/;
+            const issuesByKey = new Map();
             for (const issue of openIssues) {
-              // Extract [FAIL] lines from the issue body
-              const existingFails = (issue.body || '')
-                .split('\n')
-                .filter(line => line.includes('[FAIL]'))
-                .map(line => line.replace(/^\s*\[FAIL]\s*/, '').trim())
-                .sort()
-                .join('\n');
+              const match = (issue.body || '').match(KEY_TAG);
+              if (match) issuesByKey.set(match[1], issue);
+            }
 
-              if (existingFails === fingerprint) {
-                // Same failures — add a comment instead of a new issue
-                console.log(`Same failures as #${issue.number} — adding comment.`);
+            // For each failure: if an open issue with the same key exists, comment on it.
+            // Otherwise, open a new issue.
+            for (const failure of failures) {
+              const existing = issuesByKey.get(failure.key);
+              if (existing) {
+                console.log(`Failure "${failure.key}" still happening — commenting on #${existing.number}.`);
                 await github.rest.issues.createComment({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  issue_number: issue.number,
+                  issue_number: existing.number,
                   body: [
                     `## Still failing — ${today}`,
                     '',
-                    `Same failures detected. [Workflow run](${runUrl})`,
+                    '```',
+                    failure.detail,
+                    '```',
+                    '',
+                    `[Workflow run](${runUrl})`,
                   ].join('\n'),
                 });
-                return;
+              } else {
+                console.log(`New failure "${failure.key}" — opening issue.`);
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: failure.title,
+                  body: [
+                    `<!-- failure-key: ${failure.key} -->`,
+                    `First seen: ${today}`,
+                    '',
+                    '```',
+                    failure.detail,
+                    '```',
+                    '',
+                    `[Workflow run](${runUrl})`,
+                  ].join('\n'),
+                  labels: ['pipeline-failure'],
+                });
               }
             }
-
-            // Different failures (or no open issue) — create a new issue
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: issueTitle,
-              body: issueBody,
-              labels: ['pipeline-failure'],
-            });
