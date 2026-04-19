@@ -77,6 +77,11 @@ def _parse_dt(iso: Optional[str]) -> tuple[Optional[str], Optional[str]]:
         return iso[:10] if len(iso) >= 10 else None, None
 
 
+def _resolved_location(event: dict) -> str:
+    """Return the best known location: API locationAlias, or detail-page fallback."""
+    return _de(event.get("locationAlias")) or event.get("_scraped_location") or ""
+
+
 def fetch_events() -> list[dict]:
     api_key = _get_api_key()
     if not api_key:
@@ -118,11 +123,25 @@ def fetch_events() -> list[dict]:
             break
         page += 1
 
+    # Fetch locations from detail pages for events missing locationAlias.
+    # Must happen BEFORE the venue-based filters below: the API omits
+    # locationAlias for many events, but the detail page's JSON-LD usually
+    # carries the venue name — and without that, KBU/Theater Uri events
+    # hosted at cross-listed venues slip past the filter.
+    missing = [e for e in all_events if not _de(e.get("locationAlias"))]
+    if missing:
+        log.info("fetching locations from %d detail pages", len(missing))
+        urls = [e.get("url") for e in missing]
+        with ThreadPoolExecutor(max_workers=5) as pool:
+            locations = list(pool.map(_scrape_detail_location, urls))
+        for event, loc in zip(missing, locations):
+            if loc:
+                event["_scraped_location"] = loc
+
     # Filter out KBU events (scraped directly from kbu.ch)
     before = len(all_events)
     all_events = [e for e in all_events
-                  if not re.search(r"(?i)kantonsbibliothek",
-                                   _de(e.get("locationAlias")) or "")]
+                  if not re.search(r"(?i)kantonsbibliothek", _resolved_location(e))]
     skipped_kbu = before - len(all_events)
     if skipped_kbu:
         log.info("skipped %d KBU events (scraped from kbu.ch)", skipped_kbu)
@@ -139,24 +158,12 @@ def fetch_events() -> list[dict]:
     # Filter out Theater Uri events (scraped directly from theater-uri.ch)
     before = len(all_events)
     all_events = [e for e in all_events
-                  if not (re.search(r"(?i)theater\s+uri",
-                                    _de(e.get("locationAlias")) or "") or
+                  if not (re.search(r"(?i)theater\s+uri", _resolved_location(e)) or
                           re.search(r"(?i)theater\s+uri",
                                     _de(e.get("title")) or ""))]
     skipped_theater = before - len(all_events)
     if skipped_theater:
         log.info("skipped %d Theater Uri events (scraped from theater-uri.ch)", skipped_theater)
-
-    # Fetch locations from detail pages for events missing locationAlias
-    missing = [e for e in all_events if not _de(e.get("locationAlias"))]
-    if missing:
-        log.info("fetching locations from %d detail pages", len(missing))
-        urls = [e.get("url") for e in missing]
-        with ThreadPoolExecutor(max_workers=5) as pool:
-            locations = list(pool.map(_scrape_detail_location, urls))
-        for event, loc in zip(missing, locations):
-            if loc:
-                event["_scraped_location"] = loc
 
     return all_events
 
