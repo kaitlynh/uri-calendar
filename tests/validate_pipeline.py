@@ -783,18 +783,19 @@ def check_database(result, json_events=None):
 
     # --- DB duplicates ---
 
+    # Mirror the actual unique index: (title_normalized, start_date, COALESCE(start_time, '00:00:00'))
+    # Grouping on just (title, date) would flag legitimate same-day repeats like two cinema showings.
     cur.execute("""
-        SELECT title_normalized, start_date, count(*) as cnt
+        SELECT title_normalized, start_date, COALESCE(start_time, '00:00:00') AS st, count(*) as cnt
         FROM events
-        GROUP BY title_normalized, start_date
+        GROUP BY title_normalized, start_date, COALESCE(start_time, '00:00:00')
         HAVING count(*) > 1
     """)
     db_dupes = cur.fetchall()
     if db_dupes:
-        # This shouldn't happen because of the unique constraint, but check anyway
-        result.fail(f"{len(db_dupes)} duplicate title+date combinations in DB (unique constraint may be broken)")
+        result.fail(f"{len(db_dupes)} duplicate title+date+time combinations in DB (unique constraint may be broken)")
     else:
-        result.passed("No duplicate events in DB (title + date)")
+        result.passed("No duplicate events in DB (title + date + time)")
 
     cur.close()
     conn.close()
