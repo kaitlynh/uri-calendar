@@ -153,7 +153,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
     if event.get("end_time") and event.get("start_date"):
         end_dt = f"{event['start_date']}T{event['end_time']}"
     elif event.get("end_date") and event["end_date"] != event["start_date"]:
-        end_dt = event["end_date"]
+        end_dt = f"{event['end_date']}T00:00:00"
 
     return {
         "source_url": event["detail_url"],
