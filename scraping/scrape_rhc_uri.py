@@ -18,7 +18,11 @@ log = logging.getLogger(__name__)
 
 ICAL_URL = "https://calendar.clubdesk.com/clubdesk/ical/63505/1000321/djEtghYihgJmXrDqwgFBmjVXdjKnO-vsfvBfY47oKLgOr7I=/basic.ics"
 BASE_URL = "https://www.rhc-uri.ch/unser_verein/spiel-saisonplaene"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "text/calendar,text/plain;q=0.9,*/*;q=0.8",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 HOME_VENUE = "Sporthalle Seedorf"
 
 

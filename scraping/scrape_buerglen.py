@@ -17,7 +17,11 @@ log = logging.getLogger(__name__)
 
 URL = "https://www.buerglen.ch/anlaesseaktuelles"
 DETAIL_BASE = "https://www.buerglen.ch"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 STRIP_TAGS = re.compile(r'<[^>]+>')
 
 
@@ -82,14 +86,8 @@ def _fetch_detail(detail_url: str) -> dict:
 def fetch_events() -> list:
     """Fetch all events from buerglen.ch/anlaesseaktuelles."""
     log.info("fetching %s", URL)
-    try:
-        resp = requests.get(URL, headers=HEADERS, timeout=15)
-        if resp.status_code != 200:
-            log.warning("HTTP %s", resp.status_code)
-            return []
-    except Exception as e:
-        log.error("error: %s", e)
-        return []
+    resp = requests.get(URL, headers=HEADERS, timeout=15)
+    resp.raise_for_status()
 
     # Parse the embedded JSON from data-entities attribute
     match = re.search(r'id="anlassList"[^>]*data-entities="([^"]+)"', resp.text)

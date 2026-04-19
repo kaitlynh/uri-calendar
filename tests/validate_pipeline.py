@@ -753,8 +753,15 @@ def check_database(result, json_events=None):
         else:
             result.passed("All JSON source_names exist in DB sources table")
 
-        # Check for orphaned DB sources (in DB but never in JSON — stale rows)
-        extra_in_db = db_source_names - json_source_names
+        # Check for orphaned DB sources — only sources missing from sources.json
+        # are truly orphaned.  A configured source that scraped 0 events today
+        # is already reported by the per-source events check, so excluding it
+        # here avoids double-counting the same transient failure.
+        configured_source_names = set()
+        if SOURCES_FILE.exists():
+            with open(SOURCES_FILE) as f:
+                configured_source_names = {s.get("source_name") for s in json.load(f) if s.get("source_name")}
+        extra_in_db = db_source_names - json_source_names - configured_source_names
         if extra_in_db:
             result.fail(f"Orphaned sources in DB (not in JSON): {', '.join(sorted(extra_in_db))}")
         else:

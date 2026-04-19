@@ -22,7 +22,11 @@ urllib3.disable_warnings()
 log = logging.getLogger(__name__)
 
 BASE_URL = "https://www.urnerwochenblatt.ch/veranstaltungen/"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"
 

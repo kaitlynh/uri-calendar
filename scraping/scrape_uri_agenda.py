@@ -31,7 +31,11 @@ LIST_PARAMS = {
     "sectionId": "349",
     "language": "de",
 }
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "application/json, text/html;q=0.9",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 
 # Patterns for events scraped from direct sources
 _SKIP_VENUE_RE = re.compile(r"(?i)cinema\s+leuzinger|kantonsbibliothek\s+uri")

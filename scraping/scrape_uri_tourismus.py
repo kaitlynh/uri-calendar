@@ -24,6 +24,9 @@ API_URL = "https://uri.swiss/api/filter"
 BASE_URL = "https://uri.swiss"
 SOURCE_NAME = "uri.swiss"
 HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "application/json",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
     "Content-Type": "application/json",
     "Origin": "https://uri.swiss",
     "Referer": "https://uri.swiss/veranstaltungen",
@@ -92,7 +95,12 @@ def _fetch_venue(slug: str) -> str | None:
         return None
     url = f"{BASE_URL}{slug}"
     try:
-        resp = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
+        detail_headers = {
+            "User-Agent": HEADERS["User-Agent"],
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+        }
+        resp = requests.get(url, headers=detail_headers, timeout=15)
         if resp.status_code != 200:
             return None
         # Structure: <span class="text-large-700"> Adresse </span> ...

@@ -11,7 +11,11 @@ from bs4 import BeautifulSoup
 log = logging.getLogger(__name__)
 
 BASE_URL = "https://volleyuri.ch/veranstaltungen"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 
 
 def _parse_date(date_str: str) -> Optional[str]:
@@ -62,14 +66,8 @@ def _fetch_description(detail_url: str) -> Optional[str]:
 def fetch_events() -> list:
     """Fetch all events from volleyuri.ch/veranstaltungen."""
     log.info("fetching %s", BASE_URL)
-    try:
-        resp = requests.get(BASE_URL, headers=HEADERS, timeout=15)
-        if resp.status_code != 200:
-            log.warning("HTTP %s", resp.status_code)
-            return []
-    except Exception as e:
-        log.error("error: %s", e)
-        return []
+    resp = requests.get(BASE_URL, headers=HEADERS, timeout=15)
+    resp.raise_for_status()
 
     soup = BeautifulSoup(resp.text, "html.parser")
     cards = soup.select("a.event_card")

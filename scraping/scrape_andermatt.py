@@ -18,7 +18,11 @@ log = logging.getLogger(__name__)
 
 BASE_URL = "https://www.gemeinde-andermatt.ch/dorfleben/freizeit-kultur/veranstaltungen.html/131"
 DETAIL_BASE = "https://www.gemeinde-andermatt.ch"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"
 
 
@@ -112,12 +116,8 @@ def fetch_events() -> list[dict]:
     session.headers.update(HEADERS)
 
     log.info("fetching %s", BASE_URL)
-    try:
-        resp = session.get(_page_url(1), timeout=15)
-        resp.raise_for_status()
-    except Exception as e:
-        log.error("error: %s", e)
-        return []
+    resp = session.get(_page_url(1), timeout=15)
+    resp.raise_for_status()
 
     total_pages = _get_total_pages(resp.text)
     log.info("total pages: %d", total_pages)

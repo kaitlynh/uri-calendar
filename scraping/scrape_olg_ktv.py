@@ -18,7 +18,11 @@ log = logging.getLogger(__name__)
 # Two event pages under the same source
 URL_VEREINSTERMINE = "https://olg-ktv-altdorf.ch/?b=100679&c=EL&s=djEtkrJnjCNrDOvXomfStWZErXne_tZfQj511si9KPLGr48="
 URL_NACHWUCHS = "https://olg-ktv-altdorf.ch/?b=100407&c=EL&s=djEtCISATqYRa76C382Hl6w-P-C4e79Jo9gNoxgbgjfnwyI="
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 
 
 def _parse_date_dmy(date_str: str) -> Optional[str]:

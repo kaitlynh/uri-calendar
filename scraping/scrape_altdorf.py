@@ -21,7 +21,11 @@ log = logging.getLogger(__name__)
 
 BASE_URL = "https://www.altdorf.ch/anlaesseaktuelles"
 DETAIL_BASE = "https://www.altdorf.ch"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"
 
@@ -207,14 +211,8 @@ def fetch_events() -> list[dict]:
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
     log.info("fetching %s", BASE_URL)
-    try:
-        resp = requests.get(BASE_URL, headers=HEADERS, timeout=15)
-        if resp.status_code != 200:
-            log.warning("HTTP %s", resp.status_code)
-            return []
-    except Exception as e:
-        log.error("error: %s", e)
-        return []
+    resp = requests.get(BASE_URL, headers=HEADERS, timeout=15)
+    resp.raise_for_status()
 
     events = parse_events_from_html(resp.text)
     # Filter out events scraped from direct sources

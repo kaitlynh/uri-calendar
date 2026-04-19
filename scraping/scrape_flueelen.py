@@ -16,7 +16,11 @@ log = logging.getLogger(__name__)
 
 API_URL = "https://flueelen.ch/index.php?option=com_dpcalendar&view=events&format=raw&limit=0&Itemid=458"
 DETAIL_BASE = "https://flueelen.ch"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "application/json",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 
 
 def _parse_description(desc_html: str) -> Optional[str]:
@@ -35,16 +39,10 @@ def _parse_description(desc_html: str) -> Optional[str]:
 def fetch_events() -> list:
     """Fetch all events from the DPCalendar JSON API."""
     log.info("fetching %s", API_URL)
-    try:
-        resp = requests.get(API_URL, headers=HEADERS, timeout=15)
-        if resp.status_code != 200:
-            log.warning("HTTP %s", resp.status_code)
-            return []
-        raw = resp.json()
-        data = raw.get("data", raw) if isinstance(raw, dict) else raw
-    except Exception as e:
-        log.error("error: %s", e)
-        return []
+    resp = requests.get(API_URL, headers=HEADERS, timeout=15)
+    resp.raise_for_status()
+    raw = resp.json()
+    data = raw.get("data", raw) if isinstance(raw, dict) else raw
 
     log.info("found %d events", len(data))
 

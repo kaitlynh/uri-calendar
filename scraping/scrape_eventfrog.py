@@ -90,7 +90,12 @@ def fetch_events() -> list[dict]:
             "Get an API key at https://www.eventfrog.net"
         )
 
-    headers = {"Authorization": f"Bearer {api_key}"}
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+        "Accept": "application/json",
+        "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+    }
 
     # Build base params with all Uri zip codes
     base_params = [("zip", z) for z in URI_ZIPS]
@@ -172,8 +177,13 @@ def _scrape_detail_location(url: str) -> Optional[str]:
     """Scrape location from an eventfrog detail page via JSON-LD structured data."""
     if not url:
         return None
+    detail_headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+    }
     try:
-        resp = requests.get(url, timeout=15)
+        resp = requests.get(url, headers=detail_headers, timeout=15)
         if resp.status_code != 200:
             return None
     except Exception:

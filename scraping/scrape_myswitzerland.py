@@ -25,7 +25,11 @@ log = logging.getLogger(__name__)
 API_URL = "https://opendata.myswitzerland.io/v1/attractions"  # API endpoint for fetching event data
 BASE_URL = "https://uri.swiss"  # Events listing page — used as base_url in output and as fallback link
 SOURCE_NAME = "uri.swiss"  # Bare domain identifier
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "application/json",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 
 # Tight bounding box for Canton Uri — errs on the side of exclusion.
 # Confirmed anchor points: Altdorf 46.880/8.644, Andermatt 46.633/8.594,

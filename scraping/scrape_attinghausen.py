@@ -35,7 +35,11 @@ log = logging.getLogger(__name__)
 
 PAGE_URL = "https://www.attinghausen.ch/index.php/portrait/terminkalender"
 BASE_URL = "https://www.attinghausen.ch"
-HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    "Accept": "text/html,application/pdf;q=0.9,*/*;q=0.8",
+    "Accept-Language": "de-CH,de;q=0.9,en;q=0.8",
+}
 LOG_FILE = os.path.join(os.path.dirname(__file__), ".attinghausen_processed.json")
 
 
