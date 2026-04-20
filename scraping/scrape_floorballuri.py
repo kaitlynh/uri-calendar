@@ -28,6 +28,7 @@ TIME_RE = re.compile(r'(\d{1,2}):(\d{2})\s*Uhr')
 
 
 def _parse_date(text: str) -> Optional[str]:
+    """Parse a leading 'DD.MM.YYYY' into 'YYYY-MM-DD'."""
     m = DATE_RE.match(text.strip())
     if not m:
         return None
@@ -35,6 +36,7 @@ def _parse_date(text: str) -> Optional[str]:
 
 
 def _parse_time(text: str) -> Optional[str]:
+    """Extract 'HH:MM Uhr' from anywhere in the text and return 'HH:MM:SS'."""
     m = TIME_RE.search(text)
     if not m:
         return None
@@ -42,6 +44,7 @@ def _parse_time(text: str) -> Optional[str]:
 
 
 def _fetch_page(url: str) -> Optional[str]:
+    """GET a page, returning the body on success or None on any error."""
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
         resp.raise_for_status()
@@ -98,6 +101,7 @@ def _parse_games(page_html: str, page_url: str) -> list[dict]:
 
 
 def fetch_events(url: str = f"{BASE_URL}/meisterschaft-2025-26") -> list[dict]:
+    """Fetch the meisterschaft schedule page and return upcoming games only."""
     log.info("fetching %s", url)
     html = _fetch_page(url)
     if not html:

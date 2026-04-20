@@ -27,6 +27,7 @@ ISO_FMT = "%Y-%m-%dT%H:%M:%S"
 
 
 def _page_url(page: int) -> str:
+    """Build the paginated events URL. Page 1 is the normal listing; 2+ use the AJAX endpoint."""
     if page == 1:
         return BASE_URL
     return f"{BASE_URL}/eventsjsRequest/0/eventspage/{page}"
@@ -43,6 +44,7 @@ def _parse_time(time_str: Optional[str]) -> Optional[str]:
 
 
 def _parse_page(page_html: str) -> list[dict]:
+    """Extract events from one listing page. Location is resolved separately per event."""
     soup = BeautifulSoup(page_html, "html.parser")
     events = []
 
@@ -87,6 +89,7 @@ def _parse_page(page_html: str) -> list[dict]:
 
 
 def _get_total_pages(page_html: str) -> int:
+    """Extract the total page count from the inline JS config embedded in page 1."""
     m = re.search(r"total:\s*parseInt\('(\d+)'", page_html)
     if m:
         return int(m.group(1))
@@ -112,6 +115,7 @@ def _fetch_location(session: requests.Session, detail_url: str) -> Optional[str]
 
 
 def fetch_events() -> list[dict]:
+    """Fetch all events across paginated listings, then resolve venues from detail pages."""
     session = requests.Session()
     session.headers.update(HEADERS)
 

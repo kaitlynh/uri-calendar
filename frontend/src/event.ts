@@ -1,4 +1,4 @@
-
+/** Canonical event shape returned by /api/events. Mirrors db/schema.sql. */
 export type Event = {
   event_id: string,
   source_name: string,

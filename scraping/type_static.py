@@ -21,6 +21,10 @@ from bs4 import BeautifulSoup
 
 
 def scrape(source: dict, extracted_at: str) -> list:
+    """Scrape a server-rendered page using CSS selectors from sources.json.
+
+    Imports Event lazily to avoid a circular import with scraping.py.
+    """
     from scraping import Event
 
     sel = source.get("selectors", {})

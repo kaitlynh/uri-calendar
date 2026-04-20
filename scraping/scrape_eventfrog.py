@@ -54,6 +54,7 @@ URI_ZIPS = [
 
 
 def _get_api_key() -> Optional[str]:
+    """Read the Eventfrog API key from EVENTFROG_API_KEY (or .env via python-dotenv)."""
     return os.environ.get("EVENTFROG_API_KEY")
 
 
@@ -83,6 +84,8 @@ def _resolved_location(event: dict) -> str:
 
 
 def fetch_events() -> list[dict]:
+    """Page through the Eventfrog API for all Canton Uri ZIPs, resolve missing
+    locations from detail pages, then filter out categories scraped directly."""
     api_key = _get_api_key()
     if not api_key:
         raise RuntimeError(

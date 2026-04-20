@@ -11,6 +11,11 @@ from bs4 import BeautifulSoup
 
 
 def scrape(source: dict, extracted_at: str) -> list:
+    """Render the page with headless Chromium, then apply CSS selectors.
+
+    Playwright and Event are imported lazily — Playwright because not every
+    environment needs it, Event to avoid a circular import with scraping.py.
+    """
     from playwright.sync_api import sync_playwright
 
     from scraping import Event

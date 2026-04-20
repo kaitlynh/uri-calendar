@@ -548,8 +548,7 @@ const App: Component = () => {
     );
   }
 
-  /** Categories sorted in display order. */
-  /** Sort order for categories — unlisted ones fall to the bottom. */
+  /** Category display order — anything not in `order` falls to the bottom. */
   const sortedCategories = () => {
     const order = ['Organisationen', 'Gemeinden', 'Schulen', 'Kirchen'];
     const cats = [...new Set(knownSources().filter(s => s.category).map(s => s.category!))];

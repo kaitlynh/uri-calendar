@@ -11,6 +11,10 @@ import feedparser
 
 
 def scrape(source: dict, extracted_at: str) -> list:
+    """Parse an RSS/Atom feed into the canonical Event list.
+
+    Imports Event lazily to avoid a circular import with scraping.py.
+    """
     from scraping import Event
 
     feed = feedparser.parse(source["url"])
