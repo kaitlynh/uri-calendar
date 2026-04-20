@@ -11,7 +11,7 @@ import re
 import html
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 log = logging.getLogger(__name__)

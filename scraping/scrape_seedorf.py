@@ -7,7 +7,7 @@ OL and RHC events that are scraped from their primary sources.
 import logging
 import re
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from bs4 import BeautifulSoup

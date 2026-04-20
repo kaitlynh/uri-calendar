@@ -1,8 +1,9 @@
 """Scraper for Gemeinde Schattdorf — municipality event listing."""
 
 import logging
-import requests
+from datetime import datetime, timezone
 
+import requests
 from bs4 import BeautifulSoup
 
 from parse_utils import parse_german_date_string, parse_time

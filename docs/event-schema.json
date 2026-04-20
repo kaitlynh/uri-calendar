@@ -1,13 +1,15 @@
 {
-  "event_id": "string (unique identifier)",
-  "source_name": "string",
-  "base_url": "string",
-  "source_url": "string (url)",
+  "source_name": "string (bare domain, e.g. 'kbu.ch')",
+  "base_url": "string (full URL to the source's event listing page)",
+  "source_url": "string (URL to the specific event page; falls back to base_url)",
   "event_title": "string",
-  "start_date": "string (YYYY-MM-DD)",
-  "start_time": "string (HH:MM:SS) or null",
+  "start_date": "string (YYYY-MM-DD) or null",
+  "start_time": "string (HH:MM:SS) or null (null = all-day event)",
   "end_datetime": "string (YYYY-MM-DDTHH:MM:SS, no timezone) or null",
-  "location": "string",
-  "description": "string",
-  "extracted_at": "ISO8601 string"
+  "location": "string or null",
+  "description": "string or null",
+  "extracted_at": "string (ISO 8601 UTC timestamp)",
+  "priority": "integer (lower number wins in deduplication)",
+  "ai_flag": "boolean or null (true if discovered via AI enrichment)",
+  "ai_flag_at": "string (ISO 8601 UTC timestamp) or null"
 }

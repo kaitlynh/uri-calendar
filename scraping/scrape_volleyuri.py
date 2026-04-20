@@ -3,7 +3,7 @@
 import logging
 import re
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from bs4 import BeautifulSoup

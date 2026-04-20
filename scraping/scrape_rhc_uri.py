@@ -11,7 +11,7 @@ and enrich the data:
 import logging
 import re
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 log = logging.getLogger(__name__)

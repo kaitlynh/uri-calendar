@@ -1,7 +1,7 @@
 {
   "name": "uri-calendar",
   "version": "0.0.0",
-  "description": "",
+  "description": "SolidJS frontend for urikalender.ch — a community event calendar for Canton Uri.",
   "type": "module",
   "scripts": {
     "start": "vite",

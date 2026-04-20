@@ -11,7 +11,7 @@ import time
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 
 try:
     from dotenv import load_dotenv

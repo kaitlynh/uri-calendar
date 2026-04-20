@@ -9,7 +9,7 @@ import json
 import logging
 import re
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 

@@ -11,7 +11,7 @@ import re
 import json
 import urllib3
 import requests
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 urllib3.disable_warnings()

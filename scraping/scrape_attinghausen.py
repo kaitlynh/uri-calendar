@@ -162,7 +162,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
 
 if __name__ == "__main__":
     import json
-    from datetime import datetime
+    from datetime import datetime, timezone
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
     extracted_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")

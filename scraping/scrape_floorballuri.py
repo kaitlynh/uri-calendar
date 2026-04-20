@@ -8,7 +8,7 @@ import logging
 import re
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from typing import Optional
 
 log = logging.getLogger(__name__)

@@ -1,5 +1,6 @@
 beautifulsoup4
 feedparser
+flask
 openai
 psycopg2-binary
 python-dotenv
