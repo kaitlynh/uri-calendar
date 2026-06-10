@@ -1,16 +1,17 @@
 """Scraper for Gemeinde Altdorf — the cantonal capital.
 
-Altdorf embeds all event data as a JSON blob in a data-entities HTML
-attribute (rather than rendering it server-side), making parsing reliable.
-We extract the JSON, then fetch each event's detail page in parallel to
-get start times and descriptions.
+Altdorf relaunched their website in May 2026 (Craft CMS, apex domain
+without www).  Events are server-rendered as cards on a single listing
+page, one card per occurrence — recurring events repeat with different
+dates but share a detail page.  We parse the cards, then fetch each
+unique detail page in parallel for start times, venue addresses, and
+descriptions.
 
 Like other aggregator scrapers, we filter out events that belong to
 sources we scrape directly (Cinema Leuzinger, KBU, OL, Theater Uri).
 """
 
 import html
-import json
 import logging
 import re
 import requests
@@ -19,8 +20,8 @@ from typing import Optional
 
 log = logging.getLogger(__name__)
 
-BASE_URL = "https://www.altdorf.ch/anlaesseaktuelles"
-DETAIL_BASE = "https://www.altdorf.ch"
+BASE_URL = "https://altdorf.ch/aktuelles/veranstaltungen"
+DETAIL_BASE = "https://altdorf.ch"
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -29,75 +30,87 @@ HEADERS = {
 STRIP_TAGS = re.compile(r'<[^>]+>')
 ISO_FMT = "%Y-%m-%dT%H:%M:%S"
 
+# German month names (cards use full names, teasers abbreviate) → month number
+MONTHS = {
+    "jan": 1, "feb": 2, "mär": 3, "maer": 3, "apr": 4, "mai": 5, "jun": 6,
+    "jul": 7, "aug": 8, "sep": 9, "okt": 10, "nov": 11, "dez": 12,
+}
 
-def _extract_title(name_html: str) -> str:
-    """Extract plain text title from HTML link e.g. '<a href="...">Title</a>'."""
-    return STRIP_TAGS.sub('', html.unescape(name_html)).strip()
+# One listing card per occurrence: class attr, then data-* attrs, then body
+CARD_RE = re.compile(
+    r'<div\s+class="grid\s+col cols-1 event-item'
+    r'.*?(?=<div\s+class="grid\s+col cols-1 event-item|$)',
+    re.DOTALL,
+)
+DATE_SPAN_RE = re.compile(r'<span class="(day|month|year)">\s*([^<]+?)\s*</span>')
+TIME_RE = re.compile(r'<span class="time">\s*(\d{1,2})[:.](\d{2})')
 
 
-def _extract_href(name_html: str) -> Optional[str]:
-    """Extract the href from an HTML link."""
-    m = re.search(r'href="([^"]+)"', name_html)
-    if m:
-        return m.group(1)
-    return None
-
-
-def _parse_time_from_lead(lead_text: str) -> Optional[str]:
-    """Extract start time from the icms-lead-container text.
-
-    Formats seen:
-      "25. Apr. 2026, 9.30 Uhr - 10.30 Uhr"
-      "16. Apr. 2026, 19:00 Uhr"
-      "18.00 Uhr*"
-      "ganztägig"  -> None
-      no time at all -> None
-    """
-    if not lead_text or "ganztägig" in lead_text.lower():
+def _parse_german_date(day: str, month: str, year: str) -> Optional[str]:
+    """Convert e.g. ('12.', 'Juni', '2026') to '2026-06-12'."""
+    month_num = MONTHS.get(month.strip(". ").lower()[:3])
+    if not month_num:
         return None
-    # Match time like "9.30 Uhr" or "19:00 Uhr" (first occurrence = start time)
-    m = re.search(r'(\d{1,2})[.:](\d{2})\s*Uhr', lead_text)
-    if m:
-        return f"{int(m.group(1)):02d}:{m.group(2)}:00"
-    return None
+    try:
+        return f"{int(year):04d}-{month_num:02d}-{int(day.strip('. ')):02d}"
+    except ValueError:
+        return None
+
+
+def _clean_text(raw: str) -> str:
+    """Strip tags from an HTML fragment, keeping paragraph breaks."""
+    text = re.sub(r'<br\s*/?>', '\n', raw)
+    text = re.sub(r'</p>\s*<p[^>]*>', '\n\n', text)
+    text = STRIP_TAGS.sub('', text)
+    text = html.unescape(text).replace('\xa0', ' ')
+    text = re.sub(r'[ \t]+', ' ', text)
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text.strip()
 
 
 def _fetch_detail_info(detail_url: str) -> dict:
-    """Fetch an event detail page and extract description and start time."""
-    result = {"description": "", "start_time": None}
+    """Fetch an event detail page and extract time, location, and description."""
+    result = {"description": "", "start_time": None, "location": None}
     try:
         resp = requests.get(detail_url, headers=HEADERS, timeout=15)
         if resp.status_code != 200:
             return result
 
-        # Extract time from icms-lead-container
-        lead_match = re.search(
-            r'<div[^>]+class="[^"]*icms-lead-container[^"]*"[^>]*>(.*?)</div>',
+        # Start time sits in the large date block (not in related-event teasers)
+        datum_match = re.search(
+            r'<div class="event-detail-datum">(.*?)</div>\s*</div>',
             resp.text, re.DOTALL
         )
-        if lead_match:
-            lead_text = STRIP_TAGS.sub(' ', lead_match.group(1))
-            lead_text = html.unescape(lead_text).replace('\xa0', ' ')
-            result["start_time"] = _parse_time_from_lead(lead_text)
+        if datum_match:
+            time_match = TIME_RE.search(datum_match.group(1))
+            if time_match:
+                result["start_time"] = f"{int(time_match.group(1)):02d}:{time_match.group(2)}:00"
 
-        # Extract description from main content area
-        match = re.search(
-            r'<div[^>]+class="[^"]*icms-detail-text[^"]*"[^>]*>(.*?)</div>',
+        # "Ort" block: <p>Venue</p> <p>Street</p> <p>ZIP [Town]</p>
+        ort_match = re.search(
+            r'class="[^"]*\bort\b[^"]*"[^>]*>\s*<div[^>]*>(.*?)</div>',
             resp.text, re.DOTALL
         )
-        if not match:
-            match = re.search(
-                r'<div[^>]+class="[^"]*content-area[^"]*"[^>]*>(.*?)</div>\s*</div>',
-                resp.text, re.DOTALL
-            )
-        if match:
-            raw = match.group(1)
-            text = re.sub(r'<br\s*/?>', '\n', raw)
-            text = re.sub(r'</p>\s*<p[^>]*>', '\n\n', text)
-            text = STRIP_TAGS.sub('', text)
-            text = html.unescape(text).replace('\xa0', ' ')
-            text = re.sub(r'\n{3,}', '\n\n', text)
-            result["description"] = text.strip()
+        if ort_match:
+            paragraphs = [_clean_text(p) for p in re.findall(r'<p[^>]*>(.*?)</p>', ort_match.group(1), re.DOTALL)]
+            paragraphs = [p for p in paragraphs if p]
+            venue = paragraphs[0] if paragraphs else None
+            town = None
+            for p in paragraphs[1:]:
+                zip_match = re.match(r'(\d{4})\s*(.*)', p)
+                if zip_match:
+                    town = zip_match.group(2).strip() or ("Altdorf" if zip_match.group(1) == "6460" else None)
+            if venue and town:
+                result["location"] = f"{venue}, {town}"
+            else:
+                result["location"] = venue
+
+        desc_match = re.search(
+            r'<div class="event-description[^"]*">\s*<h3[^>]*>[^<]*</h3>(.*?)</div>',
+            resp.text, re.DOTALL
+        )
+        if desc_match:
+            result["description"] = _clean_text(desc_match.group(1))
 
         return result
     except Exception as e:
@@ -106,46 +119,44 @@ def _fetch_detail_info(detail_url: str) -> dict:
 
 
 def parse_events_from_html(page_html: str) -> list[dict]:
-    """Parse events from the altdorf.ch events page."""
-    # The table embeds all events as JSON in data-entities attribute
-    match = re.search(r'id="anlassList"[^>]*data-entities="([^"]+)"', page_html)
-    if not match:
-        log.warning("could not find anlassList data-entities")
-        return []
-
-    raw_json = html.unescape(match.group(1))
-    try:
-        entities = json.loads(raw_json)
-    except json.JSONDecodeError as e:
-        log.error("JSON parse error: %s", e)
+    """Parse occurrence cards from the altdorf.ch events listing page."""
+    cards = CARD_RE.findall(page_html)
+    if not cards:
+        log.warning("could not find any event-item cards")
         return []
 
     events = []
-    for item in entities.get("data", []):
-        event_id = item.get("id", "")
-        name_html = item.get("name", "")
-        title = _extract_title(name_html)
-        href = _extract_href(name_html)
-        detail_url = f"{DETAIL_BASE}{href}" if href else f"{DETAIL_BASE}/_rte/anlass/{event_id}"
+    for card in cards:
+        section_m = re.search(r'data-section="([^"]*)"', card)
+        if section_m and section_m.group(1) != "veranstaltungen":
+            continue
 
-        start_date = item.get("_datumVon")
-        end_date = item.get("_datumBis")
-        location_venue = item.get("lokalitaet", "")
-        location_city = item.get("ort", "")
-        location = ", ".join(filter(None, [location_venue, location_city])) or None
-        organisator = item.get("organisator", "")
+        title_m = re.search(r'data-title="([^"]*)"', card)
+        title = html.unescape(title_m.group(1)).strip() if title_m else ""
 
-        if not title or not start_date:
+        href_m = re.search(r'<a href="([^"]+)"[^>]*class="overall-link"', card)
+        detail_url = href_m.group(1).split("?")[0] if href_m else None
+
+        date_parts = dict(DATE_SPAN_RE.findall(card))
+        start_date = None
+        if {"day", "month", "year"} <= date_parts.keys():
+            start_date = _parse_german_date(date_parts["day"], date_parts["month"], date_parts["year"])
+
+        venue_m = re.search(r'<p class="small mt-0-5">\s*([^<]*?)\s*</p>', card)
+        venue = html.unescape(venue_m.group(1)) if venue_m else ""
+
+        teaser_m = re.search(r'data-content="([^"]*)"', card)
+        teaser = html.unescape(teaser_m.group(1)).strip() if teaser_m else ""
+
+        if not title or not start_date or not detail_url:
             continue
 
         events.append({
-            "id": event_id,
             "title": title,
             "start_date": start_date,
-            "end_date": end_date,
-            "location": location,
-            "organisator": organisator,
+            "location": venue or None,
             "detail_url": detail_url,
+            "teaser": teaser,
         })
 
     return events
@@ -183,25 +194,18 @@ def _is_theater_uri(event: dict) -> bool:
 
 
 def _to_template(event: dict, extracted_at: str) -> dict:
-    end_dt = None
-    if event.get("end_date") and event["end_date"] != event["start_date"]:
-        end_dt = f"{event['end_date']}T00:00:00"
-
-    title = event["title"]
-    if event.get("organisator"):
-        title = f"{title} | {event['organisator']}"
-
+    slug = event["detail_url"].rstrip("/").rsplit("/", 1)[-1]
     return {
-        "event_id": f"altdorf-{event['id']}",
+        "event_id": f"altdorf-{slug}-{event['start_date']}",
         "source_name": "altdorf.ch",
         "base_url": BASE_URL,
         "source_url": event["detail_url"],
-        "event_title": title,
+        "event_title": event["title"],
         "start_date": event["start_date"],
         "start_time": event.get("start_time"),
-        "end_datetime": end_dt,
+        "end_datetime": None,
         "location": event["location"],
-        "description": event.get("description", ""),
+        "description": event.get("description") or event.get("teaser", ""),
         "extracted_at": extracted_at,
     }
 
@@ -215,6 +219,28 @@ def fetch_events() -> list[dict]:
     resp.raise_for_status()
 
     events = parse_events_from_html(resp.text)
+    log.info("parsed %d occurrence cards", len(events))
+
+    # Fetch unique detail pages in parallel for time, address, description
+    detail_urls = sorted({e["detail_url"] for e in events})
+    log.info("fetching %d detail pages in parallel", len(detail_urls))
+    details = {}
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        future_to_url = {
+            executor.submit(_fetch_detail_info, url): url
+            for url in detail_urls
+        }
+        for future in as_completed(future_to_url):
+            details[future_to_url[future]] = future.result()
+
+    for event in events:
+        info = details.get(event["detail_url"], {})
+        event["start_time"] = info.get("start_time")
+        event["description"] = info.get("description", "")
+        # Detail-page location includes the town; fall back to the card venue
+        if info.get("location"):
+            event["location"] = info["location"]
+
     # Filter out events scraped from direct sources
     before = len(events)
     events = [e for e in events if not _is_kino(e)]
@@ -236,23 +262,13 @@ def fetch_events() -> list[dict]:
     skipped_theater = before - len(events)
     if skipped_theater:
         log.info("skipped %d Theater Uri events (scraped from theater-uri.ch)", skipped_theater)
-    log.info("found %d events, fetching details in parallel", len(events))
 
-    with ThreadPoolExecutor(max_workers=8) as executor:
-        future_to_event = {
-            executor.submit(_fetch_detail_info, event["detail_url"]): event
-            for event in events
-        }
-        for future in as_completed(future_to_event):
-            info = future.result()
-            event = future_to_event[future]
-            event["description"] = info["description"]
-            event["start_time"] = info["start_time"]
-
+    log.info("done: %d events from altdorf.ch", len(events))
     return events
 
 
 if __name__ == "__main__":
+    import json
     logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(levelname)-7s  %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     events = fetch_events()
     extracted_at = datetime.now(timezone.utc).strftime(ISO_FMT)
