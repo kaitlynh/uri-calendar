@@ -182,6 +182,15 @@ def fetch_events() -> list[dict]:
     for event in all_events:
         event["_venue"] = venues.get(event.get("slug") or "")
 
+    # Filter out remaining Cinema Leuzinger events by venue — some screenings
+    # aren't typed CinemaScreening (e.g. a reading typed LiteraryEvent)
+    before = len(all_events)
+    all_events = [e for e in all_events
+                  if not re.search(r"(?i)cinema\s+leuzinger", e.get("_venue") or "")]
+    skipped_kino_venue = before - len(all_events)
+    if skipped_kino_venue:
+        log.info("skipped %d Cinema Leuzinger venue events (scraped from cinema-leuzinger.ch)", skipped_kino_venue)
+
     # Filter out KBU events after venue resolution (scraped directly from kbu.ch)
     before = len(all_events)
     all_events = [e for e in all_events
