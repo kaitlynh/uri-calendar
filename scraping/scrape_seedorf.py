@@ -78,8 +78,16 @@ def fetch_events() -> list:
     log.info("fetching %s", API_URL)
     resp = requests.get(API_URL, headers=HEADERS, timeout=15)
     resp.raise_for_status()
-    raw = resp.json()
+    try:
+        raw = resp.json()
+    except ValueError:
+        raw = None
     data = raw.get("data", raw) if isinstance(raw, dict) else raw
+    # The API occasionally serves a maintenance page instead of the event
+    # list — fail with the payload visible so the log shows what came back
+    if not isinstance(data, list) or not all(isinstance(item, dict) for item in data):
+        snippet = resp.text[:200].replace("\n", " ")
+        raise ValueError(f"unexpected DPCalendar response (status {resp.status_code}): {snippet!r}")
 
     log.info("found %d raw events", len(data))
 
