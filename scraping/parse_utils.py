@@ -92,7 +92,9 @@ def parse_time(time_str: str) -> Optional[str]:
     """
     if not time_str or time_str.strip() in ("–", "-", ""):
         return None
-    m = re.search(r"(\d{1,2})[.:](\d{2})", time_str)
+    # Don't mistake the day.month of a numeric date ("17.06.2026") for a time
+    cleaned = re.sub(r"\d{1,2}\.\d{2}\.\d{4}", " ", time_str)
+    m = re.search(r"(\d{1,2})[.:](\d{2})", cleaned)
     if m:
         return f"{int(m.group(1)):02d}:{m.group(2)}:00"
     return None
@@ -106,7 +108,9 @@ def parse_end_time(time_str: str) -> Optional[str]:
     """
     if not time_str:
         return None
-    m = re.search(r"\d{1,2}[.:]\d{2}\s*[-–]\s*(\d{1,2})[.:](\d{2})", time_str)
+    # Don't mistake the day.month of a numeric date ("17.06.2026") for a time
+    cleaned = re.sub(r"\d{1,2}\.\d{2}\.\d{4}", " ", time_str)
+    m = re.search(r"\d{1,2}[.:]\d{2}\s*[-–]\s*(\d{1,2})[.:](\d{2})", cleaned)
     if m:
         return f"{int(m.group(1)):02d}:{m.group(2)}:00"
     return None
