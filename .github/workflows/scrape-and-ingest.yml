@@ -2,8 +2,10 @@ name: Scrape and Ingest Events
 
 on:
   schedule:
-    # 3:00 AM UTC = ~5:00 AM Zurich (CET) / ~4:00 AM (CEST)
-    - cron: "0 3 * * *"
+    # 1:25 UTC = 3:25 AM Zurich (CEST) / 2:25 AM (CET).
+    # The off-hour minute avoids GitHub's top-of-the-hour queue delays,
+    # which used to push the old "0 3" cron ~85 minutes late.
+    - cron: "25 1 * * *"
   workflow_dispatch:
 
 permissions:
