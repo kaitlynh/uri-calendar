@@ -83,6 +83,28 @@ def _resolved_location(event: dict) -> str:
     return _de(event.get("locationAlias")) or event.get("_scraped_location") or ""
 
 
+def _musikschule_slots() -> set:
+    """(start_date, start_time) pairs from the directly-scraped musikschule calendar.
+
+    Returns an empty set when the fetch fails, so the conditional filter
+    below keeps all eventfrog listings rather than dropping blind.
+    """
+    try:
+        import scrape_musikschule
+        return {(e["start_date"], e["start_time"])
+                for e in scrape_musikschule.fetch_events()}
+    except Exception as e:
+        log.warning("could not fetch musikschule events for dedup: %s", e)
+        return set()
+
+
+def _is_musikschule(event: dict) -> bool:
+    """Detect Musikschule Uri events by title or venue."""
+    title = _de(event.get("title")) or ""
+    return bool(re.search(r"(?i)musikschule\s+uri", title) or
+                re.search(r"(?i)musikschule\s+uri", _resolved_location(event)))
+
+
 def fetch_events() -> list[dict]:
     """Page through the Eventfrog API for all Canton Uri ZIPs, resolve missing
     locations from detail pages, then filter out categories scraped directly."""
@@ -172,6 +194,18 @@ def fetch_events() -> list[dict]:
     skipped_theater = before - len(all_events)
     if skipped_theater:
         log.info("skipped %d Theater Uri events (scraped from theater-uri.ch)", skipped_theater)
+
+    # Filter out Musikschule Uri events — but only those the school's own
+    # calendar also lists (same start date and time).  Unlike the filters
+    # above this is conditional: the school doesn't reliably post all its
+    # events on its own site, so an eventfrog-only listing must survive.
+    slots = _musikschule_slots() if any(_is_musikschule(e) for e in all_events) else set()
+    before = len(all_events)
+    all_events = [e for e in all_events
+                  if not (_is_musikschule(e) and _parse_dt(e.get("begin")) in slots)]
+    skipped_ms = before - len(all_events)
+    if skipped_ms:
+        log.info("skipped %d Musikschule Uri events (scraped from musikschule-uri.ch)", skipped_ms)
 
     return all_events
 
