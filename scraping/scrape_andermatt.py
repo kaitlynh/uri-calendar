@@ -137,12 +137,15 @@ def fetch_events() -> list[dict]:
         except Exception as e:
             log.error("error on page %d: %s", page, e)
 
-    # Fetch locations from detail pages (session cookies required by site)
+    # Fetch locations from detail pages (session cookies required by site).
+    # Pace requests to stay under the site's ~43-request rate limit: tripping
+    # it nightly looks abusive to the host's firewall, which then temporarily
+    # bans runner IPs (the recurring connect-timeout failures).
     import time
     log.info("fetching locations for %d events", len(all_events))
     for e in all_events:
         e["location"] = _fetch_location(session, e["detail_url"])
-        time.sleep(0.3)
+        time.sleep(1.5)
     # Retry failures — site rate-limits after ~43 requests, wait for reset
     missing = [e for e in all_events if not e.get("location")]
     if missing:
