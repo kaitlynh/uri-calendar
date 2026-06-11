@@ -7,12 +7,9 @@ Uses parse_utils for Swiss German date/time formats.
 import logging
 import re
 import json
-import urllib3
 import requests
 from datetime import datetime, timezone
 from typing import Optional
-
-urllib3.disable_warnings()
 
 from parse_utils import parse_german_date_string, parse_time
 
@@ -134,14 +131,8 @@ def _to_template(event: dict, extracted_at: str) -> dict:
 def fetch_events() -> list[dict]:
     """Fetch all events from musikschule-uri.ch."""
     log.info("fetching %s", BASE_URL)
-    try:
-        resp = requests.get(BASE_URL, headers=HEADERS, timeout=15, verify=False)
-        if resp.status_code != 200:
-            log.warning("HTTP %s", resp.status_code)
-            return []
-    except Exception as e:
-        log.error("error: %s", e)
-        return []
+    resp = requests.get(BASE_URL, headers=HEADERS, timeout=15)
+    resp.raise_for_status()
 
     events = parse_events_from_html(resp.text)
     log.info("found %d upcoming events", len(events))
