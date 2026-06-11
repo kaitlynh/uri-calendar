@@ -317,12 +317,14 @@ jobs:
                 continue;
               }
 
-              // Unknown failure shape — key off the line with volatile numbers/examples stripped.
+              // Unknown failure shape — key off the line with volatile numbers/examples
+              // stripped. Keys must stay space-free so writer and reader agree.
               const normalized = line
                 .replace(/\d+/g, 'N')
                 .replace(/\s*—\s*e\.g\..*$/, '')
                 .trim()
-                .slice(0, 100);
+                .slice(0, 100)
+                .replace(/\s+/g, '-');
               failures.push({
                 key: `other:${normalized}`,
                 title: `Pipeline failure: ${line.slice(0, 70)}`,
@@ -340,12 +342,18 @@ jobs:
               per_page: 100,
             });
 
-            const KEY_TAG = /<!--\s*failure-key:\s*([^\s]+)\s*-->/;
+            // Capture up to the closing tag — keys may contain spaces (older
+            // "other:" issues did, and [^\s]+ truncated them at the first
+            // space, so the lookup never matched and duplicates were filed)
+            const KEY_TAG = /<!--\s*failure-key:\s*(.+?)\s*-->/;
             const issuesByKey = new Map();
             for (const issue of openIssues) {
               const match = (issue.body || '').match(KEY_TAG);
               if (match) issuesByKey.set(match[1], issue);
             }
+            // If this ever logs 0 while failures exist, the API returned a bad
+            // list (seen once, 2026-05-20) and duplicates may be filed below.
+            console.log(`Dedup index: ${openIssues.length} open pipeline-failure issues, ${issuesByKey.size} with keys.`);
 
             // For each failure: if an open issue with the same key exists, comment on it.
             // Otherwise, open a new issue.
