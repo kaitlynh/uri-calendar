@@ -393,10 +393,13 @@ def check_per_source_events(events, result):
         name = event.get("source_name", "unknown")
         counts[name] = counts.get(name, 0) + 1
 
-    # Sources that legitimately may have 0 events (seasonal, API key issues, etc.)
+    # Sources that legitimately may have 0 events.  Every entry needs a reason
+    # here — an undocumented exemption hid six weeks of uri.swiss downtime.
     # musikschule-uri.ch: small school, calendar provably empty for weeks at a
     # time (e.g. 2026-04-26 to 2026-05-13 — page up, zero upcoming events)
-    warn_only = {"floorballuri.ch", "uri.swiss", "musikschule-uri.ch"}
+    # floorballuri.ch: fixture list, empty between seasons (last 2025-26 game
+    # was 2026-04-06; the 2026-27 page is not published yet)
+    warn_only = {"floorballuri.ch", "musikschule-uri.ch"}
 
     has_zero = False
     for source in sources:
