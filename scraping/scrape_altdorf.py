@@ -122,8 +122,13 @@ def parse_events_from_html(page_html: str) -> list[dict]:
     """Parse occurrence cards from the altdorf.ch events listing page."""
     cards = CARD_RE.findall(page_html)
     if not cards:
-        log.warning("could not find any event-item cards")
-        return []
+        # altdorf.ch intermittently answers 200 with the listing absent.  Raise
+        # so the orchestrator retries rather than recording a clean zero — the
+        # snippet is here because the cause is still unknown on their side.
+        snippet = re.sub(r"\s+", " ", page_html).strip()[:200]
+        raise ValueError(
+            f"no event-item cards in listing page ({len(page_html)} bytes): {snippet!r}"
+        )
 
     events = []
     for card in cards:
