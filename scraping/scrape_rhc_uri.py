@@ -96,14 +96,10 @@ def _clean_description(desc: str) -> Optional[str]:
 def fetch_events() -> list:
     """Fetch all events from RHC Uri iCal feed."""
     log.info("fetching %s", ICAL_URL)
-    try:
-        resp = requests.get(ICAL_URL, headers=HEADERS, timeout=30)
-        if resp.status_code != 200:
-            log.warning("HTTP %s", resp.status_code)
-            return []
-    except Exception as e:
-        log.error("error: %s", e)
-        return []
+    # Let non-200s and network errors propagate — the orchestrator retries,
+    # and swallowing them turned a transient clubdesk 500 into a filed issue.
+    resp = requests.get(ICAL_URL, headers=HEADERS, timeout=30)
+    resp.raise_for_status()
 
     raw_events = _parse_ical(resp.text)
     log.info("parsed %d events from iCal", len(raw_events))
