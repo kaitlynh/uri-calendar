@@ -23,6 +23,9 @@ log = logging.getLogger(__name__)
 API_URL = "https://uri.swiss/api/filter"
 BASE_URL = "https://uri.swiss"
 SOURCE_NAME = "uri.swiss"
+# Tenant id the site sends with every filter request.  A stale value is
+# accepted with HTTP 200 and an empty result set, not an error.
+PROJECT = "uri-web"
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
     "Accept": "application/json",
@@ -128,7 +131,7 @@ def fetch_events() -> list[dict]:
             "filters": FILTER,
             "type": "Event",
             "pagination": {"currentPage": page, "resultsPerPage": PAGE_SIZE},
-            "project": "szt-utag",
+            "project": PROJECT,
             "locale": "de",
             "requestedByUrl": "https://uri.swiss/veranstaltungen",
         }
