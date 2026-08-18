@@ -171,8 +171,8 @@
   {
     "name": "Cinema Leuzinger",
     "source_name": "cinema-leuzinger.ch",
-    "url": "https://www.cinema-leuzinger.ch/index.php/kinoprogramm",
-    "base_url": "https://www.cinema-leuzinger.ch",
+    "url": "https://cinema-leuzinger.ch/programm",
+    "base_url": "https://cinema-leuzinger.ch",
     "type": "custom",
     "scraper": "scrape_cinema_leuzinger",
     "priority": 1
