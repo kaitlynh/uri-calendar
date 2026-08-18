@@ -184,6 +184,17 @@ def ingest_events():
             cur.execute("RELEASE SAVEPOINT ev")
             inserted += 1
 
+        except (psycopg2.OperationalError, psycopg2.InterfaceError) as e:
+            # The connection itself is gone, not just this record: every
+            # remaining event would fail identically, and the savepoint
+            # rollback below cannot run on a dead cursor.  Stop here and
+            # report the real cause rather than masking it behind the
+            # "cursor already closed" that the rollback would raise.
+            raise RuntimeError(
+                f"Database connection lost after {inserted} events "
+                f"(at '{event.get('event_title')}'): {e}"
+            ) from e
+
         except psycopg2.Error as e:
             print(f"Skipping event '{event.get('event_title')}' due to error: {e}")
             cur.execute("ROLLBACK TO SAVEPOINT ev")
