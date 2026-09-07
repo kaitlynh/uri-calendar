@@ -12,8 +12,8 @@
   {
     "name": "Kantonsbibliothek Uri",
     "source_name": "kbu.ch",
-    "url": "https://www.kbu.ch/treffpunkt/veranstaltungen/",
-    "base_url": "https://www.kbu.ch/treffpunkt/veranstaltungen/",
+    "url": "https://www.kbu.ch/veranstaltungen",
+    "base_url": "https://www.kbu.ch/veranstaltungen",
     "type": "custom",
     "scraper": "scrape_kbu",
     "priority": 1
