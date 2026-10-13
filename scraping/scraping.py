@@ -47,6 +47,8 @@ log = logging.getLogger(__name__)
 # Ensure scraping/ is importable so custom scraper modules resolve
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import antibot  # noqa: E402  (needs scraping/ on sys.path)
+
 
 # ── Data model ──────────────────────────────────────────────────────────
 
@@ -162,7 +164,11 @@ def _run_scraper(
     t0 = time.monotonic()
     last_err = None
 
-    for attempt in range(1, MAX_RETRIES + 1):
+    attempt = 0
+    max_attempts = MAX_RETRIES
+    challenge_tried = False
+    while attempt < max_attempts:
+        attempt += 1
         try:
             events = scraper_fn(source, extracted_at)
             elapsed = time.monotonic() - t0
@@ -173,16 +179,35 @@ def _run_scraper(
                 log.info("%-30s  %3d events  (%.1fs)",
                          source["name"], len(events), elapsed)
             return source["name"], events, None
+        except antibot.BotChallenge as e:
+            # The host is greylisted by Imunify360 and served its challenge
+            # instead of the page.  Pass it once in headless Chrome, then
+            # retry at once; a second challenge after that is a real failure.
+            last_err = e
+            elapsed = time.monotonic() - t0
+            if challenge_tried:
+                log.error("%-30s  still blocked after passing the challenge (%.1fs): %s",
+                          source["name"], elapsed, e)
+                break
+            challenge_tried = True
+            log.warning("%-30s  attempt %d blocked (%.1fs): %s, passing the challenge in headless Chrome",
+                        source["name"], attempt, elapsed, e)
+            if antibot.solve(e.url):
+                max_attempts = attempt + 1
+                continue
+            log.error("%-30s  could not pass the Imunify360 challenge (%.1fs)",
+                      source["name"], time.monotonic() - t0)
+            break
         except Exception as e:
             last_err = e
             elapsed = time.monotonic() - t0
-            if attempt < MAX_RETRIES:
+            if attempt < max_attempts:
                 log.warning("%-30s  attempt %d failed (%.1fs): %s — retrying in %ds",
                             source["name"], attempt, elapsed, e, RETRY_DELAY)
                 time.sleep(RETRY_DELAY)
             else:
                 log.error("%-30s  failed after %d attempts (%.1fs): %s",
-                          source["name"], MAX_RETRIES, elapsed, last_err)
+                          source["name"], attempt, elapsed, last_err)
 
     return source["name"], [], f"ERROR: {last_err}"
 

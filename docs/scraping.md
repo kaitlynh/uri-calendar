@@ -26,6 +26,16 @@ Loads `sources.json`, dispatches all sources in parallel via `ThreadPoolExecutor
 
 Most sources use `custom`. The `static`, `rss`, and `js` types are generic — they work purely from config in `sources.json` without a dedicated scraper file.
 
+### Imunify360 bot challenge (cyon-hosted sources)
+
+altdorf, erstfeld, silenen, attinghausen, flueelen, seedorf, volleyuri, cinema-leuzinger and musikschule are hosted on cyon's shared servers behind Imunify360 WebShield. On some runs the GitHub runner's IP is on Imunify360's greylist, and every request to those hosts gets a JavaScript challenge page (HTTP 200), a JSON "Access denied by Imunify360 bot-protection" message, or HTTP 415, instead of the real page. Plain `requests` cannot run the script, so all of those scrapers report 0 events on the same day.
+
+`scraping/antibot.py` handles this. The affected scrapers fetch through `antibot.get()`, which raises `BotChallenge` when it sees the challenge. The orchestrator then calls `antibot.solve()`, which opens the site's root once in headless Chrome, lets the challenge run (it is not a CAPTCHA, a browser passes it with no interaction and Imunify360 removes the IP from its greylist), keeps the cookies, and retries the scraper right away. The log shows `blocked ... passing the challenge in headless Chrome` followed by `passed the Imunify360 challenge on <host>`.
+
+Chrome comes preinstalled on GitHub's Ubuntu runners, so clean runs download nothing. If no Chrome is found, Playwright downloads its own Chromium at that moment.
+
+Detection and the retry logic are covered by `tests/test_antibot.py` and `tests/test_orchestrator_challenge.py`, which the scrape job runs before the scrapers. The live challenge itself can only be seen on a block day; look for `passed the Imunify360 challenge` in that run's log.
+
 ### AI Enrichment (`open-ai.py`)
 
 After scraping, GPT-5 with `web_search` enabled searches for additional events in Canton Uri for the next 14 days that the scrapers may have missed. The response is parsed as JSON using the same event schema (`docs/event-schema-ai.json`), deduplicated against the existing events, and merged into `events.json`. New AI-found events are tagged with `ai_updated: true` and `ai_updated_at` timestamp. A status file (`events/ai_status.json`) is written for the validation script to check.

@@ -8,6 +8,8 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
+import antibot
+
 log = logging.getLogger(__name__)
 
 BASE_URL = "https://volleyuri.ch/veranstaltungen"
@@ -66,7 +68,7 @@ def _fetch_description(detail_url: str) -> Optional[str]:
 def fetch_events() -> list:
     """Fetch all events from volleyuri.ch/veranstaltungen."""
     log.info("fetching %s", BASE_URL)
-    resp = requests.get(BASE_URL, headers=HEADERS, timeout=15)
+    resp = antibot.get(BASE_URL, headers=HEADERS, timeout=15)
     resp.raise_for_status()
 
     soup = BeautifulSoup(resp.text, "html.parser")

@@ -13,6 +13,8 @@ from typing import Optional
 
 from parse_utils import parse_german_date_string, parse_time
 
+import antibot
+
 log = logging.getLogger(__name__)
 
 BASE_URL = "https://www.musikschule-uri.ch/events-news/"
@@ -131,7 +133,7 @@ def _to_template(event: dict, extracted_at: str) -> dict:
 def fetch_events() -> list[dict]:
     """Fetch all events from musikschule-uri.ch."""
     log.info("fetching %s", BASE_URL)
-    resp = requests.get(BASE_URL, headers=HEADERS, timeout=15)
+    resp = antibot.get(BASE_URL, headers=HEADERS, timeout=15)
     resp.raise_for_status()
 
     events = parse_events_from_html(resp.text)

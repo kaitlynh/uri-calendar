@@ -27,6 +27,8 @@ from datetime import date, datetime, timezone
 import requests
 from bs4 import BeautifulSoup
 
+import antibot
+
 log = logging.getLogger(__name__)
 
 BASE_URL = "https://cinema-leuzinger.ch"
@@ -124,7 +126,7 @@ def _showtime(link, fallback_year: int) -> tuple[str, str] | None:
 def fetch_events() -> list[dict]:
     """Fetch every scheduled showing from the programme page."""
     log.info("fetching %s", PROGRAM_URL)
-    resp = requests.get(PROGRAM_URL, headers=HEADERS, timeout=15)
+    resp = antibot.get(PROGRAM_URL, headers=HEADERS, timeout=15)
     resp.raise_for_status()
 
     soup = BeautifulSoup(resp.text, "html.parser")

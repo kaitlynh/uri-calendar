@@ -18,6 +18,8 @@ import requests
 from datetime import datetime, timezone
 from typing import Optional
 
+import antibot
+
 log = logging.getLogger(__name__)
 
 BASE_URL = "https://altdorf.ch/aktuelles/veranstaltungen"
@@ -220,7 +222,7 @@ def fetch_events() -> list[dict]:
     from concurrent.futures import ThreadPoolExecutor, as_completed
 
     log.info("fetching %s", BASE_URL)
-    resp = requests.get(BASE_URL, headers=HEADERS, timeout=15)
+    resp = antibot.get(BASE_URL, headers=HEADERS, timeout=15)
     resp.raise_for_status()
 
     events = parse_events_from_html(resp.text)

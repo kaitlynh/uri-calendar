@@ -21,6 +21,8 @@ from bs4 import BeautifulSoup
 
 from parse_utils import parse_german_date, parse_time, parse_end_time
 
+import antibot
+
 log = logging.getLogger(__name__)
 
 HEADERS = {
@@ -40,10 +42,12 @@ def scrape(source: dict, extracted_at: str) -> list:
 
     log.info("fetching %s", url)
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=15)
+        resp = antibot.get(url, headers=HEADERS, timeout=15)
         if resp.status_code != 200:
             log.warning("HTTP %s for %s", resp.status_code, url)
             return []
+    except antibot.BotChallenge:
+        raise  # let the orchestrator pass the challenge and retry
     except Exception as e:
         log.error("error fetching %s: %s", url, e)
         return []

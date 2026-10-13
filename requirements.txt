@@ -2,6 +2,7 @@ beautifulsoup4
 feedparser
 flask
 openai
+playwright
 psycopg2-binary
 python-dotenv
 requests

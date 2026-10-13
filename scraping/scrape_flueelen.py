@@ -11,6 +11,8 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
+import antibot
+
 log = logging.getLogger(__name__)
 
 API_URL = "https://flueelen.ch/index.php?option=com_dpcalendar&view=events&format=raw&limit=0&Itemid=458"
@@ -38,7 +40,7 @@ def _parse_description(desc_html: str) -> Optional[str]:
 def fetch_events() -> list:
     """Fetch all events from the DPCalendar JSON API."""
     log.info("fetching %s", API_URL)
-    resp = requests.get(API_URL, headers=HEADERS, timeout=15)
+    resp = antibot.get(API_URL, headers=HEADERS, timeout=15)
     resp.raise_for_status()
     try:
         raw = resp.json()

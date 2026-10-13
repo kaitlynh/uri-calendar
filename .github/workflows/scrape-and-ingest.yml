@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -p "test_*.py"
+
       - name: Run scrapers
         env:
           EVENTFROG_API_KEY: ${{ secrets.EVENTFROG_API_KEY }}

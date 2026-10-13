@@ -31,6 +31,8 @@ import requests
 
 from bs4 import BeautifulSoup
 
+import antibot
+
 log = logging.getLogger(__name__)
 
 PAGE_URL = "https://www.attinghausen.ch/index.php/portrait/terminkalender"
@@ -81,10 +83,12 @@ def fetch_events() -> list:
     """
     log.info("fetching %s", PAGE_URL)
     try:
-        resp = requests.get(PAGE_URL, headers=HEADERS, timeout=15)
+        resp = antibot.get(PAGE_URL, headers=HEADERS, timeout=15)
         if resp.status_code != 200:
             log.warning("HTTP %s", resp.status_code)
             return []
+    except antibot.BotChallenge:
+        raise  # let the orchestrator pass the challenge and retry
     except Exception as e:
         log.error("error fetching page: %s", e)
         return []

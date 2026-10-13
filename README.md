@@ -75,12 +75,13 @@ uri-calendar/
 │   ├── sources.json   Source configuration (URLs, types, priorities)
 │   ├── scrape_*.py    Custom scrapers (one per source)
 │   ├── type_*.py      Built-in scraper types (static, rss, js, icms)
+│   ├── antibot.py     Passes the Imunify360 challenge on cyon-hosted sources
 │   ├── open-ai.py     AI enrichment (GPT web search)
 │   └── run.sh         Pipeline entry point
 ├── db/                PostgreSQL schema + ingestion script
 ├── events/            Scraper output (events.json)
 ├── docs/              Project documentation and event schema templates
-├── tests/             Pipeline and API validation
+├── tests/             Unit tests, pipeline and API validation
 ├── nginx/             Nginx site configuration
 └── .github/workflows/ CI/CD (deploy + daily scrape pipeline)
 ```
@@ -140,6 +141,12 @@ Creates a Python venv on first run, then:
 2. Runs AI web search for additional events (optional, non-fatal)
 3. Ingests into PostgreSQL
 4. Runs validation checks
+
+Unit tests (no network, a few milliseconds):
+
+```bash
+scraping/.venv/bin/python -m unittest discover -s tests -p "test_*.py"
+```
 
 See [docs/scraping.md](docs/scraping.md) for the full scraping documentation, including how to add new sources.
 

@@ -12,6 +12,8 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
+import antibot
+
 # OL events — scraped directly from olg-ktv-altdorf.ch
 _SKIP_OL_RE = re.compile(r"(?i)OL-Cup|OLG\b|Orientierungslauf")
 # RHC events — scraped directly from rhc-uri.ch
@@ -76,7 +78,7 @@ def _parse_description(desc_html: str) -> Optional[str]:
 def fetch_events() -> list:
     """Fetch all events from the DPCalendar JSON API."""
     log.info("fetching %s", API_URL)
-    resp = requests.get(API_URL, headers=HEADERS, timeout=15)
+    resp = antibot.get(API_URL, headers=HEADERS, timeout=15)
     resp.raise_for_status()
     try:
         raw = resp.json()
