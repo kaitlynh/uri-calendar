@@ -46,21 +46,25 @@ def _parse_time_range(time_str: str) -> tuple:
     return start, end
 
 
-def _scrape_vereinstermine() -> list:
-    """Scrape the Vereinstermine page. Date+time are in the subheading."""
-    log.info("fetching Vereinstermine: %s", URL_VEREINSTERMINE)
-    try:
-        resp = requests.get(URL_VEREINSTERMINE, headers=HEADERS, timeout=15)
-        if resp.status_code != 200:
-            log.warning("HTTP %s for Vereinstermine", resp.status_code)
-            return []
-    except Exception as e:
-        log.error("error fetching Vereinstermine: %s", e)
-        return []
+def _fetch(name: str, url: str) -> tuple[BeautifulSoup, int, str]:
+    """GET one ClubDesk page.
 
+    Network errors and non-200s propagate so the orchestrator retries
+    (swallowing them turned a transient ClubDesk error into a filed issue).
+    Returns the parsed page, its event tile count and a body snippet.
+    """
+    log.info("fetching %s: %s", name, url)
+    resp = requests.get(url, headers=HEADERS, timeout=15)
+    resp.raise_for_status()
     soup = BeautifulSoup(resp.text, "html.parser")
+    tiles = len(soup.select(".cd-tile-h-box"))
+    log.info("%s: %d tiles", name, tiles)
+    return soup, tiles, resp.text[:200].replace("\n", " ")
+
+
+def _scrape_vereinstermine(soup: BeautifulSoup) -> list:
+    """Parse the Vereinstermine page. Date+time are in the subheading."""
     tiles = soup.select(".cd-tile-h-box")
-    log.info("Vereinstermine: %d tiles", len(tiles))
 
     events = []
     for tile in tiles:
@@ -94,20 +98,8 @@ def _scrape_vereinstermine() -> list:
     return events
 
 
-def _scrape_nachwuchs() -> list:
-    """Scrape the Nachwuchstrainings page. Dates are in <h3> headers above tiles."""
-    log.info("fetching Nachwuchstrainings: %s", URL_NACHWUCHS)
-    try:
-        resp = requests.get(URL_NACHWUCHS, headers=HEADERS, timeout=15)
-        if resp.status_code != 200:
-            log.warning("HTTP %s for Nachwuchs", resp.status_code)
-            return []
-    except Exception as e:
-        log.error("error fetching Nachwuchs: %s", e)
-        return []
-
-    soup = BeautifulSoup(resp.text, "html.parser")
-
+def _scrape_nachwuchs(soup: BeautifulSoup) -> list:
+    """Parse the Nachwuchstrainings page. Dates are in <h3> headers above tiles."""
     # Walk through h3 (date headers) and tiles in document order
     events = []
     current_date = None
@@ -157,8 +149,18 @@ def _dedup_key(event: dict) -> str:
 
 def fetch_events() -> list:
     """Fetch events from both pages, deduplicate, merge missing info."""
-    vereins = _scrape_vereinstermine()
-    nachwuchs = _scrape_nachwuchs()
+    v_soup, v_tiles, v_snippet = _fetch("Vereinstermine", URL_VEREINSTERMINE)
+    n_soup, n_tiles, _ = _fetch("Nachwuchstrainings", URL_NACHWUCHS)
+
+    # On 2026-06-17 ClubDesk served both pages as 200 without a single tile
+    # while its calendar feed was answering 500.  Both pages empty is not a
+    # real zero: fail so the orchestrator retries, with the page in the log.
+    # One empty page on its own is fine (the trainings page has off-seasons).
+    if v_tiles == 0 and n_tiles == 0:
+        raise ValueError(f"no event tiles on either page: {v_snippet!r}")
+
+    vereins = _scrape_vereinstermine(v_soup)
+    nachwuchs = _scrape_nachwuchs(n_soup)
 
     # Index Vereinstermine events by dedup key — these are the base
     merged = {}
