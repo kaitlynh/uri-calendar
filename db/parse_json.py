@@ -15,11 +15,17 @@ Key design decisions:
     or fewer nulls.
   - Each event is wrapped in a SAVEPOINT so one bad record doesn't abort
     the entire batch.
+  - The batch is one transaction, committed at the end.  If the server
+    closes the connection mid-way (seen twice, both times in the early
+    morning window where the server runs its package updates), nothing has
+    been committed, so the script reconnects and runs the whole batch once
+    more.  Every statement is an upsert, so running it twice is harmless.
 """
 
 import json
 import os
 import re
+import time
 from pathlib import Path
 
 import psycopg2
@@ -28,6 +34,20 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path=Path(__file__).parent.parent / ".env")
 
 # ── Database ────────────────────────────────────────────────────────────
+
+
+RECONNECT_TRIES = 6
+RECONNECT_DELAY = 10  # seconds; a PostgreSQL restart is over well within a minute
+
+
+class ConnectionLost(Exception):
+    """The database connection died mid-batch."""
+
+    def __init__(self, inserted: int, title, cause: Exception):
+        self.inserted = inserted
+        self.title = title
+        self.cause = cause
+        super().__init__(f"Database connection lost after {inserted} events (at '{title}'): {cause}")
 
 
 def get_db_connection():
@@ -47,6 +67,20 @@ def get_db_connection():
     return conn
 
 
+def reconnect():
+    """Retry get_db_connection for up to a minute, then give up loudly."""
+    for attempt in range(1, RECONNECT_TRIES + 1):
+        try:
+            return get_db_connection()
+        except psycopg2.OperationalError as e:
+            if attempt == RECONNECT_TRIES:
+                raise RuntimeError(
+                    f"Could not reconnect to the database after {RECONNECT_TRIES} tries: {e}"
+                ) from e
+            print(f"Reconnect attempt {attempt} failed ({e}); retrying in {RECONNECT_DELAY}s")
+            time.sleep(RECONNECT_DELAY)
+
+
 # ── Title normalization ────────────────────────────────────────────────
 
 
@@ -61,9 +95,10 @@ def normalize_title(title: str) -> str:
 # ── Ingestion ───────────────────────────────────────────────────────────
 
 
-def ingest_events():
+def ingest_events(json_path=None):
     """Read events/events.json and upsert every event into the database."""
-    json_path = Path(__file__).parent.parent / "events" / "events.json"
+    if json_path is None:
+        json_path = Path(__file__).parent.parent / "events" / "events.json"
 
     with open(json_path, "r") as f:
         events = json.load(f)
@@ -72,6 +107,32 @@ def ingest_events():
         raise ValueError("Expected a JSON array of event objects.")
 
     conn = get_db_connection()
+    try:
+        inserted, skipped = upsert_all(conn, events)
+    except ConnectionLost as lost:
+        # Nothing is committed until the end, so the batch starts over.
+        print(f"{lost}. Reconnecting and running the batch again.")
+        try:
+            conn.close()
+        except Exception:
+            pass
+        conn = reconnect()
+        try:
+            inserted, skipped = upsert_all(conn, events)
+        except ConnectionLost as again:
+            raise RuntimeError(
+                f"Database connection lost twice; giving up. "
+                f"First: {lost.cause}. Second: {again.cause}"
+            ) from again
+
+    conn.commit()
+    conn.close()
+
+    print(f"Done. Inserted/updated: {inserted}, Skipped: {skipped}")
+
+
+def upsert_all(conn, events) -> tuple[int, int]:
+    """Upsert every event on conn.  Raises ConnectionLost if conn dies."""
     cur = conn.cursor()
 
     inserted = 0
@@ -185,26 +246,24 @@ def ingest_events():
             inserted += 1
 
         except (psycopg2.OperationalError, psycopg2.InterfaceError) as e:
-            # The connection itself is gone, not just this record: every
-            # remaining event would fail identically, and the savepoint
-            # rollback below cannot run on a dead cursor.  Stop here and
-            # report the real cause rather than masking it behind the
-            # "cursor already closed" that the rollback would raise.
-            raise RuntimeError(
-                f"Database connection lost after {inserted} events "
-                f"(at '{event.get('event_title')}'): {e}"
-            ) from e
+            # If the connection itself is gone, every remaining event would
+            # fail identically and the savepoint rollback below cannot run
+            # on a dead cursor.  Hand the real cause to the caller.  (A
+            # cancelled or timed-out statement is also an OperationalError,
+            # but leaves the connection open; that one is just skipped.)
+            if conn.closed:
+                raise ConnectionLost(inserted, event.get("event_title"), e) from e
+            print(f"Skipping event '{event.get('event_title')}' due to error: {e}")
+            cur.execute("ROLLBACK TO SAVEPOINT ev")
+            skipped += 1
 
         except psycopg2.Error as e:
             print(f"Skipping event '{event.get('event_title')}' due to error: {e}")
             cur.execute("ROLLBACK TO SAVEPOINT ev")
             skipped += 1
 
-    conn.commit()
     cur.close()
-    conn.close()
-
-    print(f"Done. Inserted/updated: {inserted}, Skipped: {skipped}")
+    return inserted, skipped
 
 
 if __name__ == "__main__":

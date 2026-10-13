@@ -71,6 +71,8 @@ Upserts events into the `events` table (matched on title + date + time). If a `s
 - `icon_filename` — filename of the source icon in `frontend/public/source-icons/` (square PNG)
 - `category` — filter group: `Gemeinden`, `Schulen`, `Organisationen`, or `NULL`
 
+The batch is one transaction, committed at the end. If the server closes the connection mid-way (it happened twice, both times between 06:40 and 06:50 Zurich time, the window where the server runs its package updates), nothing has been committed, so the script reconnects, waiting up to a minute for PostgreSQL to come back, and runs the whole batch again. Every statement is an upsert, so the rerun is harmless. A second drop fails the ingest with both causes in the message. `tests/test_parse_json_reconnect.py` covers this.
+
 ### Validation (`tests/validate_pipeline.py`)
 
 Checks that every `source_name` in `sources.json` produced at least 1 event, validates field formats, checks DB consistency, and more. Exits non-zero on failure — in CI this creates a GitHub issue.
